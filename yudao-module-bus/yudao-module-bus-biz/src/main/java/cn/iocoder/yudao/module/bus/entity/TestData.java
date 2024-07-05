@@ -12,6 +12,8 @@ public class TestData {
 
     private String product_sn;
 
+    private String module_sn;
+
     private String soft_version;
 
     private String language_select;
@@ -29,8 +31,6 @@ public class TestData {
     private String test_result;
 
     private String start_time;
-
-    private String test_type;
 
     private String test_step;
 

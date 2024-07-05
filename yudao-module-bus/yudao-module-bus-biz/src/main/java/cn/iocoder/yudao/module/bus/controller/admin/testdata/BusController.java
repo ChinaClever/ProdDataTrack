@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
@@ -43,6 +44,11 @@ public class BusController {
     public CommonResult<PageResult<TestData>> getTestDataPage(PageReqVO pageReqVO) throws IOException {
         PageResult<TestData> pageResult = testDataService.getTestDataPage(pageReqVO);
         return success(pageResult);
+    }
+
+    @PostMapping("/file-upload")
+    public CommonResult<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return success(testDataService.fileUpload(file));
     }
 
 }

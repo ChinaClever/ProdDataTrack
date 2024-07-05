@@ -231,14 +231,14 @@ const getLoginFormCache = () => {
   }
 }
 // 根据域名，获得租户信息
-const getTenantByWebsite = async () => {
-  const website = location.host
-  const res = await LoginApi.getTenantByWebsite(website)
-  if (res) {
-    loginData.loginForm.tenantName = res.name
-    authUtil.setTenantId(res.id)
-  }
-}
+// const getTenantByWebsite = async () => {
+//   const website = location.host
+//   const res = await LoginApi.getTenantByWebsite(website)
+//   if (res) {
+//     loginData.loginForm.tenantName = res.name
+//     authUtil.setTenantId(res.id)
+//   }
+// }
 const loading = ref() // ElLoading.service 返回的实例
 // 登录
 const handleLogin = async (params) => {
@@ -327,7 +327,7 @@ watch(
 )
 onMounted(() => {
   getLoginFormCache()
-  getTenantByWebsite()
+  // getTenantByWebsite()
 })
 </script>
 

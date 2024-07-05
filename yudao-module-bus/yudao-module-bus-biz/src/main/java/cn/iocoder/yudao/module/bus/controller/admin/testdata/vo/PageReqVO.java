@@ -7,4 +7,14 @@ public class PageReqVO{
     private Integer pageNo;
 
     private Integer pageSize;
+
+    private String orderId;
+
+    private String productSN;
+
+    private String testResult;
+
+    private String language;
+
+    private String[] timeRange;
 }
