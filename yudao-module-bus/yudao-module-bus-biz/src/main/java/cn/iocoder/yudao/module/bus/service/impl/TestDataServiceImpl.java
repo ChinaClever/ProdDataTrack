@@ -7,10 +7,16 @@ import cn.iocoder.yudao.module.infra.framework.file.core.client.FileClient;
 import cn.iocoder.yudao.module.infra.framework.file.core.client.local.LocalFileClientConfig;
 import cn.iocoder.yudao.module.infra.service.file.FileConfigService;
 import cn.iocoder.yudao.module.infra.service.file.FileService;
-import com.alibaba.fastjson2.JSONWriter;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.xmlbeans.XmlException;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
+import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -49,6 +55,11 @@ public class TestDataServiceImpl implements TestDataService {
 
     private static int dataNum = 0;
     private static final int QR_CODE_SIZE = 200;
+    private static boolean existsCode = false;
+    private static boolean existsOrder = false;
+    public final static String inputFilePath = "C:/Users/gilla/Desktop/TestWord.docx";
+    public final static String outputFilePath = "./test_read_data/WordTableImage.docx";
+
 
     @Override
     public PageResult<TestData> getTestDataPage(PageReqVO pageReqVO) throws IOException {
@@ -84,7 +95,7 @@ public class TestDataServiceImpl implements TestDataService {
     }
 
     @Override
-    public String fileUpload(MultipartFile file) throws IOException {
+    public UsedOrderInfo fileUpload(MultipartFile file) throws IOException {
         // 生成唯一文件名
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -98,6 +109,7 @@ public class TestDataServiceImpl implements TestDataService {
         String baseUrl = localFileClientConfig.getBasePath();
         String Url = baseUrl+'\\'+uniqueFileName;
 
+        UsedOrderInfo usedOrderInfo = new UsedOrderInfo();
         try {
             FileInputStream fis = new FileInputStream(Url);
             XWPFDocument document = new XWPFDocument(fis);
@@ -121,7 +133,7 @@ public class TestDataServiceImpl implements TestDataService {
 //                    for (String cell : rowData) {
 //                        System.out.println(cell);
 //                    }
-                    getOrderInfo(rowData);
+                    getOrderInfo(rowData, usedOrderInfo);
                 });
             }
             XWPFTable tableRow = tables.get(0);
@@ -136,31 +148,31 @@ public class TestDataServiceImpl implements TestDataService {
         }
 
 
-        return save_path;
+        return usedOrderInfo;
     }
 
     @Override
-    public void getOrderInfo(String[] dataStr) {
+    public void getOrderInfo(String[] dataStr, UsedOrderInfo usedOrderInfo) {
         String relaseQR;
-        UsedOrderInfo usedOrderInfo = new UsedOrderInfo();
+
         for (int i = 0; i < dataStr.length; i++) {
             if (dataStr[i] != null) {
                 if (dataStr[i].equals("成品代码")) {
                     usedOrderInfo.setDeviceCode(dataStr[++i]);
-                    usedOrderInfo.setExistsCode(true);
+                    existsCode = true;
                 } else if (dataStr[i].equals("受订单号")) {
                     usedOrderInfo.setOrderNumber(dataStr[++i]);
-                    usedOrderInfo.setExistsOrder(true);
+                    existsOrder = true;
+                } else if (dataStr[i].equals("产品名称")) {
+                    System.out.println(dataStr[++i]);
                 }
             }
         }
-        System.out.println("isExistsOrder:"+usedOrderInfo.isExistsOrder());
-        System.out.println("isExistsCode:"+usedOrderInfo.isExistsCode());
 
-        if (usedOrderInfo.isExistsOrder() && usedOrderInfo.isExistsCode()) {
-            usedOrderInfo.setExistsCode(false);
-            usedOrderInfo.setExistsOrder(false);
-            System.out.println("成品代码:" + usedOrderInfo.getOrderNumber() + ";" + "受订单号:" + usedOrderInfo.getDeviceCode());
+        if (existsCode && existsOrder) {
+            existsCode = false;
+            existsOrder = false;
+            System.out.println("成品代码:" + usedOrderInfo.getDeviceCode() + ";" + "受订单号:" + usedOrderInfo.getOrderNumber());
             relaseQR = usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode();
             System.out.println("usedOrderInfo:"+usedOrderInfo);
             try{
@@ -175,9 +187,61 @@ public class TestDataServiceImpl implements TestDataService {
     public void generateQRCode(String text) throws IOException, WriterException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, QR_CODE_SIZE, QR_CODE_SIZE);
-        Path path = FileSystems.getDefault().getPath("./test_read_data/"+ text +".jpeg");
+        Path path = FileSystems.getDefault().getPath("F:/work/file_upload/qrcode/"+ text +".jpeg");
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
         System.out.println("二维码已生成：" + path);
+    }
+
+
+    @Override
+    public CTAnchor getAnchorWithGraphic(CTGraphicalObject ctGraphicalObject,
+                                         String deskFileName, int width, int height,
+                                         int leftOffset, int topOffset, boolean behind) {
+
+        String anchorXML = "<wp:anchor xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" "
+                + "simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"" + ((behind) ? 1 : 0)
+                + "\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\">"
+                + "<wp:simplePos x=\"0\" y=\"0\"/>"
+                + "<wp:positionH relativeFrom=\"column\">"
+                + "<wp:posOffset>" + leftOffset + "</wp:posOffset>"
+                + "</wp:positionH>"
+                + "<wp:positionV relativeFrom=\"paragraph\">"
+                + "<wp:posOffset>" + topOffset + "</wp:posOffset>" +
+                "</wp:positionV>"
+                + "<wp:extent cx=\"" + width + "\" cy=\"" + height + "\"/>"
+                + "<wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"0\"/>"
+                + "<wp:wrapNone/>"
+                + "<wp:docPr id=\"1\" name=\"Drawing 0\" descr=\"" + deskFileName + "\"/><wp:cNvGraphicFramePr/>"
+                + "</wp:anchor>";
+
+        CTDrawing drawing = null;
+        try {
+            drawing = CTDrawing.Factory.parse(anchorXML);
+        } catch (XmlException e) {
+            e.printStackTrace();
+        }
+        CTAnchor anchor = drawing.getAnchorArray(0);
+        anchor.setGraphic(ctGraphicalObject);
+        return anchor;
+    }
+
+    @Override
+    public void insertQRPicture(XWPFTableCell cell, String imgFile, int width, int height, int units)
+            throws IOException, InvalidFormatException {
+        // 创建一个运行来插入图片
+        XWPFRun run = cell.getParagraphArray(0).createRun();
+
+        // 在运行中插入图片
+        run.addPicture(new FileInputStream(imgFile), XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(width),
+                Units.toEMU(height));
+
+        CTDrawing drawing = run.getCTR().getDrawingArray(0);
+        CTGraphicalObject graphicalObject = drawing.getInlineArray(0).getGraphic();
+        CTAnchor anchor1 = getAnchorWithGraphic(graphicalObject, "Seal",
+                Units.toEMU(50), Units.toEMU(50), // 图片大小
+                Units.toEMU(480), Units.toEMU(0), true);// 相对当前段落位置及偏移
+        drawing.setAnchorArray(new CTAnchor[] { anchor1 });// 添加浮动属性
+        drawing.removeInline(0);// 删除行内属性
     }
 
 }

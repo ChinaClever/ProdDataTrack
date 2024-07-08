@@ -4,6 +4,7 @@ import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.PageReqVO;
 import cn.iocoder.yudao.module.bus.entity.TestData;
+import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class BusController {
     }
 
     @PostMapping("/file-upload")
-    public CommonResult<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public CommonResult<UsedOrderInfo> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         return success(testDataService.fileUpload(file));
     }
 

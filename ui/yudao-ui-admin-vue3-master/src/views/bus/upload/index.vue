@@ -1,33 +1,149 @@
 <template>
-  <div style="width: 1500px; ">
-    <el-upload
-      ref="uploadRef"
-      v-model:file-list="fileList"
-      :action="uploadUrl"
-      :auto-upload="false"
-      :data="data"
-      :disabled="formLoading"
-      :limit="1"
-      :on-change="handleFileChange"
-      :on-error="submitFormError"
-      :on-exceed="handleExceed"
-      :on-success="submitFormSuccess"
-      :http-request="httpRequest"
-      accept=".doc, .docx"
-      drag
-    >
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text"> 将文件拖到此处，或 <em>点击上传</em></div>
-      <template #tip>
-        <div class="el-upload__tip" style="color: red">
-          提示：仅允许导入 doc、docx 格式文件！
-        </div>
-      </template>
-    </el-upload>
+  <ContentWrap>
+    <div style="width: 1500px; ">
+      <el-upload
+        ref="uploadRef"
+        v-model:file-list="fileList"
+        :action="uploadUrl"
+        :auto-upload="false"
+        :data="data"
+        :disabled="formLoading"
+        :limit="1"
+        :on-change="handleFileChange"
+        :on-error="submitFormError"
+        :on-exceed="handleExceed"
+        :on-success="submitFormSuccess"
+        :http-request="httpRequest"
+        accept=".doc, .docx"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text"> 将文件拖到此处，或 <em>点击上传</em></div>
+        <template #tip>
+          <div class="el-upload__tip" style="color: red">
+            提示：仅允许导入 doc、docx 格式文件！
+          </div>
+        </template>
+      </el-upload>
 
-    <el-button :disabled="formLoading" type="primary" @click="submitFileForm">确 定</el-button>
-    <el-button @click="dialogVisible = false">取 消</el-button>
-  </div>
+      <el-button :disabled="formLoading" type="primary" @click="submitFileForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
+    </div>
+  </ContentWrap>
+  <ContentWrap>
+    <el-descriptions
+      title="New Busbar始端箱产品技术规格说明书"
+      :column="3"
+      size="Large"
+      border
+    >
+    <!-- <template #extra>
+      <el-button type="primary">Operation</el-button>
+    </template> -->
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">设计编号 </div>
+      </template>
+      {{ resData.designNumber }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">编制日期</div>
+      </template>
+      {{ resData.designDate }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">设计单位</div>
+      </template>
+      {{ resData.architect }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">数量</div>
+      </template>
+      {{ resData.number }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">产品类别 </div>
+      </template>
+      {{ resData.productCategory }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">产品系列 </div>
+      </template>
+      {{ resData.productLine }}
+    </el-descriptions-item>
+    <el-descriptions-item :span="3">
+      <template #label>
+        <div class="cell-item">交货日期 </div>
+      </template>
+      {{ resData.deliveryDate }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">运输方式 </div>
+      </template>
+      {{ resData.modeOfShipping }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">部门 </div>
+      </template>
+      {{ resData.department }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">设计人 </div>
+      </template>
+      {{ resData.designer }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">客户编码</div>
+      </template>
+      {{ resData.customerCode }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">生产车间</div>
+      </template>
+      {{ resData.manufacturingShop }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">受订单号</div>
+      </template>
+      {{ resData.orderNumber }}
+    </el-descriptions-item>
+    <el-descriptions-item  :span="1">
+      <template #label>
+        <div class="cell-item">客户名称</div>
+      </template>
+      {{ resData.customerName }}
+    </el-descriptions-item>
+    <el-descriptions-item :span="2">
+      <template #label>
+        <div class="cell-item">客户型号</div>
+      </template>
+      {{ resData.customerModel }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">成品代码</div>
+      </template>
+      {{ resData.deviceCode }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">规格型号</div>
+      </template>
+      {{ resData.deviceType }}
+    </el-descriptions-item>
+    </el-descriptions>
+  </ContentWrap>
 </template>
 
 <script lang="ts" setup>
@@ -41,6 +157,25 @@ const formLoading = ref(false) // 表单的加载中
 const fileList = ref([]) // 文件列表
 const data = ref({ path: '' })
 const uploadRef = ref()
+const resData = reactive({
+  designNumber: 'New Busbar始端箱产品技书',
+  designDate: 'New Busbar始端箱产品技术规New Bus明书格说明书',
+  architect: 'New Busbar始端箱产品技术规New 格说明书',
+  number: '',
+  productCategory: '',
+  productLine: '',
+  deliveryDate: '',
+  modeOfShipping: '',
+  department: '',
+  designer: '',
+  customerCode: '',
+  manufacturingShop: '',
+  orderNumber: '',
+  customerName: '',
+  customerModel: '',
+  deviceCode: '',
+  deviceType: '',
+})
 
 /** 处理上传的文件发生变化 */
 const handleFileChange = (file) => {
@@ -58,7 +193,8 @@ const submitFileForm = () => {
 
 /** 文件上传成功处理 */
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
-const submitFormSuccess = () => {
+const submitFormSuccess = (res) => {
+  console.log(res)
   // 清理
   formLoading.value = false
   unref(uploadRef)?.clearFiles()
@@ -87,3 +223,14 @@ const handleExceed = (): void => {
 
 
 </script>
+
+
+
+<style scoped>
+.cell-item {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  width: auto;
+}
+</style>
