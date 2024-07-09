@@ -58,15 +58,16 @@ public class FileServiceImpl implements FileService {
         Assert.notNull(client, "客户端(master) 不能为空");
         String url = client.upload(content, path, type);
 
-        // 保存到数据库
-        FileDO file = new FileDO();
-        file.setConfigId(client.getId());
-        file.setName(name);
-        file.setPath(path);
-        file.setUrl(url);
-        file.setType(type);
-        file.setSize(content.length);
-        fileMapper.insert(file);
+
+        // 不用保存到这
+//        FileDO file = new FileDO();
+//        file.setConfigId(client.getId());
+//        file.setName(name);
+//        file.setPath(path);
+//        file.setUrl(url);
+//        file.setType(type);
+//        file.setSize(content.length);
+//        fileMapper.insert(file);
         return url;
     }
 

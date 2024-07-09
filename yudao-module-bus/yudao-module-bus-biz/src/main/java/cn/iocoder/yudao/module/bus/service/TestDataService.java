@@ -18,9 +18,9 @@ public interface TestDataService {
 
     UsedOrderInfo fileUpload(MultipartFile file) throws IOException;
 
-    void getOrderInfo(String[] dataStr, UsedOrderInfo usedOrderInfo);
+    void getOrderInfo(String[] dataStr, UsedOrderInfo usedOrderInfo, String baseUrl);
 
-    void generateQRCode(String text) throws IOException, WriterException;
+    void generateQRCode(String text, String baseUrl) throws IOException, WriterException;
 
     CTAnchor getAnchorWithGraphic(CTGraphicalObject ctGraphicalObject, String deskFileName, int width,
                                   int height, int leftOffset, int topOffset, boolean behind);

@@ -1,11 +1,23 @@
 package cn.iocoder.yudao.module.bus.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Data
 @ToString
-public class UsedOrderInfo {
+@TableName("bus_file_info")
+public class UsedOrderInfo implements Serializable{
+    /**
+     * 编号，数据库自增
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     private String designNumber;
 
@@ -40,5 +52,7 @@ public class UsedOrderInfo {
     private String deviceCode;
 
     private String deviceType;
+
+    private String downloadUrl;
 
 }

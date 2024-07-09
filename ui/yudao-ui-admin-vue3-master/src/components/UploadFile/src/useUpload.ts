@@ -34,7 +34,6 @@ export const useUpload = () => {
         FileApi.updateFile({file: options.file })
           .then((res) => {
             if (res.code === 0) {
-              console.log(res.code)
               resolve(res)
             } else {
               reject(res)

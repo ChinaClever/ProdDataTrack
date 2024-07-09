@@ -34,7 +34,7 @@
     <el-descriptions
       title="New Busbar始端箱产品技术规格说明书"
       :column="3"
-      size="Large"
+      size="large"
       border
     >
     <!-- <template #extra>
@@ -158,9 +158,9 @@ const fileList = ref([]) // 文件列表
 const data = ref({ path: '' })
 const uploadRef = ref()
 const resData = reactive({
-  designNumber: 'New Busbar始端箱产品技书',
-  designDate: 'New Busbar始端箱产品技术规New Bus明书格说明书',
-  architect: 'New Busbar始端箱产品技术规New 格说明书',
+  designNumber: '',
+  designDate: '',
+  architect: '',
   number: '',
   productCategory: '',
   productLine: '',
@@ -175,6 +175,7 @@ const resData = reactive({
   customerModel: '',
   deviceCode: '',
   deviceType: '',
+  downloadUrl: ''
 })
 
 /** 处理上传的文件发生变化 */
@@ -194,7 +195,22 @@ const submitFileForm = () => {
 /** 文件上传成功处理 */
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
 const submitFormSuccess = (res) => {
-  console.log(res)
+  //先清空再赋值
+  Object.keys(res.data).forEach(key => {
+    resData[key] = '';
+  });
+  Object.keys(res.data).forEach(key => {
+    resData[key] = res.data[key];
+  });
+  if (resData.downloadUrl != null){
+    console.log(res)
+    const link = document.createElement('a');
+    link.href = resData.downloadUrl;
+    link.download = resData.orderNumber + '+' + resData.deviceCode;  // 设置下载的文件名，可以根据需求动态设置
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   // 清理
   formLoading.value = false
   unref(uploadRef)?.clearFiles()

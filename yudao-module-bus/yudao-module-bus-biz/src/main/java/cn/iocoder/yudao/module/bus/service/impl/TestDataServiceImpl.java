@@ -1,7 +1,10 @@
 package cn.iocoder.yudao.module.bus.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
+import cn.iocoder.yudao.module.bus.mapper.UsedOrderInfoMapper;
 import cn.iocoder.yudao.module.infra.dal.dataobject.file.FileConfigDO;
 import cn.iocoder.yudao.module.infra.framework.file.core.client.FileClient;
 import cn.iocoder.yudao.module.infra.framework.file.core.client.local.LocalFileClientConfig;
@@ -17,6 +20,7 @@ import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -34,7 +38,9 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -52,14 +58,14 @@ public class TestDataServiceImpl implements TestDataService {
 
     @Resource
     private FileConfigService fileConfigService;
+    @Autowired
+    private UsedOrderInfoMapper usedOrderInfoMapper;
 
     private static int dataNum = 0;
     private static final int QR_CODE_SIZE = 200;
     private static boolean existsCode = false;
     private static boolean existsOrder = false;
-    public final static String inputFilePath = "C:/Users/gilla/Desktop/TestWord.docx";
-    public final static String outputFilePath = "./test_read_data/WordTableImage.docx";
-
+    public final static String qrcodePath = "/qrcode/";
 
     @Override
     public PageResult<TestData> getTestDataPage(PageReqVO pageReqVO) throws IOException {
@@ -107,7 +113,7 @@ public class TestDataServiceImpl implements TestDataService {
         FileConfigDO fileConfigDO = fileConfigService.getFileConfig(fileClient.getId());
         LocalFileClientConfig localFileClientConfig = (LocalFileClientConfig) fileConfigDO.getConfig();
         String baseUrl = localFileClientConfig.getBasePath();
-        String Url = baseUrl+'\\'+uniqueFileName;
+        String Url = baseUrl + '\\' + uniqueFileName;
 
         UsedOrderInfo usedOrderInfo = new UsedOrderInfo();
         try {
@@ -130,29 +136,44 @@ public class TestDataServiceImpl implements TestDataService {
                         rowData[dataNum] = text;
                         dataNum += 1;
                     });
-//                    for (String cell : rowData) {
-//                        System.out.println(cell);
-//                    }
-                    getOrderInfo(rowData, usedOrderInfo);
+                    getOrderInfo(rowData, usedOrderInfo, baseUrl);
                 });
             }
-            XWPFTable tableRow = tables.get(0);
-            List<XWPFTableCell> tableCells = tableRow.getRow(0).getTableCells();
-//            for (XWPFTableCell cell : tableCells) {
-//                System.out.println(cell.getText());
-//            }
+            XWPFTable tablerow = document.getTables().get(0);
+            XWPFTableCell firstCell = tablerow.getRow(0).getCell(0);
+
+            String imgFile = baseUrl+ qrcodePath + usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode() + ".jpeg";
+            // 插入图片
+            insertQRPicture(firstCell, imgFile, 50, 50, 0);
+
+            // docPi
+            FileOutputStream out = new FileOutputStream(Url);
+            document.write(out);
+
             document.close();
             fis.close();
+            out.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // 文档文件重命名
+        File oldNameFile = new File(Url);
+        String newName = baseUrl + "\\" + usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode() + extension;
+        FileUtil.rename(oldNameFile, newName, true);
+
+        // 生成文件下载url 例如http://127.0.0.1:48088/admin-api/infra/file/23/get/88be287d-543a-4afe-9636-b65ffd8a4d0b.docx
+        String newNamePath = usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode() + extension;
+        String downloadUrl = StrUtil.format("{}/admin-api/infra/file/{}/get/{}", localFileClientConfig.getDomain(), fileClient.getId(), newNamePath);
+        usedOrderInfo.setDownloadUrl(downloadUrl);
+        // 保存到mysql
+        usedOrderInfoMapper.insert(usedOrderInfo);
 
         return usedOrderInfo;
     }
 
     @Override
-    public void getOrderInfo(String[] dataStr, UsedOrderInfo usedOrderInfo) {
+    public void getOrderInfo(String[] dataStr, UsedOrderInfo usedOrderInfo, String baseUrl) {
         String relaseQR;
 
         for (int i = 0; i < dataStr.length; i++) {
@@ -163,8 +184,36 @@ public class TestDataServiceImpl implements TestDataService {
                 } else if (dataStr[i].equals("受订单号")) {
                     usedOrderInfo.setOrderNumber(dataStr[++i]);
                     existsOrder = true;
-                } else if (dataStr[i].equals("产品名称")) {
-                    System.out.println(dataStr[++i]);
+                } else if (dataStr[i].equals("设计编号")) {
+                    usedOrderInfo.setDesignNumber(dataStr[++i]);
+                }else if (dataStr[i].equals("编制日期")) {
+                    usedOrderInfo.setDesignDate(dataStr[++i]);
+                }else if (dataStr[i].equals("设计单位")) {
+                    usedOrderInfo.setArchitect(dataStr[++i]);
+                }else if (dataStr[i].equals("数量")) {
+                    usedOrderInfo.setNumber(dataStr[++i]);
+                }else if (dataStr[i].equals("产品类别")) {
+                    usedOrderInfo.setProductCategory(dataStr[++i]);
+                }else if (dataStr[i].equals("产品系列")) {
+                    usedOrderInfo.setProductLine(dataStr[++i]);
+                }else if (dataStr[i].equals("交货日期")) {
+                    usedOrderInfo.setDeliveryDate(dataStr[++i]);
+                }else if (dataStr[i].equals("运输方式")) {
+                    usedOrderInfo.setModeOfShipping(dataStr[++i]);
+                }else if (dataStr[i].equals("部门")) {
+                    usedOrderInfo.setDepartment(dataStr[++i]);
+                }else if (dataStr[i].equals("设计人")) {
+                    usedOrderInfo.setDesigner(dataStr[++i]);
+                }else if (dataStr[i].equals("客户编码")) {
+                    usedOrderInfo.setCustomerCode(dataStr[++i]);
+                }else if (dataStr[i].equals("生产车间")) {
+                    usedOrderInfo.setManufacturingShop(dataStr[++i]);
+                }else if (dataStr[i].equals("客户名称")) {
+                    usedOrderInfo.setCustomerName(dataStr[++i]);
+                }else if (dataStr[i].equals("客户型号")) {
+                    usedOrderInfo.setCustomerModel(dataStr[++i]);
+                }else if (dataStr[i].equals("规格型号")) {
+                    usedOrderInfo.setDeviceType(dataStr[++i]);
                 }
             }
         }
@@ -176,7 +225,7 @@ public class TestDataServiceImpl implements TestDataService {
             relaseQR = usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode();
             System.out.println("usedOrderInfo:"+usedOrderInfo);
             try{
-                generateQRCode(relaseQR);
+                generateQRCode(relaseQR, baseUrl);
             }catch (Exception e) {
                 System.out.println(relaseQR);
             }
@@ -184,14 +233,13 @@ public class TestDataServiceImpl implements TestDataService {
     }
 
     @Override
-    public void generateQRCode(String text) throws IOException, WriterException {
+    public void generateQRCode(String text, String baseUrl) throws IOException, WriterException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, QR_CODE_SIZE, QR_CODE_SIZE);
-        Path path = FileSystems.getDefault().getPath("F:/work/file_upload/qrcode/"+ text +".jpeg");
+        Path path = FileSystems.getDefault().getPath(baseUrl + qrcodePath + text +".jpeg");
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
         System.out.println("二维码已生成：" + path);
     }
-
 
     @Override
     public CTAnchor getAnchorWithGraphic(CTGraphicalObject ctGraphicalObject,
@@ -228,20 +276,33 @@ public class TestDataServiceImpl implements TestDataService {
     @Override
     public void insertQRPicture(XWPFTableCell cell, String imgFile, int width, int height, int units)
             throws IOException, InvalidFormatException {
-        // 创建一个运行来插入图片
-        XWPFRun run = cell.getParagraphArray(0).createRun();
+        FileInputStream fis = null;
+        try {
+            // 创建一个运行来插入图片
+            XWPFRun run = cell.getParagraphArray(0).createRun();
 
-        // 在运行中插入图片
-        run.addPicture(new FileInputStream(imgFile), XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(width),
-                Units.toEMU(height));
+            // 在运行中插入图片
+            fis = new FileInputStream(imgFile);
+            run.addPicture(fis, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(width),
+                    Units.toEMU(height));
 
-        CTDrawing drawing = run.getCTR().getDrawingArray(0);
-        CTGraphicalObject graphicalObject = drawing.getInlineArray(0).getGraphic();
-        CTAnchor anchor1 = getAnchorWithGraphic(graphicalObject, "Seal",
-                Units.toEMU(50), Units.toEMU(50), // 图片大小
-                Units.toEMU(480), Units.toEMU(0), true);// 相对当前段落位置及偏移
-        drawing.setAnchorArray(new CTAnchor[] { anchor1 });// 添加浮动属性
-        drawing.removeInline(0);// 删除行内属性
+            CTDrawing drawing = run.getCTR().getDrawingArray(0);
+            CTGraphicalObject graphicalObject = drawing.getInlineArray(0).getGraphic();
+            CTAnchor anchor1 = getAnchorWithGraphic(graphicalObject, "Seal",
+                    Units.toEMU(50), Units.toEMU(50), // 图片大小
+                    Units.toEMU(480), Units.toEMU(0), true);// 相对当前段落位置及偏移
+            drawing.setAnchorArray(new CTAnchor[] { anchor1 });// 添加浮动属性
+            drawing.removeInline(0);// 删除行内属性
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close(); // 关闭文件流
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+
 
 }
