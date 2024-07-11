@@ -1,6 +1,6 @@
 <template>
   <ContentWrap>
-    <div style="width: 1500px; ">
+    <div>
       <el-upload
         ref="uploadRef"
         v-model:file-list="fileList"
@@ -37,9 +37,6 @@
       size="large"
       border
     >
-    <!-- <template #extra>
-      <el-button type="primary">Operation</el-button>
-    </template> -->
     <el-descriptions-item>
       <template #label>
         <div class="cell-item">设计编号 </div>

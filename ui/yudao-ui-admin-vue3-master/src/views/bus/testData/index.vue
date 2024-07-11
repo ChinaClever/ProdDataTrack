@@ -74,7 +74,7 @@
       layout = "total, sizes, prev, pager, next, jumper"
       v-model:page="queryParams.pageNo"
       v-model:limit="queryParams.pageSize"
-      />
+      @pagination="getList"/>
   </ContentWrap>
 </template>
 
@@ -209,14 +209,14 @@ const getList = async () => {
   }
 }
 
-// 格式化日期
+// 格式化日期列
 function formatTime(_row: any, _column: any, cellValue: number): string {
   if (!cellValue) {
     return ''
   }
   return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss')
 }
-// 格式化语言
+// 格式化语言列
 function formatLanguage(_row: any, _column: any, cellValue: number): string {
   if (cellValue == 0) {
     return '中文'
@@ -224,7 +224,7 @@ function formatLanguage(_row: any, _column: any, cellValue: number): string {
     return 'English'
   }
 }
-// 格式化语言
+// 格式化结果列
 function formatTestResult(row: any, _column: any, cellValue: number): string {
   if (cellValue == 0) {
     if( row.language_select == '0'){

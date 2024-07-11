@@ -3,6 +3,10 @@ package cn.iocoder.yudao.module.bus.service.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
 import cn.iocoder.yudao.module.bus.mapper.UsedOrderInfoMapper;
 import cn.iocoder.yudao.module.infra.dal.dataobject.file.FileConfigDO;
@@ -10,6 +14,10 @@ import cn.iocoder.yudao.module.infra.framework.file.core.client.FileClient;
 import cn.iocoder.yudao.module.infra.framework.file.core.client.local.LocalFileClientConfig;
 import cn.iocoder.yudao.module.infra.service.file.FileConfigService;
 import cn.iocoder.yudao.module.infra.service.file.FileService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -24,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.PageReqVO;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
@@ -52,10 +59,8 @@ import java.util.UUID;
 public class TestDataServiceImpl implements TestDataService {
     @Resource
     private MongoTemplate mongoTemplate;
-
     @Resource
     private FileService fileService;
-
     @Resource
     private FileConfigService fileConfigService;
     @Autowired
@@ -68,7 +73,7 @@ public class TestDataServiceImpl implements TestDataService {
     public final static String qrcodePath = "/qrcode/";
 
     @Override
-    public PageResult<TestData> getTestDataPage(PageReqVO pageReqVO) throws IOException {
+    public PageResult<TestData> getTestDataPage(TestDataPageReqVO pageReqVO) {
         Query query = new Query();
         Criteria criteria = new Criteria();
         if(pageReqVO.getOrderId() != null){
@@ -87,16 +92,49 @@ public class TestDataServiceImpl implements TestDataService {
             criteria.and("end_time").gte(pageReqVO.getTimeRange()[0]).lte(pageReqVO.getTimeRange()[1]);
         }
         query.addCriteria(criteria);
-        query.with(Sort.by(Sort.Order.desc("end_time")))
+        // 查询总数
+        long total = mongoTemplate.count(query, TestData.class);
+        // 查询分页
+        query.with(Sort.by(Sort.Order.desc("_id")))
                 .skip((long)(pageReqVO.getPageNo() - 1) * pageReqVO.getPageSize())
                 .limit(pageReqVO.getPageSize());
         List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
-        // 查询总数
-        long total = mongoTemplate.count(query, TestData.class);
-        PageResult<TestData> pageResult = new PageResult<>();
 
+        PageResult<TestData> pageResult = new PageResult<>();
         pageResult.setList(testDataList);
         pageResult.setTotal(total);
+        return pageResult;
+    }
+
+    @Override
+    public PageResult<UsedOrderInfo> getFileListPage(FileListPageReqVO pageReqVO) {
+        Page<UsedOrderInfo> page = new Page<>(pageReqVO.getPageNo(), pageReqVO.getPageSize());
+
+        LambdaQueryWrapper<UsedOrderInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByDesc(UsedOrderInfo::getId);
+
+        // 模糊查询
+        if (pageReqVO.getKeyword() != null) {
+            queryWrapper.and(wrapper -> wrapper
+                    .like(UsedOrderInfo::getOrderNumber, pageReqVO.getKeyword())
+                    .or()
+                    .like(UsedOrderInfo::getDeviceCode, pageReqVO.getKeyword())
+                    .or()
+                    .like(UsedOrderInfo::getCustomerName, pageReqVO.getKeyword())
+                    .or()
+                    .like(UsedOrderInfo::getProductCategory, pageReqVO.getKeyword())
+                    .or()
+                    .like(UsedOrderInfo::getProductLine, pageReqVO.getKeyword())
+                    .or()
+                    .like(UsedOrderInfo::getDesigner, pageReqVO.getKeyword())
+                    .or()
+                    .like(UsedOrderInfo::getDepartment, pageReqVO.getKeyword()));
+        }
+        IPage<UsedOrderInfo> resultPage = usedOrderInfoMapper.selectPage(page, queryWrapper);
+
+        PageResult<UsedOrderInfo> pageResult = new PageResult<>();
+        pageResult.setList(resultPage.getRecords());
+        pageResult.setTotal(resultPage.getTotal());
         return pageResult;
     }
 
@@ -302,6 +340,34 @@ public class TestDataServiceImpl implements TestDataService {
                 }
             }
         }
+    }
+
+    @Override
+    public ReportRespVO getReportInfo(ReportReqVO reqVO) {
+        QueryWrapper<UsedOrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_number", reqVO.getOrderId())
+                .eq("device_code", reqVO.getProductSN());
+        UsedOrderInfo usedOrderInfo = usedOrderInfoMapper.selectOne(queryWrapper);
+
+        Query query = new Query();
+        Criteria criteria = new Criteria();
+        if(reqVO.getOrderId() != null){
+            criteria.and("order_id").is(reqVO.getOrderId());
+        }
+        if(reqVO.getProductSN() != null){
+            criteria.and("product_sn").is(reqVO.getProductSN());
+        }
+        query.addCriteria(criteria);
+
+        if (usedOrderInfo != null){
+            ReportRespVO respVO = new ReportRespVO();
+            respVO.setCustomerName(usedOrderInfo.getCustomerName());
+            respVO.setDeviceType(usedOrderInfo.getDeviceType());
+            respVO.setProductionNum(respVO.getProductionNum());
+
+        }
+
+        return null;
     }
 
 

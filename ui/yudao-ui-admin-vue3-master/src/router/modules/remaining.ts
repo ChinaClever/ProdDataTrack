@@ -234,6 +234,17 @@ const remainingRouter: AppRouteRecordRaw[] = [
       noTagsView: true
     }
   },
+  {
+    path: '/report',
+    component: () => import('@/views/bus/report/index.vue'),
+    name: 'BusReport',
+    meta: {
+      hidden: true,
+      title: '出厂报告',
+      noTagsView: true,
+      canTo: true   
+    }
+  },
 
 ]
 

@@ -3,7 +3,7 @@ package cn.iocoder.yudao.module.bus.controller.admin.testdata.vo;
 import lombok.Data;
 
 @Data
-public class PageReqVO{
+public class TestDataPageReqVO{
     private Integer pageNo;
 
     private Integer pageSize;

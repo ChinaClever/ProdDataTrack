@@ -2,7 +2,10 @@ package cn.iocoder.yudao.module.bus.controller.admin.testdata;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.PageReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
@@ -42,7 +45,7 @@ public class BusController {
 
     @GetMapping("/testData-page")
     @PermitAll
-    public CommonResult<PageResult<TestData>> getTestDataPage(PageReqVO pageReqVO) throws IOException {
+    public CommonResult<PageResult<TestData>> getTestDataPage(TestDataPageReqVO pageReqVO) {
         PageResult<TestData> pageResult = testDataService.getTestDataPage(pageReqVO);
         return success(pageResult);
     }
@@ -50,6 +53,21 @@ public class BusController {
     @PostMapping("/file-upload")
     public CommonResult<UsedOrderInfo> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         return success(testDataService.fileUpload(file));
+    }
+
+    @GetMapping("/fileList-page")
+    @PermitAll
+    public CommonResult<PageResult<UsedOrderInfo>> getFileListPage(FileListPageReqVO pageReqVO) {
+        PageResult<UsedOrderInfo> pageResult = testDataService.getFileListPage(pageReqVO);
+        return success(pageResult);
+    }
+
+    @PostMapping("/report")
+    @PermitAll
+    public CommonResult<ReportRespVO> getReportInfo(@RequestBody ReportReqVO reqVO) {
+        ReportRespVO respVO = testDataService.getReportInfo(reqVO);
+        return success(respVO);
+
     }
 
 }

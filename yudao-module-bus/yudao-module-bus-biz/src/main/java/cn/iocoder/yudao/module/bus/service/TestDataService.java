@@ -1,6 +1,9 @@
 package cn.iocoder.yudao.module.bus.service;
 
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.PageReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
@@ -14,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface TestDataService {
-    PageResult<TestData> getTestDataPage(PageReqVO pageReqVO) throws IOException;
+    PageResult<TestData> getTestDataPage(TestDataPageReqVO pageReqVO);
+
+    PageResult<UsedOrderInfo> getFileListPage(FileListPageReqVO pageReqVO);
 
     UsedOrderInfo fileUpload(MultipartFile file) throws IOException;
 
@@ -27,4 +32,6 @@ public interface TestDataService {
 
     void insertQRPicture(XWPFTableCell cell, String imgFile, int width, int height, int units)
             throws IOException, InvalidFormatException;
+
+    ReportRespVO getReportInfo(ReportReqVO reqVO);
 }
