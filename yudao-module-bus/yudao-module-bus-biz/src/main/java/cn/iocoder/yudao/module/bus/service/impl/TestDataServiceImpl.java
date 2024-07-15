@@ -30,6 +30,10 @@ import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import cn.iocoder.yudao.module.bus.entity.TestData;
@@ -51,8 +55,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -344,30 +347,85 @@ public class TestDataServiceImpl implements TestDataService {
 
     @Override
     public ReportRespVO getReportInfo(ReportReqVO reqVO) {
+        // 查mysql
         QueryWrapper<UsedOrderInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("order_number", reqVO.getOrderId())
                 .eq("device_code", reqVO.getProductSN());
         UsedOrderInfo usedOrderInfo = usedOrderInfoMapper.selectOne(queryWrapper);
+        // 查mysql所需返回数据
+        ReportRespVO respVO = new ReportRespVO();
+        if (usedOrderInfo != null){
+            respVO.setCustomerName(usedOrderInfo.getCustomerName());
+            respVO.setDeviceType(usedOrderInfo.getDeviceType());
+            respVO.setProductionNum(Integer.valueOf(usedOrderInfo.getNumber()));
+        }
 
         Query query = new Query();
         Criteria criteria = new Criteria();
-        if(reqVO.getOrderId() != null){
-            criteria.and("order_id").is(reqVO.getOrderId());
-        }
-        if(reqVO.getProductSN() != null){
-            criteria.and("product_sn").is(reqVO.getProductSN());
-        }
+        criteria.and("order_id").is(reqVO.getOrderId());
+        criteria.and("product_sn").is(reqVO.getProductSN());
+        criteria.and("language_select").is("0");
         query.addCriteria(criteria);
+        query.with(Sort.by(Sort.Order.desc("_id")));
+        List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
+        List<String> passTestModuleList = new ArrayList<>();
+        List<String> failTestModuleList = new ArrayList<>();
+        Boolean skipFlag = false;
+        // 区分不同模块
+        String nowModule = null;
+        // 区分同模块不同次检测 通过同一模块不同检测的检测开始时间区分
+        String nowStartTime = null;
 
-        if (usedOrderInfo != null){
-            ReportRespVO respVO = new ReportRespVO();
-            respVO.setCustomerName(usedOrderInfo.getCustomerName());
-            respVO.setDeviceType(usedOrderInfo.getDeviceType());
-            respVO.setProductionNum(respVO.getProductionNum());
+        // 查到的数据已经按时间倒序排序 最新一次在前面
+        for(TestData testData : testDataList){
+            // 初始化当前循环在哪个模块哪一次 第一次循环才执行
+            if (nowModule == null ){
+                nowModule = testData.getModule_sn();
+                nowStartTime = testData.getStart_time();
+            }
 
+            // 不跳过,同时属于同模块同一次, 不在passTestModuleList和failTestModuleList说明是最新那次
+            //需要判断!failTestModuleList.contains(testData.getModule_sn())是为了避免模块最新那次失败了，后续循环到旧检测还执行后续判断，应跳过
+            if (!skipFlag && Objects.equals(testData.getModule_sn(), nowModule) && !passTestModuleList.contains(testData.getModule_sn())
+                    && !failTestModuleList.contains(testData.getModule_sn())){
+
+                // 同一模块的同一检测次 出现失败 则这个模块失败 直接跳过到下一模块
+                if (Objects.equals(testData.getTest_result(), "0")){
+                    failTestModuleList.add(nowModule);
+                    skipFlag = true;
+                    continue;
+                }
+            }
+            // 到了下一个模块执行 或者同一模块旧一次检测
+            if ( !Objects.equals(testData.getModule_sn(), nowModule) || !Objects.equals(nowStartTime, testData.getStart_time())
+                    && !passTestModuleList.contains(testData.getModule_sn())
+                    && !failTestModuleList.contains(testData.getModule_sn())){
+                // 如果skipFlag == false  说明上一个模块通过测试 需加入passTestModuleList
+                if ( !skipFlag && !passTestModuleList.contains(testData.getModule_sn())){
+                    passTestModuleList.add(nowModule);
+                }
+                skipFlag = false;
+                nowModule = testData.getModule_sn();
+                nowStartTime = testData.getStart_time();
+                // 看本项测试是否失败 如果失败就继续跳过到下一个模块
+                if (Objects.equals(testData.getTest_result(), "0")){
+                    failTestModuleList.add(nowModule);
+                    skipFlag = true;
+                }
+
+            }
         }
 
-        return null;
+        System.out.println("passTestModuleList"+Arrays.toString(passTestModuleList.toArray()));
+        System.out.println("failTestModuleList"+Arrays.toString(failTestModuleList.toArray()));
+        if (!testDataList.isEmpty()){
+            respVO.setDevName(testDataList.get(0).getDev_name());
+            respVO.setPassTestNum(passTestModuleList.size());
+            respVO.setProductionDate(testDataList.get(0).getStart_time());
+            respVO.setTestDate(testDataList.get(0).getEnd_time());
+        }
+
+        return respVO;
     }
 
 

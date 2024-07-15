@@ -7,7 +7,7 @@
             inactive-text="英文"
             @change="updateLanguage"
         />
-        <el-button type="primary" :disabled="disableExport" class="container-button" >导出 PDF</el-button>
+        <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
 
       <div v-if="out_language == true">
@@ -716,29 +716,40 @@
 </template>
 
 <script setup lang="ts">
-// import { TestDataApi } from '@/api/bus/testData'
+import { TestDataApi } from '@/api/bus/testData'
+import { ElMessageBox } from 'element-plus'
+import html2canvas from "html2canvas";
+import JsPDF from "jspdf";
+
 defineOptions({ name: 'BusReport' })
-  const Out_dialogVisible = ref(false);
-  const goods_SN_data = ref({});
-  // const goods_product_sn = ref(null);
-  // const goods_language_select = ref(null);
-  // const goods_tool_name = ref(null);
-  // const goods_soft_version = ref(null);
-  // const goods_test_type = ref(null);
-  // const goods_start_time = ref<Date | null>(new Date());
-  const goods_end_time = ref<Date | null>(new Date());
-  // const goods_order_id = ref(null);
-  const goods_order_num = ref(null);
-  const goods_test_num = ref(null);
-  const goods_dev_name = ref('始端箱');
-  // const end_judgment = ref(null);
-  const centerAlign = 'center';
-  const fontSize = 60;
-  // const language = ref(true);
-  const out_language = ref(true);
-  const modelNumber = ref('');
-  const customerName = ref('');
-  const radio1 = ref('2');
+const Out_dialogVisible = ref(false);
+const goods_SN_data = ref({});
+// const goods_product_sn = ref(null);
+// const goods_language_select = ref(null);
+// const goods_tool_name = ref(null);
+// const goods_soft_version = ref(null);
+// const goods_test_type = ref(null);
+const goods_start_time = ref<Date | null>(null);
+const goods_end_time = ref<Date | null>(null);
+// const goods_order_id = ref(null);
+const goods_order_num = ref<number | null>(null);
+const goods_test_num = ref<number | null>(null);
+const goods_dev_name = ref<string | null>(null);
+// const end_judgment = ref(null);
+const centerAlign = 'center';
+const fontSize = 60;
+// const language = ref(true);
+const out_language = ref(true);
+const modelNumber = ref('');
+const customerName = ref('');
+const radio1 = ref('2');
+const loading = ref(false) // 加载中
+const queryParams = reactive({
+  orderId: '' , // 订单号
+  productSN: '',// 成品代码
+  moduleSN: '', // 模块序列号
+})
+
 
   //母线槽对外报告信息  -zh
   const Busway =  [
@@ -2000,8 +2011,8 @@ defineOptions({ name: 'BusReport' })
       }
       return ''
     }
-    
-        // 使用正则表达式同时匹配中英文分号
+  
+  // 使用正则表达式同时匹配中英文分号
   function formatSkills(skills): string{
       if (skills) {
         return skills.replace(/[;；]/g, '<br/>');
@@ -2023,9 +2034,6 @@ defineOptions({ name: 'BusReport' })
       } else {
         return '0';
       }
-    }
-  function disableExport(): boolean {
-      return !modelNumber.value || !customerName.value;
     }
 
   const objectSpanMethod = ({row, rowIndex, columnIndex}) => {
@@ -2108,7 +2116,6 @@ defineOptions({ name: 'BusReport' })
       return len;
   }
 
-
   const updateLanguage = () => {
     if(out_language.value !== true)
       {
@@ -2138,6 +2145,175 @@ defineOptions({ name: 'BusReport' })
         }
     }
   }
+
+      //对外导出的pdf
+  const OutExportToPDF = () =>{
+  // 获取第一页内容
+    const page1Element = document.getElementById('page1Content');
+
+    // 创建新的 PDF 实例
+    const PDF = new JsPDF('', 'pt', 'a4');
+
+    // 处理每一页的通用函数
+    const processPage = (element, pageNumber) => {
+      // 更新替代元素
+      return html2canvas(element)
+        .then(canvas => {
+          const contentWidth = canvas.width;
+          const contentHeight = canvas.height;
+          const pageHeight = (contentWidth / 592.28) * 841.89;
+          let position = 0;
+
+          // 添加页面（如果需要处理多页，这里可能需要调整）
+          if (pageNumber > 1) {
+            PDF.addPage();
+          }
+
+          while (position < contentHeight) {
+            let remainingHeight = pageHeight;
+            if (position + remainingHeight > contentHeight) {
+              remainingHeight = contentHeight - position;
+            }
+
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = contentWidth;
+            tempCanvas.height = remainingHeight;
+            const context = tempCanvas.getContext('2d');
+            context?.drawImage(canvas, 0, position, contentWidth, remainingHeight, 0, 0, contentWidth, remainingHeight);
+
+            const imageData = tempCanvas.toDataURL('image/jpeg', 1.0);
+            PDF.addImage(imageData, 'JPEG', 0, 0, 595.28, (592.28 / contentWidth) * remainingHeight);
+
+            position += remainingHeight;
+          }
+          return canvas;
+        });
+    };
+
+    // 处理第一页
+    processPage(page1Element, 1)
+      .then(() => {
+        // 假设我们有第二页内容需要处理，这里的ID应替换为实际的第二页元素ID
+        const page2Element = document.getElementById('page2Content');
+        return processPage(page2Element, 2); // 处理第二页
+      })
+      .then(() => {
+        // 在这里检查条件
+        if (goods_dev_name.value === '插接箱' || goods_dev_name.value === '始端箱' || goods_dev_name.value  === 'Feeder box' || goods_dev_name.value === 'Tap-off box') {
+          // 处理第三页
+          const page3Element = document.getElementById('page3Content');
+          return processPage(page3Element, 3);
+        } else {
+          // 如果条件不满足，则跳过第三页，直接进行后续操作
+          return Promise.resolve();
+        }
+      })
+      .then(() => {
+        // 完成后保存PDF
+        let fileName;
+        if(out_language.value  === true) {
+            if(radio1.value  === '1'  && goods_dev_name.value  !== '母线槽')
+            {
+                fileName = `订单号 ${queryParams.orderId}${goods_dev_name}-基本型出厂报告.pdf`;
+            }
+            else if(radio1.value === '2'  && goods_dev_name.value !== '母线槽')
+            {
+                fileName = `订单号 ${queryParams.orderId}${goods_dev_name}-智能出厂报告.pdf`;
+            }
+            else{
+                fileName = `订单号 ${queryParams.orderId}${goods_dev_name}出厂报告.pdf`;
+            }
+        } else if(out_language.value === false) {
+            if(radio1.value === '1'  && goods_dev_name.value !== 'Busway')
+            {
+                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name}-base Ex-factory Report.pdf`;
+            }
+            else if(radio1.value === '2'  && goods_dev_name.value !== 'Busway')
+            {
+                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name}-smart Ex-factory Report.pdf`;
+            }
+            else{
+                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name} Ex-factory Report.pdf`;
+            }
+        }
+        PDF.save(fileName);
+      })
+      .catch(error => {
+        console.error('导出PDF时出错：', error);
+      });
+    }
+  const out_handleExport = () =>{
+      if (!modelNumber || !customerName) {
+          alert('请确保所有输入框都已填写！');
+        } else {
+          // const loading = loading({
+          //   lock: true,
+          //   text: '正在导出PDF...',
+          //   spinner: 'el-icon-loading',
+          //   background: 'rgba(0, 0, 0, 0.7)'
+          // });
+          loading.value = true;
+          OutExportToPDF();
+          setTimeout(() => {
+            loading.value = false;
+          }, 2000);
+        }
+    }
+
+  // 获取出差报告数据
+  const getReportData = async () => {
+    loading.value = true;
+    try {
+      const res = await TestDataApi.getReportData(queryParams);
+      if (res != null){
+        goods_dev_name.value = res.devName
+        customerName.value = res.customerName
+        modelNumber.value = res.deviceType
+        goods_start_time.value = res.productionDate
+        goods_end_time.value = res.testDate
+        goods_order_num.value = res.productionNum
+        goods_test_num.value = res.passTestNum
+        
+      }
+  } finally {
+    loading.value = false;
+
+    if (goods_order_num.value != null && goods_test_num.value != null && goods_order_num.value != goods_test_num.value){
+      ElMessageBox.alert('检验暂未完成，生产数量：'+ goods_order_num.value + '台，当前检验数量：'+ goods_test_num.value + '台', 
+      '订单号：'+ queryParams.orderId, 
+      {
+        showClose:false,
+        showConfirmButton: false,
+        showCancelButton: false,
+      })
+    }
+    
+  }
+}
+
+onMounted(() => { 
+  const queryOrderId = useRoute().query.orderId as string;
+  const queryProductSN = useRoute().query.productSN as string;
+  const queryModuleSN = useRoute().query.moduleSN as string;
+
+  if (queryOrderId == '' || queryProductSN == '' || queryModuleSN == ''){
+    ElMessageBox.alert('出错了，数据缺失（订单号、成品代码、模块序列号）', 
+      'Error', 
+      {
+        showClose:false,
+        showConfirmButton: false,
+        showCancelButton: false,
+      })
+      
+  }else{
+    queryParams.orderId = queryOrderId;
+    queryParams.productSN = queryProductSN;
+    queryParams.moduleSN = queryModuleSN;
+    getReportData(); 
+  }
+
+})
+
     
 </script>
 

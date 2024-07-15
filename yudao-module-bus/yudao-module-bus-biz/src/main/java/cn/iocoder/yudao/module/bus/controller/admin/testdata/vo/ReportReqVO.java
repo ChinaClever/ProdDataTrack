@@ -7,12 +7,12 @@ public class ReportReqVO {
     /**
      * 订单号
      */
-    private Integer orderId;
+    private String orderId;
 
     /**
      * 成品代码
      */
-    private Integer productSN;
+    private String productSN;
 
     /**
      * 模块序列号

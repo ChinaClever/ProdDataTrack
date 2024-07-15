@@ -28,7 +28,7 @@
       </el-table-column>
       <!-- 遍历其他列 -->  
       <template v-for="column in tableColumns">
-        <el-table-column :key="column.prop" :label="column.label" :align="column.align" :prop="column.prop" :formatter="column.formatter" :width="column.width" v-if="column.istrue">
+        <el-table-column :key="column.prop" :label="column.label" :align="column.align" :prop="column.prop" :width="column.width" v-if="column.istrue">
         <template #default="{ row }">
           <div v-if="column.slot === 'downloadUrl'">
             <el-link type="primary" download :href="row.downloadUrl" :underline="false" target="_blank">下载</el-link>

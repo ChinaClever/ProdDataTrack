@@ -10,4 +10,8 @@ export const TestDataApi = {
     return await request.get({ url: `/bus/fileList-page`, params })
   },
 
+  getReportData: async (data: any) => {
+    return await request.post({ url: `/bus/report`, data })
+  },
+
 }
