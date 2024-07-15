@@ -2273,7 +2273,6 @@ const queryParams = reactive({
         goods_end_time.value = res.testDate
         goods_order_num.value = res.productionNum
         goods_test_num.value = res.passTestNum
-        
       }
   } finally {
     loading.value = false;
@@ -2309,6 +2308,8 @@ onMounted(() => {
     queryParams.orderId = queryOrderId;
     queryParams.productSN = queryProductSN;
     queryParams.moduleSN = queryModuleSN;
+    // 成品代码第四个字母判断类型 M为智能型，值为1； 其他字母为基本型，值为2
+    radio1.value = queryProductSN[3] == 'M'? '2' : '1';
     getReportData(); 
   }
 
