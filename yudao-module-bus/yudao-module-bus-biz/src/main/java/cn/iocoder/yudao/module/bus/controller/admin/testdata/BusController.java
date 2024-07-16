@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import java.io.IOException;
+import java.util.List;
+
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 @Slf4j
 @RestController
@@ -44,7 +46,6 @@ public class BusController {
     }
 
     @GetMapping("/testData-page")
-    @PermitAll
     public CommonResult<PageResult<TestData>> getTestDataPage(TestDataPageReqVO pageReqVO) {
         PageResult<TestData> pageResult = testDataService.getTestDataPage(pageReqVO);
         return success(pageResult);
@@ -56,7 +57,6 @@ public class BusController {
     }
 
     @GetMapping("/fileList-page")
-    @PermitAll
     public CommonResult<PageResult<UsedOrderInfo>> getFileListPage(FileListPageReqVO pageReqVO) {
         PageResult<UsedOrderInfo> pageResult = testDataService.getFileListPage(pageReqVO);
         return success(pageResult);
@@ -68,6 +68,13 @@ public class BusController {
         ReportRespVO respVO = testDataService.getReportInfo(reqVO);
         return success(respVO);
 
+    }
+
+
+    @GetMapping("/internal-report")
+    public CommonResult<List<TestData>> getInternalReport(ReportReqVO reqVO) {
+        List<TestData> pageResult = testDataService.getInternalReport(reqVO);
+        return success(pageResult);
     }
 
 }

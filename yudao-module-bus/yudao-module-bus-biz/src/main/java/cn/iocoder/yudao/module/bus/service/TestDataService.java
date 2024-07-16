@@ -15,6 +15,7 @@ import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface TestDataService {
     PageResult<TestData> getTestDataPage(TestDataPageReqVO pageReqVO);
@@ -34,4 +35,6 @@ public interface TestDataService {
             throws IOException, InvalidFormatException;
 
     ReportRespVO getReportInfo(ReportReqVO reqVO);
+
+    List<TestData> getInternalReport(ReportReqVO reqVO);
 }

@@ -428,5 +428,26 @@ public class TestDataServiceImpl implements TestDataService {
         return respVO;
     }
 
+    @Override
+    public List<TestData> getInternalReport(ReportReqVO reqVO) {
+        Query query = new Query();
+        Criteria criteria = new Criteria();
+        if(reqVO.getOrderId() != null){
+            criteria.and("order_id").is(reqVO.getOrderId());
+        }
+        if(reqVO.getProductSN() != null){
+            criteria.and("product_sn").is(reqVO.getProductSN());
+        }
+        if(reqVO.getProductSN() != null){
+            criteria.and("module_sn").is(reqVO.getModuleSN());
+        }
+        query.addCriteria(criteria);
+        // 查询
+//        query.with(Sort.by(Sort.Order.desc("_id")));
+        List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
+
+        return testDataList;
+    }
+
 
 }

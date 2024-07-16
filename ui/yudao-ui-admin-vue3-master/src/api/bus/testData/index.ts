@@ -14,4 +14,8 @@ export const TestDataApi = {
     return await request.post({ url: `/bus/report`, data })
   },
 
+  getInternalReport: async (params: any) => {
+    return await request.get({ url: `/bus/internal-report`, params })
+  },
+
 }
