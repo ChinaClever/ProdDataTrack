@@ -2,7 +2,6 @@ package cn.iocoder.yudao.module.system.dal.dataobject.notify;
 
 import cn.iocoder.yudao.framework.common.enums.UserTypeEnum;
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
-import cn.iocoder.yudao.module.system.dal.dataobject.mail.MailTemplateDO;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -52,37 +51,37 @@ public class NotifyMessageDO extends BaseDO {
     /**
      * 模版编号
      *
-     * 关联 {@link NotifyTemplateDO#getId()}
+     * 关联
      */
     private Long templateId;
     /**
      * 模版编码
      *
-     * 关联 {@link NotifyTemplateDO#getCode()}
+     * 关联
      */
     private String templateCode;
     /**
      * 模版类型
      *
-     * 冗余 {@link NotifyTemplateDO#getType()}
+     * 冗余
      */
     private Integer templateType;
     /**
      * 模版发送人名称
      *
-     * 冗余 {@link NotifyTemplateDO#getNickname()}
+     * 冗余
      */
     private String templateNickname;
     /**
      * 模版内容
      *
-     * 基于 {@link NotifyTemplateDO#getContent()} 格式化后的内容
+     * 基于  格式化后的内容
      */
     private String templateContent;
     /**
      * 模版参数
      *
-     * 基于 {@link NotifyTemplateDO#getParams()} 输入后的参数
+     * 基于  输入后的参数
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Map<String, Object> templateParams;

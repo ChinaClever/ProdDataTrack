@@ -33,7 +33,7 @@
     </el-form>
   </ContentWrap>
 
-    <div class="reportDetails" id="PDFcontent" v-if="dialogVisible">
+    <div class="reportDetails" id="PDFcontent" v-if="dialogVisible" >
 <!--                    中文-->
         <div v-if="language == true" >
           <br/>
@@ -42,32 +42,46 @@
           <br/>
           <div>
             <el-row class="table-row">
-              <el-col  class="table-label">客户名称：</el-col>
-              <el-col  class="table-label-1">订单号：{{goods_order_id}}</el-col>
-              <el-col  class="table-label-2">订单数量：{{goods_order_num}} 台</el-col>
+              <div class="left-row">
+                <el-col  class="table-label">客户名称：</el-col>
+                <el-col  class="table-label-1">订单号：{{goods_order_id}}</el-col>
+                <el-col  class="table-label-2">订单数量：{{goods_order_num}} 台</el-col>
+              </div>
+              <div class="right-row" >
+                <el-col  class="table-label">产品型号：{{goods_dev_name}}</el-col>
+                <el-col  class="table-label-1">检验日期：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
+                <el-col  class="table-label-2">检验数量：{{goods_test_num}}</el-col>
+              </div>
             </el-row>
           </div>
             <hr/>
             <br/>
-          <div>
+          <!-- <div>
             <el-row class="table-row">
               <el-col  class="table-label">产品型号：{{goods_dev_name}}</el-col>
               <el-col  class="table-label-1">检验日期：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
               <el-col  class="table-label-2">检验数量：{{goods_test_num}}</el-col>
             </el-row>
-          </div>
-            <hr/>
-            <br/>
+          </div> -->
+            <!-- <hr/>
+            <br/> -->
           <div>
             <el-row class="table-row">
-              <el-col  class="table-label">SN编号：{{goods_product_sn}}</el-col>
-              <el-col  class="table-label-1">检验开始时间：{{goods_start_time}}</el-col>
-              <el-col  class="table-label-2">检验结束时间：{{goods_end_time}}</el-col>
+              <div class="left-row">
+                <el-col  class="table-label">SN编号：{{goods_product_sn}}</el-col>
+                <el-col  class="table-label-1">检验开始时间：{{goods_start_time}}</el-col>
+                <el-col  class="table-label-2">检验结束时间：{{goods_end_time}}</el-col>
+              </div>
+              <div class="right-row" style="padding-left: 705px;">
+                <el-col  class="table-label">测试项目：成品功能</el-col>
+                <el-col  class="table-label-1">检验类型：全检</el-col>
+                <el-col  class="table-label-2">检验结果：{{displayEndJudgment(end_judgment)}}</el-col>
+              </div>
             </el-row>
           </div>
             <hr/>
             <br/>
-          <div>
+          <!-- <div>
             <el-row class="table-row">
               <el-col  class="table-label">测试项目：成品功能</el-col>
               <el-col  class="table-label-1">检验类型：全检</el-col>
@@ -75,27 +89,27 @@
             </el-row>
           </div>
             <hr/>
-            <br/>
+            <br/> -->
 
         <br/>
-          <div class="table-wrapper">
-            <el-table :data="goods_SN_data" class="table-data2" style="width: 100%" border>
+          <div class="table-wrapper"  style="padding-left: 2%;">
+            <el-table :data="goods_SN_data" class="table-data2" style="width: 97%" border>
                 <el-table-column prop="test_step" label="检验步骤" :align="centerAlign" width="200"/>
                 <el-table-column prop="test_item" label="检验项" :align="centerAlign" width="300"/>
-                <el-table-column prop="test_request" label="检验要求" :header-align="centerAlign" width="550">
-                  <template #item="{ scope }">
-                      <div v-html="formatSkills(scope.row.test_request)" ></div>
+                <el-table-column prop="test_request" label="检验要求" :align="centerAlign" width="550">
+                  <template #default="{ row }">
+                      <div v-html="formatSkills(row.test_request)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="test_process" label="检验结果"  :header-align="centerAlign"  width="500">
-                    <template #item="{ scope }">
-                      <div v-html="formatSkills(scope.row.test_process)" ></div>
+                <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="350">
+                    <template #default="{ row }">
+                      <div v-html="formatSkills(row.test_process)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="test_result" label="判定" :align="centerAlign" width="200">
-                  <template #item="{ scope }" >
-                    <span v-if="scope.row.test_result == 1" >通过</span>
-                    <span v-else-if="scope.row.test_result == 0" >失败</span>
+                <el-table-column prop="test_result" label="判定" :align="centerAlign" width="105">
+                  <template #default="{ row }" >
+                    <span v-if="row.test_result == 1" >通过</span>
+                    <span v-else-if="row.test_result == 0" >失败</span>
                   </template>
                 </el-table-column>
             </el-table>
@@ -145,24 +159,24 @@
             <br/>
 
         <br/>
-          <div class="table-wrapper">
-            <el-table :data="goods_SN_data" class="table-data2"  style="width: 100%" border>
+          <div class="table-wrapper" style="padding-left: 2%;">
+            <el-table :data="goods_SN_data" class="table-data2"  style="width: 97%" border>
                 <el-table-column prop="test_step" label="Inspection Steps"  :align="centerAlign" width="200"/>
                 <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="300"/>
                 <el-table-column prop="test_request" label="Inspection Requirements" :header-align="centerAlign" width="550">
-                    <template #item="{ scope }">
-                      <div v-html="formatSkills(scope.row.test_request)" ></div>
+                    <template #default="{ row }">
+                      <div v-html="formatSkills(row.test_request)" ></div>
                   </template>
                 </el-table-column>
                 <el-table-column prop="test_process" label="Inspection Results"  :header-align="centerAlign"  width="500">
-                  <template #item="{ scope }">
-                      <div v-html="formatSkills(scope.row.test_process)" ></div>
+                  <template #default="{ row }">
+                      <div v-html="formatSkills(row.test_process)" ></div>
                   </template>
                 </el-table-column>
                 <el-table-column prop="test_result" label="Determine" :align="centerAlign" width="200">
-                  <template #item="{ scope }" >
-                    <span v-if="scope.row.test_result == 1" >PASS</span>
-                    <span v-else-if="scope.row.test_result == 0" >FAIL</span>
+                  <template #default="{ row }" >
+                    <span v-if="row.test_result == 1" >PASS</span>
+                    <span v-else-if="row.test_result == 0" >FAIL</span>
                   </template>
                 </el-table-column>
             </el-table>
@@ -560,6 +574,14 @@ align-items: center;  */
   line-height: 1.5em;
   padding-top: 4px;
   padding-bottom: 4px;
+}
+
+.left-row {
+  padding-left: 100px; /* 根据需要调整这个数值 */
+}
+.right-row {
+  /*align-items: flex-start;  或 'center'  依据需要调整 */
+  padding-left: 900px; /* 根据需要调整这个数值 */
 }
 
 /* 输入框样式可以根据需要调整 */

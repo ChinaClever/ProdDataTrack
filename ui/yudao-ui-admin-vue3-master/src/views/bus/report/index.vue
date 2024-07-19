@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%; overflow: auto;">
-      <div class="custom-button">
+      <div class="custom-button"  style="padding-left: 50px;">
         <el-switch
             v-model="out_language"
             active-text="中文"
@@ -13,17 +13,17 @@
       <div v-if="out_language == true">
         <div id="page1Content">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
-              <div style="padding-left: 60px; padding-top: 30px;">
+              <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
-              <div style="padding-top: 100px; padding-right: 150px; text-align: center; font-size: 20px; flex: 1;">
+              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
               </div>
           </div>
           <div class="horizontal-rule">
           <hr/>
           </div>
-          <div style="padding-right: 60px;">
+          <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">第1页，共2页</p>
           </div>
           <br/>
@@ -45,7 +45,7 @@
               </div>
               <div class="column right-column">
                 <p >客户名称: {{customerName}}</p>
-                <p >检验类别: 出场检验</p>
+                <p >检验类别: 出厂检验</p>
                 <p >生产数量: {{goods_order_num}}台</p>
                 <p >检验数量: {{goods_test_num}}台</p>
               </div>
@@ -57,43 +57,43 @@
           <div style="text-align: center; font-size: 40px;">
               <p>检验依据：GB/T7251.6-2015标准技术要求</p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 20px">
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
               <p> 检 验 结 论 </p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 20px">
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
               <p>该批产品检验，所检项目符合GB/T7251.6-2015标准技术要求</p>
           </div>
-          <div style="height: 120px">
+          <div style="height: 6cap">
               <br/>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="height: 60px">
+          <div style="height: 20px">
               <br/>
           </div>
-          <div  style="text-align: left; font-size: 40px; padding-left: 100px;">
+          <div  style="text-align: left; font-size: 40px; padding-left: 15%;">
               <p>说明：</p>
           </div>
-          <div style="height: 30px">
+          <div style="height: 20px">
               <br/>
           </div>
-          <div  style="text-align: left; font-size: 40px; padding-left: 100px;">
+          <div  style="text-align: left; font-size: 40px; padding-left: 15%;">
               <p>1、产品特性及状态： 正常</p>
           </div>
-          <div style="height: 30px">
+          <div style="height: 20px">
               <br/>
           </div>
-          <div  style="text-align: left; font-size: 40px; padding-left: 100px;">
+          <div  style="text-align: left; font-size: 40px; padding-left: 15%;">
               <p>2、检验环境条件：  （25±5）℃</p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 20px">
             <br/>
           </div>
           <div class="horizontal-rule">
@@ -102,22 +102,22 @@
           <div style="height: 30px">
             <br/>
           </div>
-          <div style="text-align: right; font-size: 20px; padding-right: 30px;">
+          <div style="text-align: right; font-size: 20px; padding-right: 5%;">
             <p>
               <span style="display: inline-block; margin-right: 50px;">年</span>
               <span style="display: inline-block; margin-right: 50px;">月</span>
               <span>日</span>
             </p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 40px">
             <br/>
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
-            <div style="padding-left: 80px">
+            <div style="padding-left: 5%">
                   <span >检验员：</span>
             </div>
             <span>审核：</span>
-            <div style="padding-right: 160px">
+            <div style="padding-right: 15%">
                 <span >批准：</span>
             </div>
           </div>
@@ -127,17 +127,17 @@
         </div>
         <div id="page2Content">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
-            <div style="padding-left: 60px; padding-top: 30px;">
+            <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
-              <div style="padding-top: 100px; padding-right: 150px; text-align: center; font-size: 20px; flex: 1;">
+              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
               </div>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="padding-right: 60px;">
+          <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">第2页，共2页</p>
           </div>
 
@@ -148,101 +148,101 @@
             <hr/>
           </div>
           <br/>
-            <div v-if="goods_dev_name === '母线槽'">
+            <div v-if="goods_dev_name === '母线槽'" style="padding-left: 6%;">
               <!--母线槽的报告排版-->
                 <div >
-                  <el-table :data="Busway" class="custom-table" style="width: 100%" border>
-                      <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="310"/>
+                  <el-table :data="Busway" class="custom-table" style="width: 95%" border>
+                      <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="300"/>
                       <el-table-column prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="500">
-                          <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
                   </el-table>
                 </div>
             </div>
 
-            <div  v-else-if="goods_dev_name === '插接箱'">
-              <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
+            <div  v-else-if="goods_dev_name === '插接箱'" style="padding-left: 6%;">
+              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统等</p>
               </div>
                 <div v-if="radio1 === '2'">
-                  <el-table :data="JackBox" class="custom-table" style="width: 100%" border>
+                  <el-table :data="JackBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
-                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="210"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
                       <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="500">
-                          <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
                   </el-table>
                 </div>
                 <div v-else-if="radio1 === '1'">
-                  <el-table :data="JackBox_jb" class="custom-table" style="width: 100%" border>
+                  <el-table :data="JackBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
-                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="210"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
                       <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="500">
-                          <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
                   </el-table>
                 </div>
             </div>
-            <div  v-else-if="goods_dev_name === '始端箱'">
-              <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
+            <div  v-else-if="goods_dev_name === '始端箱'" style="padding-left: 6%;">
+              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统等</p>
               </div>
                 <div v-if="radio1 === '2'">
-                  <el-table :data="HeaBox" class="custom-table" style="width: 100%" border>
+                  <el-table :data="HeaBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
-                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="210"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
                       <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div  class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="500">
-                          <template #item="{ scope }">
-                            <div  class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
                   </el-table>
                 </div>
                 <div v-if="radio1 === '1'">
-                  <el-table :data="HeaBox_jb" class="custom-table" style="width: 100%" border>
+                  <el-table :data="HeaBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
-                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="210"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
                       <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div  class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="500">
-                          <template #item="{ scope }">
-                            <div  class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
                   </el-table>
                 </div>
        
@@ -252,10 +252,10 @@
         <div id="page3Content">
           <div v-if="goods_dev_name !== '母线槽' && radio1 !== '1'">
             <div class="custom-dialog-title" style="display: flex; align-items: center;">
-              <div style="padding-left: 60px; padding-top: 30px;">
+              <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
-              <div style="padding-top: 100px; padding-right: 150px; text-align: center; font-size: 20px; flex: 1;">
+              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
               </div>
             </div>
@@ -264,110 +264,103 @@
             </div>
             <br/>
             <br/>
-          <div  v-if="goods_dev_name === '插接箱'">
-              <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
+          <div  v-if="goods_dev_name === '插接箱'" style="padding-left: 6%;">
+              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>附表1：产品功能测试</p>
               </div>
                   <div >
-                    <el-table :data="JackBox_1" class="custom-table" :span-method="objectSpanMethod" style="width: 100%" border>
-                        <el-table-column prop="num" label="" :align="centerAlign" width="120"/>
-                        <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="190"/>
+                    <el-table :data="JackBox_1" class="custom-table"  :span-method="objectSpanMethod" style="width: 95%" border>
+                        <el-table-column prop="num" label=" " :align="centerAlign" width="120"/>
+                        <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="180"/>
                         <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="750">
-                          <template #item="{ scope }">
-                              <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                          <template #default="{ row }">
+                              <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                           </template>
                         </el-table-column>
-                        <el-table-column prop="test_process" label="测试结果"  :align="centerAlign"  width="500">
-                            <template #item="{ scope }">
-                              <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                        <el-table-column prop="test_process" label="测试结果"  :align="centerAlign"  width="400">
+                            <template #default="{ row }">
+                              <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                           </template>
                         </el-table-column>
-                        <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="200"/>
+                        <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
                     </el-table>
                   </div>
-                <div style="padding-left: 50px; padding-top: 50px;text-align: left; font-size: 30px; flex: 1;">
+                <div style="padding-left: 10px;  padding-top: 50px;text-align: left; font-size: 30px; flex: 1;">
                     <p>附表2：电流电压测试数据</p>
                 </div>
                   <div >
-                    <el-table :data="JackBox_2" class="custom-table"  style="width: 100%" border>
-                        <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="180"/>
-                        <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="190"/>
-                        <el-table-column prop="A3" label="分电流" :align="centerAlign" width="190"/>
+                    <el-table :data="JackBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
+                        <el-table-column prop="L" label="相位" :align="centerAlign" width="172"/>
+                        <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="210"/>
+                        <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="320"/>
+                        <!-- <el-table-column prop="A3" label="分电流" :align="centerAlign" width="190"/> -->
                         
-                        <el-table-column prop="A4" label="总电流"  :align="centerAlign"  width="190"/>
+                        <el-table-column prop="A4" label="总电流"  :align="centerAlign"  width="210"/>
                         
-                        <el-table-column prop="A5" label="标准输入电压（V）" :align="centerAlign" width="190"/>
+                        <el-table-column prop="A5" label="标准输入电压（V）" :align="centerAlign" width="210"/>
                         
-                        <el-table-column prop="A6" label="合格显示范围"  :align="centerAlign"  width="190"/>
+                        <el-table-column prop="A6" label="合格显示范围"  :align="centerAlign"  width="320"/>
                         
-                        <el-table-column label="总电压"  :align="centerAlign"  width="570">
-                            <el-table-column prop="L1" label="L1"  :align="centerAlign"  width="200"/>
-                            
-                            <el-table-column prop="L2" label="L2"  :align="centerAlign"  width="200"/>
-                            
-                            <el-table-column prop="L3" label="L3"  :align="centerAlign"  width="200"/>
-                            
-                        </el-table-column>
+                        <el-table-column prop="L1" label="总电压"  :align="centerAlign"  width="210"/>
+                                    
                     </el-table>
                   </div>
           </div>
-          <div  v-else-if="goods_dev_name === '始端箱'">
-              <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
+          <div  v-else-if="goods_dev_name === '始端箱'" style="padding-left: 6%;">
+              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                 <p>附表1：产品功能测试</p>
             </div>
                 <div >
-                  <el-table :data="HeaBox_1" class="custom-table" :span-method="objectSpanMethod" style="width: 100%" border>
+                  <el-table :data="HeaBox_1" class="custom-table" :span-method="objectSpanMethod" style="width: 95%" border>
                       <el-table-column prop="num" label="" :align="centerAlign" width="120"/>
                       
-                      <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="190"/>
+                      <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="180"/>
                       
                       <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="测试结果"  :align="centerAlign"  width="500">
-                          <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                      <el-table-column prop="test_process" label="测试结果"  :align="centerAlign"  width="400">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
                       
                   </el-table>
                 </div>
 
-              <div style="padding-left: 50px; padding-top: 10px;text-align: left; font-size: 30px; flex: 1;">
+              <div style="padding-left: 10px; padding-top: 10px;text-align: left; font-size: 30px; flex: 1;">
                   <p>附表2：电流电压测试数据</p>
               </div>
                 <div >
-                  <el-table :data="HeaBox_2" class="custom-table"  style="width: 100%" border>
-                      <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="220"/>
+                  <el-table :data="HeaBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
+                      <el-table-column prop="L" label="相位" :align="centerAlign" width="172"/>
+                      <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="210"/>
                       
-                      <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="220"/>
+                      <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="320"/>
                       
-                      <el-table-column prop="A4" label="总电流"  :align="centerAlign"  width="220"/>
+                      <el-table-column prop="A4" label="总电流"  :align="centerAlign"  width="210"/>
                       
-                      <el-table-column prop="A5" label="标准输入电压（V）" :align="centerAlign" width="220"/>
+                      <el-table-column prop="A5" label="标准输入电压（V）" :align="centerAlign" width="210"/>
                       
-                      <el-table-column prop="A6" label="合格显示范围"  :align="centerAlign"  width="220"/>
+                      <el-table-column prop="A6" label="合格显示范围"  :align="centerAlign"  width="320"/>
                       
-                      <el-table-column label="总电压"  :align="centerAlign"  width="630">
-                          <el-table-column prop="L1" label="L1"  :align="centerAlign"  width="210"/>
-                          
-                          <el-table-column prop="L2" label="L2"  :align="centerAlign"  width="210"/>
-                          
-                          <el-table-column prop="L3" label="L3"  :align="centerAlign"  width="210"/>
-                          
-                      </el-table-column>
+                      <el-table-column prop="L1" label="总电压"  :align="centerAlign"  width="210"/>
+                         
                   </el-table>
                 </div>
           </div>
+          <div style="height: 30px">
+            <br/>
+          </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 20px;">
-            <div style="padding-left: 80px">
+            <div style="padding-left: 15%">
                   <span >OK：合格，符合测试要求。</span>
             </div>
             <span>NG：不合格，不符合测试要求。</span>
-            <div style="padding-right: 80px">
+            <div style="padding-right: 15%">
                 <span > NA：所测产品无此项功能。</span>
             </div>
           </div>
@@ -379,17 +372,17 @@
       <div v-else-if="out_language == false">
         <div id="page1Content">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
-              <div style="padding-left: 60px; padding-top: 30px;">
+              <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
-              <div style="padding-top: 100px; padding-right: 150px; text-align: center; font-size: 20px; flex: 1;">
+              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>HUIZHOU CLEVER ELECTRONIC CO.,LTD</p>
               </div>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="padding-right: 60px;">
+          <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">Page 1 of 2</p>
           </div>
           <br/>
@@ -402,13 +395,13 @@
           </div>
           <div class="dialog-content">
             <div class="row">
-              <div class="column left-column">
+              <div class="column left-column" style="padding-left: 10%;">
                 <p >Product Name: {{ goods_dev_name }}</p>
                 <p >Sp. & Mod: {{modelNumber}}</p>
                 <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
-              <div class="column right-column">
+              <div class="column right-column" style="padding-right: 5%;">
                 <p >Customer Name: {{ customerName }}</p>
                 <p >Inspection Category: Factory Inspection</p>
                 <p >Production Quantity: {{goods_order_num}}units</p>
@@ -422,65 +415,65 @@
           <div  style="text-align: center; font-size: 40px;">
               <p>Technical requirements according to GB/T 7251.6-2015 standard.</p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 20px">
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
               <p> Inspection Conclusion </p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 20px">
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
               <p>The inspection of this batch of products concludes that the tested items comply with the technical requirements of GB/T 7251.6-2015 standard.</p>
           </div>
-          <div style="height: 120px">
+          <div style="height: 20px">
               <br/>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="height: 60px">
+          <div style="height: 10px">
               <br/>
           </div>
-          <div  style="text-align: left; font-size: 40px; padding-left: 100px;">
+          <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
               <p>Notes：</p>
           </div>
-          <div style="height: 30px">
+          <div style="height: 10px">
               <br/>
           </div>
-          <div  style="text-align: left; font-size: 40px; padding-left: 100px;">
+          <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
               <p>1.Product Characteristics and Status: Normal</p>
           </div>
-          <div style="height: 30px">
+          <div style="height: 10px">
               <br/>
           </div>
-          <div  style="text-align: left; font-size: 40px; padding-left: 100px;">
+          <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
               <p>2.Inspection Environmental Conditions: (25±5)°C</p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 3cqmax">
             <br/>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="height: 30px">
+          <div style="height: 10px">
             <br/>
           </div>
-          <div style="text-align: right; font-size: 20px; padding-right: 30px;">
+          <div style="text-align: right; font-size: 20px; padding-right: 5%;">
             <p>
               <span>Date: _______/_______/_______</span>
             </p>
           </div>
-          <div style="height: 60px">
+          <div style="height: 10px">
             <br/>
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
-            <div style="padding-left: 80px">
+            <div style="padding-left: 5cm">
                   <span >Inspector：</span>
             </div>
             <span>Review：</span>
-            <div style="padding-right: 160px">
+            <div style="padding-right: 15%">
                 <span >Approval：</span>
             </div>
           </div>
@@ -490,17 +483,17 @@
         </div>
         <div id="page2Content">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
-            <div style="padding-left: 60px; padding-top: 30px;">
+            <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
-              <div style="padding-top: 100px; padding-right: 150px; text-align: center; font-size: 20px; flex: 1;">
+              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>HUIZHOU CLEVER ELECTRONIC CO.,LTD</p>
               </div>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="padding-right: 60px;">
+          <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">Page 2 of 2</p>
           </div>
           <br/>
@@ -509,72 +502,72 @@
             <hr/>
           </div>
           <br/>
-            <div v-if="goods_dev_name === 'Busway'">
+            <div v-if="goods_dev_name === 'Busway'" style="padding-left: 6%;">
               <!--母线槽的报告排版-->
                 <div >
-                  <el-table :data="Busway_EN" class="custom-table" style="width: 100%" border>
-                      <el-table-column  prop="test_item" label="Inspection Items" :align="centerAlign" width="310"/>
+                  <el-table :data="Busway_EN" class="custom-table" style="width: 95%" border>
+                      <el-table-column  prop="test_item" label="Inspection Items" :align="centerAlign" width="300"/>
                       
                       <el-table-column prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
                       <el-table-column prop="test_process" label="Inspection Results"  :align="centerAlign"  width="400">
-                          <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="300"/>
+                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
                       
                   </el-table>
                 </div>
             </div>
-            <div  v-else-if="goods_dev_name === 'Tap-off box'">
-              <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
+            <div  v-else-if="goods_dev_name === 'Tap-off box'" style="padding-left: 6%;">
+              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>Inspection Instruments: High-temperature Aging Chamber, Safety Regulation Testing Equipment, Busbar Quality Inspection Testing System, etc.</p>
               </div>
                 <div >
-                  <el-table :data="JackBox_EN" class="custom-table" style="width: 100%" border>
+                  <el-table :data="JackBox_EN" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
-                      <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="210"/>
+                      <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="200"/>
                       
                       <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
                       <el-table-column prop="test_process" label="Inspection Results"  :align="centerAlign"  width="400">
-                          <template #item="{ scope }">
-                            <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="300"/>
+                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
                   </el-table>
                 </div>
             </div>
-            <div  v-else-if="goods_dev_name === 'Feeder box'">
-              <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
+            <div  v-else-if="goods_dev_name === 'Feeder box'" style="padding-left: 6%;">
+              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>Inspection Instruments: High-temperature Aging Chamber, Safety Regulation Testing Equipment, Busbar Quality Inspection Testing System, etc.</p>
               </div>
                 <div >
-                  <el-table :data="HeaBox_EN" class="custom-table" style="width: 100%" border>
+                  <el-table :data="HeaBox_EN" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
-                      <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="210"/>
+                      <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="200"/>
                       
                       <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="750">
-                        <template #item="{ scope }">
-                            <div  class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
                       <el-table-column prop="test_process" label="Inspection Results"  :align="centerAlign"  width="400">
-                          <template #item="{ scope }">
-                            <div  class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="300"/>
+                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
                       
                   </el-table>
                 </div>
@@ -583,10 +576,10 @@
         <div id="page3Content">
             <div v-if="goods_dev_name !== 'Busway' && radio1 !== '1'">
                 <div class="custom-dialog-title" style="display: flex; align-items: center;">
-                <div style="padding-left: 60px; padding-top: 30px;">
+                <div style="padding-left: 5%; padding-top: 30px;">
                     <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
                 </div>
-                <div style="padding-top: 100px; padding-right: 150px; text-align: center; font-size: 20px; flex: 1;">
+                <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                     <p>HUIZHOU CLEVER ELECTRONIC CO.,LTD</p>
                 </div>
                 </div>
@@ -595,80 +588,75 @@
                 </div>
                 <br/>
                 <br/>
-              <div  v-if="goods_dev_name === 'Tap-off box'">
+              <div  v-if="goods_dev_name === 'Tap-off box'" style="padding-left: 6%;">
                 <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
                     <p>Attachment 1: Product Functionality Test</p>
                 </div>
                     <div >
-                      <el-table :data="JackBox_1_EN" class="custom-table" :span-method="objectSpanMethod" style="width: 100%" border>
+                      <el-table :data="JackBox_1_EN" class="custom-table" :span-method="objectSpanMethod" style="width: 95% " border>
                           <el-table-column prop="num" label="" :align="centerAlign" width="120"/>
 
-                          <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="190"/>
+                          <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="180"/>
 
                           <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="750">
-                            <template #item="{ scope }">
-                                <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                            <template #default="{ row }">
+                                <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                             </template>
                           </el-table-column>
                           <el-table-column prop="test_process" label="Test Results"  :align="centerAlign"  width="400">
-                              <template #item="{ scope }">
-                                <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                              <template #default="{ row }">
+                                <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                             </template>
                           </el-table-column>
-                          <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="300"/>
+                          <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
 
                       </el-table>
                     </div>
 
-                  <div style="padding-left: 50px; padding-top: 50px;text-align: left; font-size: 30px; flex: 1;">
+                  <div style="padding-left: 10px; padding-top: 50px;text-align: left; font-size: 30px; flex: 1;">
                       <p>Attachment 2: Current and Voltage Test Data</p>
                   </div>
                     <div >
-                      <el-table :data="JackBox_2" class="custom-table"  style="width: 100%" border>
-                          <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="180"/>
+                      <el-table :data="JackBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
+                        <el-table-column prop="L" label="Phase" :align="centerAlign" width="172"/>  
+                        <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="210"/>
                           
-                          <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="190"/>
+                          <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="320"/>
                           
-                          <el-table-column prop="A3" label="Fractional Current" :align="centerAlign" width="200"/>
+                          <!-- <el-table-column prop="A3" label="Fractional Current" :align="centerAlign" width="200"/> -->
                           
-                          <el-table-column prop="A4" label="Total Current"  :align="centerAlign"  width="190"/>
+                          <el-table-column prop="A4" label="Total Current"  :align="centerAlign"  width="210"/>
                           
-                          <el-table-column prop="A5" label="Standard Input Voltage (V)" :align="centerAlign" width="180"/>
+                          <el-table-column prop="A5" label="Standard Input Voltage (V)" :align="centerAlign" width="210"/>
                           
-                          <el-table-column prop="A6" label="Total Voltage"  :align="centerAlign"  width="190"/>
+                          <el-table-column prop="A6" label="Qualified Display range"  :align="centerAlign"  width="320"/>
                           
-                          <el-table-column label="总电压"  :align="centerAlign"  width="570">
-                              <el-table-column prop="L1" label="L1"  :align="centerAlign"  width="200"/>
-                              
-                              <el-table-column prop="L2" label="L2"  :align="centerAlign"  width="200"/>
-                              
-                              <el-table-column prop="L3" label="L3"  :align="centerAlign"  width="200"/>
-                              
-                          </el-table-column>
+                          <el-table-column prop="L1" label="Total voltage"  :align="centerAlign"  width="210"/>
+                             
                       </el-table>
                     </div>
             </div>
-              <div  v-else-if="goods_dev_name === 'Feeder box'">
-                  <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
+              <div  v-else-if="goods_dev_name === 'Feeder box'" style="padding-left: 6%;">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                     <p>Product Functionality Test</p>
                 </div>
                     <div >
-                      <el-table :data="HeaBox_1_EN" class="custom-table" :span-method="objectSpanMethod" style="width: 100%" border>
+                      <el-table :data="HeaBox_1_EN" class="custom-table" :span-method="objectSpanMethod" style="width: 95%" border>
                           <el-table-column prop="num" label="" :align="centerAlign" width="120"/>
                           
-                          <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="190"/>
+                          <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="180"/>
                           
                           <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="750">
-                            <template #item="{ scope }">
-                                <div class="cell-content-table" v-html="formatSkills(scope.row.test_request)" ></div>
+                            <template #default="{ row }">
+                                <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                             </template>
                           </el-table-column>
                           <el-table-column prop="test_process" label="Test Results"  :align="centerAlign"  width="400">
-                              <template #item="{ scope }">
-                                <div class="cell-content-table" v-html="formatSkills(scope.row.test_process)" ></div>
+                              <template #default="{ row }">
+                                <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                             </template>
                           </el-table-column>
-                          <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="300"/>
+                          <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
       
                       </el-table>
                     </div>
@@ -677,35 +665,33 @@
                       <p>Current and Voltage Test Data</p>
                   </div>
                     <div >
-                      <el-table :data="HeaBox_2" class="custom-table"  style="width: 100%" border>
-                          <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="220"/>
+                      <el-table :data="HeaBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
+                          <el-table-column prop="L" label="Phase" :align="centerAlign" width="172"/>  
+                          <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="210"/>
                           
-                          <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="220"/>
+                          <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="300"/>
                           
-                          <el-table-column prop="A4" label="Fractional Current"  :align="centerAlign"  width="220"/>
+                          <el-table-column prop="A4" label="Fractional Current"  :align="centerAlign"  width="210"/>
                           
-                          <el-table-column prop="A5" label="Standard Input Voltage (V)" :align="centerAlign" width="220"/>
+                          <el-table-column prop="A5" label="Standard Input Voltage (V)" :align="centerAlign" width="210"/>
                           
-                          <el-table-column prop="A6" label="Qualified Display Range"  :align="centerAlign"  width="220"/>
+                          <el-table-column prop="A6" label="Qualified Display Range"  :align="centerAlign"  width="320"/>
                           
-                          <el-table-column label="Total Voltage"  :align="centerAlign"  width="630">
-                              <el-table-column prop="L1" label="L1"  :align="centerAlign"  width="210"/>
-                              
-                              <el-table-column prop="L2" label="L2"  :align="centerAlign"  width="210"/>
-                              
-                              <el-table-column prop="L3" label="L3"  :align="centerAlign"  width="210"/>
-                              
-                          </el-table-column>
+                          <el-table-column prop="L1" label="Total Voltage"  :align="centerAlign"  width="210"/>
+    
                       </el-table>
                     </div>
               </div>
+              <div style="height: 30px">
+            <br/>
+          </div>
               <div  class="column" style="display: flex; justify-content: space-between; font-size: 20px;">
-                <div style="padding-left: 80px">
-                      <span >OK：Pass, meets the test requirements.</span>
+                <div style="padding-left: 5%">
+                      <span >OK:Pass, meets the test requirements.</span>
                 </div>
-                <span>NG：Fail, does not meet the test requirements.</span>
-                <div style="padding-right: 80px">
-                    <span > NA： Not AppltestStepIndicesicable, the tested product does not have this feature/function.</span>
+                <span>NG:Fail, does not meet the test requirements.</span>
+                <div style="padding-right: 0%">
+                    <span > NA: Not AppltestStepIndicesicable, the tested product does not have this feature/function.</span>
                 </div>
               </div>
           </div>
@@ -722,7 +708,7 @@ import html2canvas from "html2canvas";
 import JsPDF from "jspdf";
 
 defineOptions({ name: 'BusReport' })
-const Out_dialogVisible = ref(false);
+const Out_dialogVisible = ref(true);
 const goods_SN_data = ref({});
 // const goods_product_sn = ref(null);
 // const goods_language_select = ref(null);
@@ -789,41 +775,41 @@ const queryParams = reactive({
   const Busway_EN = [
         {
           test_item: 'High voltage resistance test',
-          test_request: 'Apply 2500VAC voltage for 5S to the following parts, and no flashover or breakdown shall occur;\n' +
-              '1. Between the live wires of each phase of the busway;\n' +
-              '2. Between the live wires of each phase of the busway and the neutral wire;\n' +
-              '3. Between the live wires of each phase of the busway and PE;\n' +
-              '4. Between the live wires of each phase of the busway and the shell;',
+          test_request: 'Apply 2500VAC voltage for 5S to the following parts, and no flashover or breakdown shall occur:;' +
+              '1. Between the live wires of each phase of the busway.;' +
+              '2. Between the live wires of each phase of the busway and the neutral wire.;' +
+              '3. Between the live wires of each phase of the busway and PE.;' +
+              '4. Between the live wires of each phase of the busway and the shell.;',
           test_process: 'Meet standard requirements',
           test_result:'OK'
         }, {
           test_item: 'Insulation Detection',
-          test_request: 'Apply 500VDC voltage for 5S to the following parts and read the insulation resistance value. the insulation resistance value is more than 10MΩ to be judged as qualified:\n' +
-              '1. Between the live wires of each phase of the busway;\n' +
-              '2. Between the live wires of each phase of the busway and the neutral wire;\n' +
-              '3. Between the live wires of each phase of the busway and PE;\n' +
-              '4. Between the live wires of each phase of the busway and the shell;',
+          test_request: 'Apply 500VDC voltage for 5S to the following parts and read the insulation resistance value. the insulation resistance value is more than 10MΩ to be judged as qualified:;' +
+              '1. Between the live wires of each phase of the busway.;' +
+              '2. Between the live wires of each phase of the busway and the neutral wire.;' +
+              '3. Between the live wires of each phase of the busway and PE.;' +
+              '4. Between the live wires of each phase of the busway and the shell.;',
           test_process: 'Meet standard requirements',
           test_result:'OK'
         }, {
           test_item: 'Product Configuration',
-          test_request: 'Check the assembled products with the tracking sheet and process drawings to ensure accurate production:\n' +
-              '1. The product component model is consistent with the BOM list;\n' +
-              '2. The position and assembly direction of each assembly part of the product are consistent;\n' +
-              '3. The product specification is consistent with the specifications of the assembled aluminum alloy shell and copper busbar;',
+          test_request: 'Check the assembled products with the tracking sheet and process drawings to ensure accurate production:;' +
+              '1. The product component model is consistent with the BOM list.;' +
+              '2. The position and assembly direction of each assembly part of the product are consistent.;' +
+              '3. The product specification is consistent with the specifications of the assembled aluminum alloy shell and copper busbar.;',
           test_process: 'Meet standard requirements',
           test_result:'OK'
         }, {
           test_item: 'Visual inspection',
-          test_request: 'Check the appearance of the product, the coating is uniform, there is no color mixing, no obvious scratches, dirt, paint peeling, exposed bottom, deformation, cracking, and all meet the finished product appearance inspection standards;',
+          test_request: 'Check the appearance of the product, the coating is uniform, there is no color mixing, no obvious scratches, dirt, paint peeling, exposed bottom, deformation, cracking, and all meet the finished product appearance inspection standards.',
           test_process: 'Meet standard requirements',
           test_result:'OK'
         }, {
           test_item: 'Product Identification',
-          test_request: '1. The following signs should be present: rated current, rated voltage, power source symbol, name or trademark of the manufacturer or seller, and model number;\n' +
-              '2. The grounding mark should be obvious and in the correct position;\n' +
-              '3. Symbols should be used in accordance with the standard;\n' +
-              '4. The mark should be durable and clearly identifiable;',
+          test_request: '1. The following signs should be present: rated current, rated voltage, power source symbol, name or trademark of the manufacturer or seller, and model number.;' +
+              '2. The grounding mark should be obvious and in the correct position.;' +
+              '3. Symbols should be used in accordance with the standard.;' +
+              '4. The mark should be durable and clearly identifiable.;',
           test_process: 'Meet standard requirements',
           test_result:'OK'
         }, {
@@ -838,7 +824,7 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：；看线束是否压接到位，铜丝不能外露超过2mm；焊接是否有虚焊、漏焊、飞丝、松散等问题；内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象。；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；④ 对于发现的问题及时进行返工，重新连接。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
+          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象。；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；④ 对于发现的问题及时进行返工，重新连接。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
           test_process: '符合标准要求',
           test_result:"OK"
         },
@@ -873,7 +859,7 @@ const queryParams = reactive({
           {
           num:'6',
           test_item: '绝缘检测',
-          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
+          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
           test_process: '符合标准要求',
           test_result:"OK"
         },
@@ -911,18 +897,18 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: 'Internal Connections',
-          test_request: '    ①  Visual inspection: See whether the wiring harness is pressed to the position, the copper wire can not be exposed more than 2mm; Whether there are problems such as virtual welding, missing welding, flying wire and loose welding; Whether the internal wiring is neat and beautiful.\n' +
-              '    ②  Hand pull: Pull the wire with the specified tension, whether there will be loosening, falling off phenomenon.\n' +
-              '    ③  Check the fastening point of the screw with a wrench to see if it meets the requirements.\n' +
-              '    ④  If the problem is found, rework and reconnect it in time.\n' +
-              'Note: For wireless products with reserved terminals at the front end, check the wiring screws in the terminals.\n',
+          test_request: '    ①  Visual inspection: See whether the wiring harness is pressed to the position, the copper wire can not be exposed more than 2mm, Whether there are problems such as virtual welding, missing welding, flying wire and loose welding, Whether the internal wiring is neat and beautiful.;' +
+              '    ②  Hand pull: Pull the wire with the specified tension, whether there will be loosening, falling off phenomenon.;' +
+              '    ③  Check the fastening point of the screw with a wrench to see if it meets the requirements.;' +
+              '    ④  If the problem is found, rework and reconnect it in time.;' +
+              'Note: For wireless products with reserved terminals at the front end, check the wiring screws in the terminals.;',
           test_process: 'Meet standard requirements',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: 'Product configuration',
-          test_request: '①  Check the assembled products with the tracking list and process drawings to ensure the accuracy of the production;\n' +
+          test_request: '①  Check the assembled products with the tracking list and process drawings to ensure the accuracy of the production.;\n' +
               '    ②  Check the cable and plug specifications against the product specifications to confirm that they are correct.',
           test_process: 'Meet standard requirements',
           test_result:"OK"
@@ -930,8 +916,8 @@ const queryParams = reactive({
           {
           num:'3',
           test_item: 'Ageing',
-          test_request: 'Place the ammeter product in a high-temperature aging room at 45°C for 24 hours without load and then transfer it to a room temperature room at 25±20°C for 24 hours without load. During the aging process, check whether the display screen, buttons, and indicator lights are working properly and whether the product has any alarm.\n',
-          test_process: 'The display screen, buttons and indicator lights are working properly.\n' +
+          test_request: 'Place the ammeter product in a high-temperature aging room at 45°C for 24 hours without load and then transfer it to a room temperature room at 25±20°C for 24 hours without load. During the aging process, check whether the display screen, buttons, and indicator lights are working properly and whether the product has any alarm.',
+          test_process: 'The display screen, buttons and indicator lights are working properly.;' +
               'There is no alarm on the product.',
           test_result:"OK"
         },
@@ -944,7 +930,7 @@ const queryParams = reactive({
         },
           {
           num:'5',
-          test_item: 'High voltage resistance test\n',
+          test_item: 'High voltage resistance test',
           test_request: 'Apply 2500VAC voltage between the live and neutral wires, the ground wire and the housing for 5S, and no flashover or breakdown should occur.',
           test_process: 'No flashover or breakdown',
           test_result:"OK"
@@ -959,9 +945,8 @@ const queryParams = reactive({
           {
           num:'7',
           test_item: 'Polarity check',
-          test_request: 'Connect the load to each socket of the product, check whether the indicator light of the polarity test module is normal, and determine whether the live, neutral and ground wiring are correct.\n',
-          test_process: 'Meet standard\n' +
-              'requirements',
+          test_request: 'Connect the load to each socket of the product, check whether the indicator light of the polarity test module is normal, and determine whether the live, neutral and ground wiring are correct.',
+          test_process: 'Meet standard requirements',
           test_result:"OK"
         },
           {
@@ -973,11 +958,10 @@ const queryParams = reactive({
         },
           {
           num:'9',
-          test_item: 'Product logo\n' +
-              'Appearance',
-          test_request: '① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number;\n' +
-              '    ② Symbols should be used as specified in the standard;\n' +
-              '    ③ The logo should be durable and legible;\n' +
+          test_item: 'Product logo Appearance',
+          test_request: '① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number.;' +
+              '    ② Symbols should be used as specified in the standard.;' +
+              '    ③ The logo should be durable and legible.;' +
               '    ④ Check the appearance of the product to see if there are any problems such as color mixing and obvious scratches.',
           test_process: 'Meet standard requirements',
           test_result:"OK"
@@ -995,7 +979,7 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：；看线束是否压接到位，铜丝不能外露超过2mm；焊接是否有虚焊、漏焊、飞丝、松散等问题；内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象。；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；④ 对于发现的问题及时进行返工，重新连接。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
+          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象。；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；④ 对于发现的问题及时进行返工，重新连接。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
           test_process: '符合标准要求',
           test_result:"OK"
         },
@@ -1016,14 +1000,14 @@ const queryParams = reactive({
           {
           num:'4',
           test_item: '耐高压检测',
-          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。;1、插接箱各相火线之间。；2、插接箱各相火线与PE；3、插接箱各相火线与零线。；',
+          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。；1、插接箱各相火线之间。；2、插接箱各相火线与PE；3、插接箱各相火线与零线。；',
           test_process: '无闪络或击穿现象',
           test_result:"OK"
         },
           {
           num:'5',
           test_item: '绝缘检测',
-          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
+          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
           test_process: '符合标准要求',
           test_result:"OK"
         },
@@ -1147,7 +1131,7 @@ const queryParams = reactive({
         },{
           num:'硬件设置',
           test_item: '温度检查',
-          test_request: '上电检查L1/L2/L3/N温度值，所有的值在平均值的±5℃范围内',
+          test_request: '上电检查L1/L2/L3/N温度值，所有的值在平均值的±5℃范围内。',
           test_process: '符合标准要求',
           test_result:"OK"
         },{
@@ -1177,19 +1161,19 @@ const queryParams = reactive({
         },{
           num:'硬件设置',
           test_item: '按键检查',
-          test_request: '功能按键：设置功能键（进入设置模式，设置后保存退出）',
+          test_request: '功能按键：设置功能键（进入设置模式，设置后保存退出）。',
           test_process: '操作成功',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '按键检查',
-          test_request: 'UP按键：向上翻页功能键，翻页查看显示屏内容（设置模式时为向上设置功能）',
+          test_request: 'UP按键：向上翻页功能键，翻页查看显示屏内容（设置模式时为向上设置功能）。',
           test_process: '操作成功',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '按键检查',
-          test_request: 'DOWN按键：向下翻页功能键，翻页查看显示屏内容（设置模式时长按为定位功能，短按为向下设置功能）',
+          test_request: 'DOWN按键：向下翻页功能键，翻页查看显示屏内容（设置模式时长按为定位功能，短按为向下设置功能）。',
           test_process: '操作成功',
           test_result:"OK"
         },{
@@ -1207,19 +1191,19 @@ const queryParams = reactive({
         },{
           num:'硬件设置',
           test_item: '级联检查',
-          test_request: 'IN、OUT: 级联治具连接插接箱IN和OUT接口，通讯正常',
+          test_request: 'IN、OUT: 级联治具连接插接箱IN和OUT接口，通讯正常。',
           test_process: '符合要求',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '电压检查',
-          test_request: '分别通断各插座对应的回路断路器，对应回路电压数据一致：',
+          test_request: '分别通断各插座对应的回路断路器，对应回路电压数据一致。',
           test_process: '符合要求',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '电流检查',
-          test_request: '接入负载，分别断开负载端三相断路器，对应回路电流为0A；',
+          test_request: '接入负载，分别断开负载端三相断路器，对应回路电流为0A。',
           test_process: '符合要求',
           test_result:"OK"
         },{
@@ -1296,26 +1280,26 @@ const queryParams = reactive({
         },{
           num:'Hardware Setup',
           test_item: 'Buzzer check',
-          test_request: 'Buzzer on: generates an alarm, and the buzzer sounds loud and clear; clears the alarm and the buzzer stops;\n' +
+          test_request: 'Buzzer on: generates an alarm, and the buzzer sounds loud and clear; clears the alarm and the buzzer stops;' +
               'Buzzer off: generates an alarm and the buzzer stops.',
           test_process: 'Functioning normally',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Key Check',
-          test_request: 'Function key: Setting function key (enter setting mode, save and exit after setting)',
+          test_request: 'Function key: Setting function key (enter setting mode, save and exit after setting).',
           test_process: 'Successful operation',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Key Check',
-          test_request: 'UP button: page up function button, page up to view the display content (upward setting function in setting mode)',
+          test_request: 'UP button: page up function button, page up to view the display content (upward setting function in setting mode).',
           test_process: 'Successful operation',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Key Check',
-          test_request: 'DOWN button: page down function button, page down to view the display content (in setting mode, long press for positioning function, short press for downward setting function)',
+          test_request: 'DOWN button: page down function button, page down to view the display content (in setting mode, long press for positioning function, short press for downward setting function).',
           test_process: 'Successful operation',
           test_result:"OK"
         },{
@@ -1327,25 +1311,25 @@ const queryParams = reactive({
         },{
           num:'Hardware Setup',
           test_item: 'Interface Check',
-          test_request: 'IN/OUT: RS485 Serial communication is normal.\n',
+          test_request: 'IN/OUT: RS485 Serial communication is normal.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Cascade Check',
-          test_request: 'IN/OUT: The cascade fixture is connected to the IN and OUT interfaces of the tap-off box, and the communication is normal',
+          test_request: 'IN/OUT: The cascade fixture is connected to the IN and OUT interfaces of the tap-off box, and the communication is normal.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Voltage Check',
-          test_request: 'Switch on and off the circuit breakers corresponding to each socket respectively, and the corresponding circuit voltage data are consistent;',
+          test_request: 'Switch on and off the circuit breakers corresponding to each socket respectively, and the corresponding circuit voltage data are consistent.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Current check',
-          test_request: 'Connect the load and disconnect the thr/ee-phase circuit breakers at the load end, and the corresponding loop current is 0A;',
+          test_request: 'Connect the load and disconnect the thr/ee-phase circuit breakers at the load end, and the corresponding loop current is 0A.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },{
@@ -1396,37 +1380,40 @@ const queryParams = reactive({
   //插接箱对外报告信息  附件2 -zh
   const JackBox_2 = [
           {
-            A1:'0.0',
-            A2:'0.0~0.1',
+            A1:'8.0',
+            A2:'7.9~8.1',
             A3:'OK',
             A4:'OK',
             A5:'220',
-            A6:'215~225',
+            A6:'219~221',
             L1:'OK',
-            L2:'OK',
-            L3:'OK',
-          },
-          {
-            A1:'0.2',
-            A2:'0.1~0.3',
-            A3:'OK',
-            A4:'OK',
-            A5:'',
-            A6:'',
-            L1:'',
             L2:'',
             L3:'',
+            L:'L1',
           },
           {
             A1:'8.0',
-            A2:'7.8~8.2',
+            A2:'7.9~8.1',
             A3:'OK',
             A4:'OK',
-            A5:'',
-            A6:'',
-            L1:'',
+            A5:'220',
+            A6:'219~221',
+            L1:'OK',
             L2:'',
             L3:'',
+            L:'L2',
+          },
+          {
+            A1:'8.0',
+            A2:'7.9~8.1',
+            A3:'OK',
+            A4:'OK',
+            A5:'220',
+            A6:'219~221',
+            L1:'OK',
+            L2:'',
+            L3:'',
+            L:'L3',
           },
   ]
    //始端箱对外报告信息 -zh 智能型
@@ -1434,14 +1421,14 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：；看线束是否压接到位，铜丝不能外露超过2mm。；焊接是否有虚焊、漏焊、飞丝、松散等问题。；内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
+          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
           test_process: '符合标准要求',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: '产品配置',
-          test_request: '① 将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误。；② 对照产品规格书对电缆线、插头规格进行检查，确认无误。；③ 对于结构的搭接、零部件和电器元件的保护接地应装有专用的接地垫圈或采取其它措施，且连接良好，有明显的接地标志。；',
+          test_request: '① 将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误。；② 对照产品规格书对电缆线、插头规格进行检查，确认无误。；③ 对于结构的搭接、零部件和电器元件的保护接地应装有专用的接地垫圈或采取其它措施，且连接良好，有明显的接地标志。',
           test_process: '符合标准要求',
           test_result:"OK"
         },
@@ -1462,14 +1449,14 @@ const queryParams = reactive({
           {
           num:'5',
           test_item: '耐高压检测',
-          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
+          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。',
           test_process: '无闪络或击穿现象',
           test_result:"OK"
         },
           {
           num:'6',
           test_item: '绝缘检测',
-          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
+          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。',
           test_process: '符合标准要求',
           test_result:"OK"
         },
@@ -1507,26 +1494,26 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: 'Internal Connections',
-          test_request: '    ①  Visual inspection: Check whether the wire harness is crimped in place, and the copper wire cannot be exposed more than 2mm; whether there are problems such as cold soldering, leaking soldering, flying wires, looseness, etc.; whether the internal wiring is neat and beautiful;\n' +
-              '    ②  Hand pulling: Pull the wire with the specified pulling force to see if it will loosen or fall off;\n' +
-              '    ③  Use a wrench to check the screw fastening points to see if they meet the requirements.\n' +
-              'Note: For wireless products with reserved wiring terminals at the front end, the wiring screws inside the terminals must be checked.\n',
+          test_request: '    ①  Visual inspection: Check whether the wire harness is crimped in place, and the copper wire cannot be exposed more than 2mm; whether there are problems such as cold soldering, leaking soldering, flying wires, looseness, etc.; whether the internal wiring is neat and beautiful.;' +
+              '    ②  Hand pulling: Pull the wire with the specified pulling force to see if it will loosen or fall off.;' +
+              '    ③  Use a wrench to check the screw fastening points to see if they meet the requirements.;' +
+              'Note: For wireless products with reserved wiring terminals at the front end, the wiring screws inside the terminals must be checked.;',
           test_process: 'Meet standard requirements',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: 'Product configuration',
-          test_request: '    ① Check the assembled products with the tracking sheet, process drawings, and wiring diagrams to ensure that the assembly is accurate;\n' +
-              '    ② Check the specifications of the circuit breaker and copper busbar against the product specifications to confirm that they are correct.\n' +
-              '    ③ For the overlapping of structures, protective grounding of parts and electrical components, special grounding washers or other measures should be installed, and the connection should be good and there should be obvious grounding marks;\n',
+          test_request: '    ① Check the assembled products with the tracking sheet, process drawings, and wiring diagrams to ensure that the assembly is accurate.;' +
+              '    ② Check the specifications of the circuit breaker and copper busbar against the product specifications to confirm that they are correct.;' +
+              '    ③ For the overlapping of structures, protective grounding of parts and electrical components, special grounding washers or other measures should be installed, and the connection should be good and there should be obvious grounding marks.;',
           test_process: 'Meet standard requirements',
           test_result:"OK"
         },
           {
           num:'3',
           test_item: 'Ageing',
-          test_request: 'Place the feeder box ammeter in a high-temperature aging room at 45°C for 24 hours without load and then transfer it to a room at 25±50°C for 24 hours without load.\n' +
+          test_request: 'Place the feeder box ammeter in a high-temperature aging room at 45°C for 24 hours without load and then transfer it to a room at 25±50°C for 24 hours without load.;' +
               'During the aging process, check whether the display, buttons, and indicator lights are working properly and whether the product has any alarm.',
           test_process: 'The display screen, buttons and indicator lights are working properly. There is no alarm on the product.',
           test_result:"OK"
@@ -1562,17 +1549,17 @@ const queryParams = reactive({
           {
           num:'8',
           test_item: 'Function test',
-          test_request: 'Test the various functions of the product against the product specifications and product manual to confirm that the product functions normally.\n',
+          test_request: 'Test the various functions of the product against the product specifications and product manual to confirm that the product functions normally.',
           test_process: 'See Appendix 1',
           test_result:"OK"
         },
           {
           num:'9',
           test_item: 'Product logo and appearance',
-          test_request: '    ① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number;\n' +
-              '    ② Symbols should be used as specified in the standard;\n' +
-              '    ③ The logo should be durable and legible;；\n' +
-              '    ④ Check the appearance of the product to see if there are any problems such as color mixing and obvious scratches;\n',
+          test_request: '    ① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number.;' +
+              '    ② Symbols should be used as specified in the standard.;' +
+              '    ③ The logo should be durable and legible.;' +
+              '    ④ Check the appearance of the product to see if there are any problems such as color mixing and obvious scratches.;',
           test_process: 'Meet standard requirements',
           test_result:"OK"
         },
@@ -1589,7 +1576,7 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：；看线束是否压接到位，铜丝不能外露超过2mm。；焊接是否有虚焊、漏焊、飞丝、松散等问题。；内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
+          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
           test_process: '符合标准要求',
           test_result:"OK"
         },
@@ -1631,8 +1618,8 @@ const queryParams = reactive({
           {
           num:'7',
           test_item: '断路器检查',
-          test_request: '断路器合闸，绿色指示灯亮；\n' +
-              '断路器跳闸，红色指示灯亮、蜂鸣器蜂鸣；\n' +
+          test_request: '断路器合闸，绿色指示灯亮；' +
+              '断路器跳闸，红色指示灯亮、蜂鸣器蜂鸣；' +
               '断路器分闸，绿色、红色指示灯都不亮；',
           test_process: '符合标准要求',
           test_result:"OK"
@@ -1767,19 +1754,19 @@ const queryParams = reactive({
         },{
           num:'硬件设置',
           test_item: '按键检查',
-          test_request: '功能按键：设置功能键（进入设置模式，设置后保存退出）',
+          test_request: '功能按键：设置功能键（进入设置模式，设置后保存退出）。',
           test_process: '操作成功',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '按键检查',
-          test_request: 'UP按键：向上翻页功能键，翻页查看显示屏内容（设置模式时为向上设置功能）',
+          test_request: 'UP按键：向上翻页功能键，翻页查看显示屏内容（设置模式时为向上设置功能）。',
           test_process: '操作成功',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '按键检查',
-          test_request: 'DOWN按键：向下翻页功能键，翻页查看显示屏内容（设置模式时长按为定位功能，短按为向下设置功能）',
+          test_request: 'DOWN按键：向下翻页功能键，翻页查看显示屏内容（设置模式时长按为定位功能，短按为向下设置功能）。',
           test_process: '操作成功',
           test_result:"OK"
         },{
@@ -1803,19 +1790,19 @@ const queryParams = reactive({
         },{
           num:'硬件设置',
           test_item: '级联检查',
-          test_request: 'IN、OUT: 级联治具连接插接箱IN和OUT接口，通讯正常',
+          test_request: 'IN、OUT: 级联治具连接插接箱IN和OUT接口，通讯正常。',
           test_process: '符合要求',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '电压检查',
-          test_request: '分别通断各插座对应的回路断路器，对应回路电压数据一致：',
+          test_request: '分别通断各插座对应的回路断路器，对应回路电压数据一致。',
           test_process: '符合要求',
           test_result:"OK"
         },{
           num:'硬件设置',
           test_item: '电流检查',
-          test_request: '接入负载，分别断开负载端三相断路器，对应回路电流为0A；',
+          test_request: '接入负载，分别断开负载端三相断路器，对应回路电流为0A。',
           test_process: '符合要求',
           test_result:"OK"
         },{
@@ -1868,7 +1855,7 @@ const queryParams = reactive({
         },{
           num:'Hardware Setup',
           test_item: 'Display screen inspection',
-          test_request: 'The display is centered, the backlight is evenly distributed, there are no abnormal bright spots, and the display switches without flickering.\n',
+          test_request: 'The display is centered, the backlight is evenly distributed, there are no abnormal bright spots, and the display switches without flickering.',
           test_process: 'Display normal',
           test_result:"OK"
         },{
@@ -1886,26 +1873,26 @@ const queryParams = reactive({
         },{
           num:'Hardware Setup',
           test_item: 'Buzzer check',
-          test_request: 'Buzzer on: generates an alarm, and the buzzer sounds loud and clear; clears the alarm and the buzzer stops;\n' +
+          test_request: 'Buzzer on: generates an alarm, and the buzzer sounds loud and clear; clears the alarm and the buzzer stops.;' +
               'Buzzer off: generates an alarm and the buzzer stops.',
           test_process: 'Functioning normally',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Key Check',
-          test_request: 'Function key: Setting function key (enter setting mode, save and exit after setting)',
+          test_request: 'Function key: Setting function key (enter setting mode, save and exit after setting).',
           test_process: 'Successful operation',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Key Check',
-          test_request: 'UP button: page up function button, page up to view the display content (upward setting function in setting mode)',
+          test_request: 'UP button: page up function button, page up to view the display content (upward setting function in setting mode).',
           test_process: 'Successful operation',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Key Check',
-          test_request: 'DOWN button: page down function button, page down to view the display content (in setting mode, long press for positioning function, short press for downward setting function)\n',
+          test_request: 'DOWN button: page down function button, page down to view the display content (in setting mode, long press for positioning function, short press for downward setting function).',
           test_process: 'Successful operation',
           test_result:"OK"
         },{
@@ -1929,13 +1916,13 @@ const queryParams = reactive({
         },{
           num:'Hardware Setup',
           test_item: 'Voltage Check',
-          test_request: 'Disconnect the A/B/C circuit breakers at the input end respectively, and the corresponding phase voltage data is 0V;',
+          test_request: 'Disconnect the A/B/C circuit breakers at the input end respectively, and the corresponding phase voltage data is 0V.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },{
           num:'Hardware Setup',
           test_item: 'Current check',
-          test_request: 'Connect the load, disconnect the thr/ee-phase circuit breakers at the load end, and the corresponding phase current is 0A;',
+          test_request: 'Connect the load, disconnect the thr/ee-phase circuit breakers at the load end, and the corresponding phase current is 0A.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },{
@@ -1973,34 +1960,37 @@ const queryParams = reactive({
   //始端箱对外报告信息  附件2 -zh
   const HeaBox_2 = [
           {
-            A1:'0.0',
-            A2:'0.0~0.1',
+            A1:'120.0',
+            A2:'119.0~121.1',
             A4:'OK',
             A5:'220',
-            A6:'215~225',
+            A6:'219~221',
             L1:'OK',
             L2:'OK',
             L3:'OK',
+            L:'L1',
           },
           {
-            A1:'0.2',
-            A2:'0.1~0.3',
+            A1:'120.0',
+            A2:'119.0~121.1',
             A4:'OK',
-            A5:'',
-            A6:'',
-            L1:'',
-            L2:'',
-            L3:'',
+            A5:'220',
+            A6:'219~221',
+            L1:'OK',
+            L2:'OK',
+            L3:'OK',
+            L:'L2',
           },
           {
-            A1:'8.0',
-            A2:'7.8~8.2',
+            A1:'120.0',
+            A2:'119.0~121.1',
             A4:'OK',
-            A5:'',
-            A6:'',
-            L1:'',
-            L2:'',
-            L3:'',
+            A5:'220',
+            A6:'219~221',
+            L1:'OK',
+            L2:'OK',
+            L3:'OK',
+            L:'L3',
           },
   ]
 
@@ -2013,8 +2003,11 @@ const queryParams = reactive({
     }
   
   // 使用正则表达式同时匹配中英文分号
+  // const formatSkills = (skills)=>{
   function formatSkills(skills): string{
+    console.log("skills:"+skills)
       if (skills) {
+        console.log("skills:"+skills)
         return skills.replace(/[;；]/g, '<br/>');
       }
       return '';
@@ -2043,6 +2036,9 @@ const queryParams = reactive({
           {
             const len = testStepGroup(row.num);
             const lenName = testStepLen(row.num);
+            // console.log("len:"+len)
+            // console.log("lenName"+lenName)
+            // console.log("rowIndex"+rowIndex)
             if(rowIndex === lenName)
             {
               return {
@@ -2062,6 +2058,7 @@ const queryParams = reactive({
         {
           const len = testStepGroup(row.test_step);
           const lenName = testStepLen(row.test_step);
+          
           if(rowIndex === lenName)
           {
             return {
@@ -2201,8 +2198,12 @@ const queryParams = reactive({
         // 在这里检查条件
         if (goods_dev_name.value === '插接箱' || goods_dev_name.value === '始端箱' || goods_dev_name.value  === 'Feeder box' || goods_dev_name.value === 'Tap-off box') {
           // 处理第三页
+          if(radio1.value === '2')
+        {
           const page3Element = document.getElementById('page3Content');
           return processPage(page3Element, 3);
+        }         
+          
         } else {
           // 如果条件不满足，则跳过第三页，直接进行后续操作
           return Promise.resolve();
@@ -2275,6 +2276,8 @@ const queryParams = reactive({
         goods_test_num.value = res.passTestNum
       }
   } finally {
+
+
     loading.value = false;
 
     if (goods_order_num.value != null && goods_test_num.value != null && goods_order_num.value != goods_test_num.value){
@@ -2391,10 +2394,10 @@ align-items: center;  */
   margin-right: 10px; /* 设置行与行之间的间距 */
 }
 .custom-table {
-  font-size: 20px; /* 调整字体大小 */
-  line-height: 4; /* 调整行高 */
+  font-size: 22px; /* 调整字体大小 */
+  line-height: 10; /* 调整行高 */
   white-space: pre-wrap; /* 允许换行 */
-  padding: 20px; /* 调整内边距 */
+  padding: 0px; /* 调整内边距 */
 }
 
 .container-button{
@@ -2432,14 +2435,16 @@ align-items: center;  */
   align-items: center;
 }
 .horizontal-rule {
-  width: 98%; /* 或者是任何你想要的百分比，用于决定分割线的长度 */
+  width: 100%; /* 或者是任何你想要的百分比，用于决定分割线的长度 */
   margin: 0 auto; /* 这会使分割线居中 */
+  /* padding-left: 5%;
+  padding-right: 5%; */
 }
 .br-rule{
     height: 60px;
 }
 .br-rule2{
-    height: 700px;
+    height: 200px;
 }
 .product-name {
   text-align: left;
@@ -2450,7 +2455,7 @@ align-items: center;  */
 .customer-label {
   text-align: right;
   font-size: 40px;
-  line-height: 45px;
+  line-height: 40px;
   margin-right: 10px;
 }
 
@@ -2482,16 +2487,16 @@ align-items: center;  */
 }
 
 .left-column {
-  padding-left: 100px; /* 根据需要调整这个数值 */
+  padding-left: 15%; /* 根据需要调整这个数值 */
 }
 .right-column {
-  align-items: flex-start; /* 或 'center' 依据需要调整 */
-  padding-left: 100px; /* 根据需要调整这个数值 */
+  align-items: flex-start; /* 或 'center'  依据需要调整 */
+  padding-right: 15%; /* 根据需要调整这个数值 */
 }
 
 .cell-content-table{
-  font-size: 23px;
-  line-height: 1.5em;
+  font-size: 22px;
+  line-height: 25px;
   padding-top: 4px;
   padding-bottom: 4px;
 }
