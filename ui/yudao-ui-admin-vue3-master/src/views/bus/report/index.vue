@@ -2261,7 +2261,7 @@ const queryParams = reactive({
         }
     }
 
-  // 获取出差报告数据
+  // 获取出厂报告数据
   const getReportData = async () => {
     loading.value = true;
     try {
@@ -2274,12 +2274,11 @@ const queryParams = reactive({
         goods_end_time.value = res.testDate
         goods_order_num.value = res.productionNum
         goods_test_num.value = res.passTestNum
+      }else{
+        ElMessageBox.alert('暂无数据！')
       }
   } finally {
-
-
     loading.value = false;
-
     if (goods_order_num.value != null && goods_test_num.value != null && goods_order_num.value != goods_test_num.value){
       ElMessageBox.alert('检验暂未完成，生产数量：'+ goods_order_num.value + '台，当前检验数量：'+ goods_test_num.value + '台', 
       '订单号：'+ queryParams.orderId, 

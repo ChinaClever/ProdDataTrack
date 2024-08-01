@@ -8,41 +8,45 @@ import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
+import cn.iocoder.yudao.module.bus.mapper.TestDataMapper;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import java.io.IOException;
 import java.util.List;
 
+import static cn.hutool.core.lang.Console.log;
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 @Slf4j
 @RestController
 @RequestMapping("/bus")
 public class BusController {
-    @Resource
-    private MongoTemplate mongoTemplate;
 
     @Autowired
     private TestDataService testDataService;
+
+    @Autowired
+    private TestDataMapper testDataMapper;
 
     @PostMapping("/testData")
     @PermitAll
     public ResponseEntity<?> receiveTestData(@RequestBody TestData testData) {
         try {
-            TestData testData1 = mongoTemplate.save(testData);
-            return ResponseEntity.ok(testData1);
+            testData.setAll_data(testData.toString());
+            testDataMapper.insert(testData);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save data: " + e.getMessage());
+            log("存储测试数据失败：" + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("存储测试数据失败" + e.getMessage());
             // 如果保存失败，返回500状态码和错误信息
         }
+        return ResponseEntity.ok("存储测试数据成功");
     }
 
     @GetMapping("/testData-page")

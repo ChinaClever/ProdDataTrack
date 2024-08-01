@@ -8,12 +8,15 @@ import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
+import cn.iocoder.yudao.module.bus.mapper.TestDataMapper;
 import cn.iocoder.yudao.module.bus.mapper.UsedOrderInfoMapper;
 import cn.iocoder.yudao.module.infra.dal.dataobject.file.FileConfigDO;
 import cn.iocoder.yudao.module.infra.framework.file.core.client.FileClient;
 import cn.iocoder.yudao.module.infra.framework.file.core.client.local.LocalFileClientConfig;
 import cn.iocoder.yudao.module.infra.service.file.FileConfigService;
 import cn.iocoder.yudao.module.infra.service.file.FileService;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -29,17 +32,9 @@ import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
-
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.google.zxing.BarcodeFormat;
@@ -47,6 +42,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -61,51 +58,49 @@ import java.util.*;
 @Service
 public class TestDataServiceImpl implements TestDataService {
     @Resource
-    private MongoTemplate mongoTemplate;
-    @Resource
     private FileService fileService;
     @Resource
     private FileConfigService fileConfigService;
     @Autowired
     private UsedOrderInfoMapper usedOrderInfoMapper;
+    @Autowired
+    private TestDataMapper testDataMapper;
 
     private static int dataNum = 0;
     private static final int QR_CODE_SIZE = 200;
     private static boolean existsCode = false;
     private static boolean existsOrder = false;
-    public final static String qrcodePath = "/qrcode/";
+    public final static String qrcodePath = "/";
 
     @Override
     public PageResult<TestData> getTestDataPage(TestDataPageReqVO pageReqVO) {
-        Query query = new Query();
-        Criteria criteria = new Criteria();
+
+        System.out.println(pageReqVO);
+        Page<TestData> page = new Page<>(pageReqVO.getPageNo(), pageReqVO.getPageSize());
+
+        QueryWrapper<TestData> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+
         if(pageReqVO.getOrderId() != null){
-            criteria.and("order_id").is(pageReqVO.getOrderId());
+            queryWrapper.eq("order_id", pageReqVO.getOrderId());
         }
         if(pageReqVO.getProductSN() != null){
-            criteria.and("product_sn").is(pageReqVO.getProductSN());
+            queryWrapper.eq("product_sn", pageReqVO.getProductSN());
         }
         if(!pageReqVO.getTestResult().equals("all")){
-            criteria.and("test_result").is(pageReqVO.getTestResult());
+            queryWrapper.eq("test_result", pageReqVO.getTestResult());
         }
         if(!pageReqVO.getLanguage().equals("all")){
-            criteria.and("language_select").is(pageReqVO.getLanguage());
+            queryWrapper.eq("language_select", pageReqVO.getLanguage());
         }
         if(pageReqVO.getTimeRange() != null){
-            criteria.and("end_time").gte(pageReqVO.getTimeRange()[0]).lte(pageReqVO.getTimeRange()[1]);
+            queryWrapper.ge("end_time", pageReqVO.getTimeRange()[0]).le("end_time", pageReqVO.getTimeRange()[1]);
         }
-        query.addCriteria(criteria);
-        // 查询总数
-        long total = mongoTemplate.count(query, TestData.class);
-        // 查询分页
-        query.with(Sort.by(Sort.Order.desc("_id")))
-                .skip((long)(pageReqVO.getPageNo() - 1) * pageReqVO.getPageSize())
-                .limit(pageReqVO.getPageSize());
-        List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
 
+        IPage<TestData> resultPage = testDataMapper.selectPage(page, queryWrapper);
         PageResult<TestData> pageResult = new PageResult<>();
-        pageResult.setList(testDataList);
-        pageResult.setTotal(total);
+        pageResult.setList(resultPage.getRecords());
+        pageResult.setTotal(resultPage.getTotal());
         return pageResult;
     }
 
@@ -358,16 +353,32 @@ public class TestDataServiceImpl implements TestDataService {
             respVO.setCustomerName(usedOrderInfo.getCustomerName());
             respVO.setDeviceType(usedOrderInfo.getDeviceType());
             respVO.setProductionNum(Integer.valueOf(usedOrderInfo.getNumber()));
+        }else{
+            // 查不到就请求其他接口 据说一定能查到
+            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx?Type=GetSpecPrints&UserId=BBFC8115-8EF5-42E1-B1CB-A1154291F9CD" +
+                    "&OrderNo=" + reqVO.getOrderId() +
+                    "&ProductNo=" + reqVO.getProductSN();
+            ResponseEntity<String> response = new RestTemplate().getForEntity(url, String.class);
+            JSONObject json = JSONObject.parseObject(response.getBody());
+            JSONArray rows = json.getJSONArray("rows");
+            if (!rows.isEmpty()) {
+                JSONObject jsonObject = rows.getJSONObject(0);
+                respVO.setCustomerName(jsonObject.getString("CUSTOMERNAME"));
+                respVO.setDeviceType(jsonObject.getString("MODELCODE"));
+                respVO.setProductionNum(jsonObject.getInteger("QUANTITY"));
+            }else {
+                return null;
+            }
+
         }
 
-        Query query = new Query();
-        Criteria criteria = new Criteria();
-        criteria.and("order_id").is(reqVO.getOrderId());
-        criteria.and("product_sn").is(reqVO.getProductSN());
-        criteria.and("language_select").is("0");
-        query.addCriteria(criteria);
-        query.with(Sort.by(Sort.Order.desc("_id")));
-        List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
+        QueryWrapper<TestData> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.orderByDesc("id")
+                .eq("order_id", reqVO.getOrderId())
+                .eq("product_sn", reqVO.getProductSN())
+                .eq("language_select", "0");
+
+        List<TestData> testDataList = testDataMapper.selectList(queryWrapper1);
         List<String> passTestModuleList = new ArrayList<>();
         List<String> failTestModuleList = new ArrayList<>();
         Boolean skipFlag = false;
@@ -430,21 +441,13 @@ public class TestDataServiceImpl implements TestDataService {
 
     @Override
     public List<TestData> getInternalReport(ReportReqVO reqVO) {
-        Query query = new Query();
-        Criteria criteria = new Criteria();
-        if(reqVO.getOrderId() != null){
-            criteria.and("order_id").is(reqVO.getOrderId());
-        }
-        if(reqVO.getProductSN() != null){
-            criteria.and("product_sn").is(reqVO.getProductSN());
-        }
-        if(reqVO.getProductSN() != null){
-            criteria.and("module_sn").is(reqVO.getModuleSN());
-        }
-        query.addCriteria(criteria);
-        // 查询
-//        query.with(Sort.by(Sort.Order.desc("_id")));
-        List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
+
+        QueryWrapper<TestData> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_id", reqVO.getOrderId())
+                .eq("product_sn", reqVO.getProductSN())
+                .eq("module_sn", reqVO.getModuleSN());
+
+        List<TestData> testDataList = testDataMapper.selectList(queryWrapper);
 
         return testDataList;
     }

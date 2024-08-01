@@ -1,14 +1,20 @@
 package cn.iocoder.yudao.module.bus.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.ToString;
 
 @Data
-@Document(collection = "testdata")
+@ToString
+@TableName("test_data")
 public class TestData {
-    @Id
-    private String id;
+    /**
+     * 编号，数据库自增
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     private String product_sn;
 
@@ -21,8 +27,6 @@ public class TestData {
     private String order_id;
 
     private String order_num;
-
-    private String test_num;
 
     private String dev_name;
 
@@ -43,4 +47,6 @@ public class TestData {
     private String test_process;
 
     private String end_time;
+
+    private String all_data;
 }
