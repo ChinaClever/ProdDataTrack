@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.bus.controller.admin.testdata.vo;
 
+
 import lombok.Data;
 
 @Data
@@ -17,4 +18,5 @@ public class TestDataPageReqVO{
     private String language;
 
     private String[] timeRange;
+
 }

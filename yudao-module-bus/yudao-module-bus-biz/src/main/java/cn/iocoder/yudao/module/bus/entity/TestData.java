@@ -16,37 +16,38 @@ public class TestData {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String product_sn;
+    private String productSn;
 
-    private String module_sn;
+    private String moduleSn;
 
-    private String soft_version;
+    private String softVersion;
 
-    private String language_select;
+    private String languageSelect;
 
-    private String order_id;
+    private String orderId;
 
-    private String order_num;
+    private String orderNum;
 
-    private String dev_name;
+    private String devName;
 
-    private String tool_name;
+    private String toolName;
 
-    private String test_result;
+    private String testResult;
 
-    private String start_time;
+    private String startTime;
 
-    private String test_step;
+    private String testStep;
 
-    private String test_item;
+    private String testItem;
 
-    private String test_cfg;
+    private String testCfg;
 
-    private String test_request;
+    private String testRequest;
 
-    private String test_process;
+    private String testProcess;
 
-    private String end_time;
+    private String endTime;
 
-    private String all_data;
+    private String allData;
+
 }

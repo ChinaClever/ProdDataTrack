@@ -173,22 +173,22 @@ watch(() => queryParams.language, (_newLanguage) => {
 });
 
 const tableColumns = ref([
-  { label: '订单号', align: 'center', prop: 'order_id' , istrue: true, width: '200px'},
-  { label: '成品代码', align: 'center', prop: 'product_sn' , istrue: true, width: '230px'},
-  { label: '模块序列号', align: 'center', prop: 'module_sn' , istrue: true, width: '230px'},
+  { label: '订单号', align: 'center', prop: 'orderId' , istrue: true, width: '200px'},
+  { label: '成品代码', align: 'center', prop: 'productSn' , istrue: true, width: '230px'},
+  { label: '模块序列号', align: 'center', prop: 'moduleSn' , istrue: true, width: '230px'},
   // { label: '订单数量', align: 'center', prop: 'order_num' , istrue: true, width: '100px'},
   // { label: '已测试数量', align: 'center', prop: 'test_num' , istrue: true, width: '100px'},
-  { label: '设备名称', align: 'center', prop: 'dev_name' , istrue: true, width: '150px'},
+  { label: '设备名称', align: 'center', prop: 'devName' , istrue: true, width: '150px'},
   // { label: '工具名称', align: 'center', prop: 'tool_name' , istrue: true, width: '150px'},
-  { label: '测试结果', align: 'center', prop: 'test_result', istrue: true, formatter: formatTestResult},
-  { label: '测试项目', align: 'center', prop: 'test_item', istrue: true, width: '200px'},
+  { label: '测试结果', align: 'center', prop: 'testResult', istrue: true, formatter: formatTestResult},
+  { label: '测试项目', align: 'center', prop: 'testItem', istrue: true, width: '200px'},
   // { label: 'test_cfg', align: 'center', prop: 'test_cfg', istrue: true, width: '200px'},
-  { label: '测试要求', align: 'center', prop: 'test_request', istrue: true, width: '200px'},
-  { label: '结果判定', align: 'center', prop: 'test_process', istrue: true, width: '200px'},
-  { label: '开始时间', align: 'center', prop: 'start_time', istrue: true, formatter: formatTime, width: '200px'},
-  { label: '结束时间', align: 'center', prop: 'end_time', istrue:true, formatter: formatTime, width: '200px'},  
-  { label: '软件版本', align: 'center', prop: 'soft_version', istrue: true},
-  { label: '语言', align: 'center', prop: 'language_select' , istrue: true, formatter: formatLanguage, width: '100px'},
+  { label: '测试要求', align: 'center', prop: 'testRequest', istrue: true, width: '200px'},
+  { label: '结果判定', align: 'center', prop: 'testProcess', istrue: true, width: '200px'},
+  { label: '开始时间', align: 'center', prop: 'startTime', istrue: true, formatter: formatTime, width: '200px'},
+  { label: '结束时间', align: 'center', prop: 'endTime', istrue:true, formatter: formatTime, width: '200px'},  
+  { label: '软件版本', align: 'center', prop: 'softVersion', istrue: true},
+  { label: '语言', align: 'center', prop: 'languageSelect' , istrue: true, formatter: formatLanguage, width: '100px'},
 ]);
 
 /** 搜索按钮操作 */
@@ -227,12 +227,12 @@ function formatLanguage(_row: any, _column: any, cellValue: number): string {
 // 格式化结果列
 function formatTestResult(row: any, _column: any, cellValue: number): string {
   if (cellValue == 0) {
-    if( row.language_select == '0'){
+    if( row.languageSelect == '0'){
       return '失败'
     }
     return 'Fail'
   }else{
-    if( row.language_select == '0'){
+    if( row.languageSelect == '0'){
     return '通过'
     }
     return 'Pass'

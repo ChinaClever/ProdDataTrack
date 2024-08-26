@@ -50,7 +50,7 @@
               <div class="right-row" >
                 <el-col  class="table-label">产品型号：{{goods_dev_name}}</el-col>
                 <el-col  class="table-label-1">检验日期：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
-                <el-col  class="table-label-2">检验数量：{{goods_test_num}}</el-col>
+                <!-- <el-col  class="table-label-2">检验数量：{{goods_test_num}}</el-col> -->
               </div>
             </el-row>
           </div>
@@ -94,22 +94,22 @@
         <br/>
           <div class="table-wrapper"  style="padding-left: 2%;">
             <el-table :data="goods_SN_data" class="table-data2" style="width: 97%" border>
-                <el-table-column prop="test_step" label="检验步骤" :align="centerAlign" width="200"/>
-                <el-table-column prop="test_item" label="检验项" :align="centerAlign" width="300"/>
-                <el-table-column prop="test_request" label="检验要求" :align="centerAlign" width="550">
+                <el-table-column prop="testStep" label="检验步骤" :align="centerAlign" width="200"/>
+                <el-table-column prop="testItem" label="检验项" :align="centerAlign" width="300"/>
+                <el-table-column prop="testRequest" label="检验要求" :align="centerAlign" width="550">
                   <template #default="{ row }">
-                      <div v-html="formatSkills(row.test_request)" ></div>
+                      <div v-html="formatSkills(row.testRequest)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="350">
+                <el-table-column prop="testProcess" label="检验结果"  :align="centerAlign"  width="350">
                     <template #default="{ row }">
-                      <div v-html="formatSkills(row.test_process)" ></div>
+                      <div v-html="formatSkills(row.testProcess)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="test_result" label="判定" :align="centerAlign" width="105">
+                <el-table-column prop="testResult" label="判定" :align="centerAlign" width="105">
                   <template #default="{ row }" >
-                    <span v-if="row.test_result == 1" >通过</span>
-                    <span v-else-if="row.test_result == 0" >失败</span>
+                    <span v-if="row.testResult == 1" >通过</span>
+                    <span v-else-if="row.testResult == 0" >失败</span>
                   </template>
                 </el-table-column>
             </el-table>
@@ -134,7 +134,7 @@
             <el-row class="table-row">
               <el-col  class="table-label">Product Model：{{goods_dev_name}}</el-col>
               <el-col  class="table-label-1">Inspection Date：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
-              <el-col  class="table-label-2">Inspection Quantity：{{goods_test_num}}</el-col>
+              <!-- <el-col  class="table-label-2">Inspection Quantity：{{goods_test_num}}</el-col> -->
             </el-row>
           </div>
             <hr/>
@@ -161,22 +161,22 @@
         <br/>
           <div class="table-wrapper" style="padding-left: 2%;">
             <el-table :data="goods_SN_data" class="table-data2"  style="width: 97%" border>
-                <el-table-column prop="test_step" label="Inspection Steps"  :align="centerAlign" width="200"/>
-                <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="300"/>
-                <el-table-column prop="test_request" label="Inspection Requirements" :header-align="centerAlign" width="550">
+                <el-table-column prop="testStep" label="Inspection Steps"  :align="centerAlign" width="200"/>
+                <el-table-column prop="testItem" label="Inspection Items" :align="centerAlign" width="300"/>
+                <el-table-column prop="testRequest" label="Inspection Requirements" :header-align="centerAlign" width="550">
                     <template #default="{ row }">
-                      <div v-html="formatSkills(row.test_request)" ></div>
+                      <div v-html="formatSkills(row.testRequest)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="test_process" label="Inspection Results"  :header-align="centerAlign"  width="500">
+                <el-table-column prop="testProcess" label="Inspection Results"  :header-align="centerAlign"  width="500">
                   <template #default="{ row }">
-                      <div v-html="formatSkills(row.test_process)" ></div>
+                      <div v-html="formatSkills(row.testProcess)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="test_result" label="Determine" :align="centerAlign" width="200">
+                <el-table-column prop="testResult" label="Determine" :align="centerAlign" width="200">
                   <template #default="{ row }" >
-                    <span v-if="row.test_result == 1" >PASS</span>
-                    <span v-else-if="row.test_result == 0" >FAIL</span>
+                    <span v-if="row.testResult == 1" >PASS</span>
+                    <span v-else-if="row.testResult == 0" >FAIL</span>
                   </template>
                 </el-table-column>
             </el-table>
@@ -322,8 +322,8 @@ const queryParams = reactive({
         goods_SN_data.value = data
         if (goods_SN_data.value.length != 0 ){
           // 数据分成两部分
-            ChineseItems.value = goods_SN_data.value.filter(item => item.language_select == 0);
-            EnglishItems.value = goods_SN_data.value.filter(item => item.language_select == 1);
+            ChineseItems.value = goods_SN_data.value.filter(item => item.languageSelect == 0);
+            EnglishItems.value = goods_SN_data.value.filter(item => item.languageSelect == 1);
             console.log(EnglishItems.value)
           if(language.value === true){
             goods_SN_data.value = ChineseItems.value
@@ -331,23 +331,23 @@ const queryParams = reactive({
           else {
             goods_SN_data.value = EnglishItems.value
           }
-          goods_product_sn.value = goods_SN_data.value[0].product_sn;
-          goods_tool_name.value = goods_SN_data.value[0].tool_name;
-          goods_soft_version.value = goods_SN_data.value.find(item=>item.soft_version !== '0.0.0').soft_version;
-          goods_test_type.value = goods_SN_data.value[0].test_type;
-          goods_start_time.value = goods_SN_data.value[0].start_time;
-          goods_order_id.value = goods_SN_data.value[0].order_id;
-          goods_order_num.value = goods_SN_data.value[0].order_num;
-          goods_dev_name.value = goods_SN_data.value[0].dev_name;
+          goods_product_sn.value = goods_SN_data.value[0].productSn;
+          goods_tool_name.value = goods_SN_data.value[0].toolName;
+          goods_soft_version.value = goods_SN_data.value.find(item=>item.softVersion !== '0.0.0').softVersion;
+          goods_test_type.value = goods_SN_data.value[0].testType;
+          goods_start_time.value = goods_SN_data.value[0].startTime;
+          goods_order_id.value = goods_SN_data.value[0].orderId;
+          goods_order_num.value = goods_SN_data.value[0].orderNum;
+          goods_dev_name.value = goods_SN_data.value[0].devName;
           if (goods_SN_data.value.length > 0 ){
-            goods_end_time.value = goods_SN_data.value[goods_SN_data.value.length -1].end_time;
-            end_judgment.value = goods_SN_data.value[goods_SN_data.value.length -1].test_result;
+            goods_end_time.value = goods_SN_data.value[goods_SN_data.value.length -1].endTime;
+            end_judgment.value = goods_SN_data.value[goods_SN_data.value.length -1].testResult;
           } else {
               goods_end_time.value = null;
               end_judgment.value = null;
           }
-          const res = await TestDataApi.getReportData(queryParams)
-          goods_test_num.value = res.passTestNum
+          // const res = await TestDataApi.getReportData(queryParams)
+          // goods_test_num.value = res.passTestNum
           dialogVisible.value = true;
 
         }else{
@@ -394,7 +394,7 @@ const queryParams = reactive({
       goods_SN_data.value = EnglishItems.value
       console.log(goods_SN_data.value)
     }
-    goods_dev_name.value = goods_SN_data.value[0].dev_name;
+    goods_dev_name.value = goods_SN_data.value[0].devName;
   }
 
 </script>

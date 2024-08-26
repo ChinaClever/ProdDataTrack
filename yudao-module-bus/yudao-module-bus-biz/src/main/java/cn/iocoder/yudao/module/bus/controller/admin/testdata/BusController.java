@@ -38,7 +38,7 @@ public class BusController {
     @PermitAll
     public ResponseEntity<?> receiveTestData(@RequestBody TestData testData) {
         try {
-            testData.setAll_data(testData.toString());
+            testData.setAllData(testData.toString());
             testDataMapper.insert(testData);
 
         } catch (Exception e) {

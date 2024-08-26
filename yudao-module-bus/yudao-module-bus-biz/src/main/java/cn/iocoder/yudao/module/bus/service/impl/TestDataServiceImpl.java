@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
+
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
 import cn.iocoder.yudao.module.bus.mapper.TestDataMapper;
@@ -391,35 +392,35 @@ public class TestDataServiceImpl implements TestDataService {
         for(TestData testData : testDataList){
             // 初始化当前循环在哪个模块哪一次 第一次循环才执行
             if (nowModule == null ){
-                nowModule = testData.getModule_sn();
-                nowStartTime = testData.getStart_time();
+                nowModule = testData.getModuleSn();
+                nowStartTime = testData.getStartTime();
             }
 
             // 不跳过,同时属于同模块同一次, 不在passTestModuleList和failTestModuleList说明是最新那次
             //需要判断!failTestModuleList.contains(testData.getModule_sn())是为了避免模块最新那次失败了，后续循环到旧检测还执行后续判断，应跳过
-            if (!skipFlag && Objects.equals(testData.getModule_sn(), nowModule) && !passTestModuleList.contains(testData.getModule_sn())
-                    && !failTestModuleList.contains(testData.getModule_sn())){
+            if (!skipFlag && Objects.equals(testData.getModuleSn(), nowModule) && !passTestModuleList.contains(testData.getModuleSn())
+                    && !failTestModuleList.contains(testData.getModuleSn())){
 
                 // 同一模块的同一检测次 出现失败 则这个模块失败 直接跳过到下一模块
-                if (Objects.equals(testData.getTest_result(), "0")){
+                if (Objects.equals(testData.getTestResult(), "0")){
                     failTestModuleList.add(nowModule);
                     skipFlag = true;
                     continue;
                 }
             }
             // 到了下一个模块执行 或者同一模块旧一次检测
-            if ( !Objects.equals(testData.getModule_sn(), nowModule) || !Objects.equals(nowStartTime, testData.getStart_time())
-                    && !passTestModuleList.contains(testData.getModule_sn())
-                    && !failTestModuleList.contains(testData.getModule_sn())){
+            if ( !Objects.equals(testData.getModuleSn(), nowModule) || !Objects.equals(nowStartTime, testData.getStartTime())
+                    && !passTestModuleList.contains(testData.getModuleSn())
+                    && !failTestModuleList.contains(testData.getModuleSn())){
                 // 如果skipFlag == false  说明上一个模块通过测试 需加入passTestModuleList
-                if ( !skipFlag && !passTestModuleList.contains(testData.getModule_sn())){
+                if ( !skipFlag && !passTestModuleList.contains(testData.getModuleSn())){
                     passTestModuleList.add(nowModule);
                 }
                 skipFlag = false;
-                nowModule = testData.getModule_sn();
-                nowStartTime = testData.getStart_time();
+                nowModule = testData.getModuleSn();
+                nowStartTime = testData.getStartTime();
                 // 看本项测试是否失败 如果失败就继续跳过到下一个模块
-                if (Objects.equals(testData.getTest_result(), "0")){
+                if (Objects.equals(testData.getTestResult(), "0")){
                     failTestModuleList.add(nowModule);
                     skipFlag = true;
                 }
@@ -430,10 +431,10 @@ public class TestDataServiceImpl implements TestDataService {
         System.out.println("passTestModuleList"+Arrays.toString(passTestModuleList.toArray()));
         System.out.println("failTestModuleList"+Arrays.toString(failTestModuleList.toArray()));
         if (!testDataList.isEmpty()){
-            respVO.setDevName(testDataList.get(0).getDev_name());
+            respVO.setDevName(testDataList.get(0).getDevName());
             respVO.setPassTestNum(passTestModuleList.size());
-            respVO.setProductionDate(testDataList.get(0).getStart_time());
-            respVO.setTestDate(testDataList.get(0).getEnd_time());
+            respVO.setProductionDate(testDataList.get(0).getStartTime());
+            respVO.setTestDate(testDataList.get(0).getEndTime());
         }
 
         return respVO;
