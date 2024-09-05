@@ -1000,7 +1000,7 @@ const queryParams = reactive({
           {
           num:'4',
           test_item: '耐高压检测',
-          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。；1、插接箱各相火线之间。；2、插接箱各相火线与PE；3、插接箱各相火线与零线。；',
+          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。；1、插接箱各相火线与PE。；', //；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；
           test_process: '无闪络或击穿现象',
           test_result:"OK"
         },
@@ -2310,7 +2310,7 @@ onMounted(() => {
     queryParams.orderId = queryOrderId;
     queryParams.productSN = queryProductSN;
     queryParams.moduleSN = queryModuleSN;
-    // 成品代码第四个字母判断类型 M为智能型，值为1； 其他字母为基本型，值为2
+    // 成品代码第四个字母判断类型 M为智能型，值为2； 其他字母为基本型，值为1
     radio1.value = queryProductSN[3] == 'M'? '2' : '1';
     getReportData(); 
   }

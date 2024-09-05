@@ -47,7 +47,7 @@
                 <el-col  class="table-label-1">订单号：{{goods_order_id}}</el-col>
                 <el-col  class="table-label-2">订单数量：{{goods_order_num}} 台</el-col>
               </div>
-              <div class="right-row" >
+              <div class="right-row"  style= "padding-left: 895px;">
                 <el-col  class="table-label">产品型号：{{goods_dev_name}}</el-col>
                 <el-col  class="table-label-1">检验日期：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
                 <!-- <el-col  class="table-label-2">检验数量：{{goods_test_num}}</el-col> -->
@@ -67,12 +67,12 @@
             <br/> -->
           <div>
             <el-row class="table-row">
-              <div class="left-row">
+              <div class="left-row" >
                 <el-col  class="table-label">SN编号：{{goods_product_sn}}</el-col>
                 <el-col  class="table-label-1">检验开始时间：{{goods_start_time}}</el-col>
                 <el-col  class="table-label-2">检验结束时间：{{goods_end_time}}</el-col>
               </div>
-              <div class="right-row" style="padding-left: 705px;">
+              <div class="right-row" style= "padding-left: 700px;">
                 <el-col  class="table-label">测试项目：成品功能</el-col>
                 <el-col  class="table-label-1">检验类型：全检</el-col>
                 <el-col  class="table-label-2">检验结果：{{displayEndJudgment(end_judgment)}}</el-col>
@@ -123,32 +123,45 @@
           <br/>
           <div>
             <el-row class="table-row">
-              <el-col  class="table-label">Customer Name：</el-col>
-              <el-col  class="table-label-1">Order Number：{{goods_order_id}}</el-col>
-              <el-col  class="table-label-2">Order Quantity：{{goods_order_num}} UNIT</el-col>
+              <div class="left-row">
+                <el-col  class="table-label">Customer Name：</el-col>
+                <el-col  class="table-label-1">Order Number：{{goods_order_id}}</el-col>
+                <el-col  class="table-label-2">Order Quantity：{{goods_order_num}} UNIT</el-col>
+              </div>
+              <div class="right-row" style= "padding-left: 590px;">
+                <el-col  class="table-label">Product Model：{{goods_dev_name}}</el-col>
+                <el-col  class="table-label-1">Inspection Date：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
+              </div>
             </el-row>
           </div>
             <hr/>
             <br/>
-          <div>
+          <!-- <div>
             <el-row class="table-row">
               <el-col  class="table-label">Product Model：{{goods_dev_name}}</el-col>
               <el-col  class="table-label-1">Inspection Date：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
-              <!-- <el-col  class="table-label-2">Inspection Quantity：{{goods_test_num}}</el-col> -->
+              <el-col  class="table-label-2">Inspection Quantity：{{goods_test_num}}</el-col>
             </el-row>
           </div>
             <hr/>
-            <br/>
+            <br/> -->
           <div>
             <el-row class="table-row">
-              <el-col  class="table-label">SN Number：{{goods_product_sn}}</el-col>
-              <el-col  class="table-label-1">Inspection Start Time：{{goods_start_time}}</el-col>
-              <el-col  class="table-label-2">Inspection End Time：{{goods_end_time}}</el-col>
+              <div class="left-row">
+                <el-col  class="table-label">SN Number：{{goods_product_sn}}</el-col>
+                <el-col  class="table-label-1">Inspection Start Time：{{goods_start_time}}</el-col>
+                <el-col  class="table-label-2">Inspection End Time：{{goods_end_time}}</el-col>
+            </div>
+            <div class="right-row" style= "padding-left: 400px;">
+                <el-col  class="table-label">Test Items：Finished product functions</el-col>
+                <el-col  class="table-label-1">Inspection Type：Full inspection</el-col>
+                <el-col  class="table-label-2">Inspection results：{{displayEndJudgment(end_judgment)}}</el-col>
+            </div>
             </el-row>
           </div>
             <hr/>
             <br/>
-          <div>
+          <!-- <div>
             <el-row class="table-row">
               <el-col  class="table-label">Test Items：Finished product functions</el-col>
               <el-col  class="table-label-1">Inspection Type：Full inspection</el-col>
@@ -156,24 +169,24 @@
             </el-row>
           </div>
             <hr/>
-            <br/>
+            <br/> -->
 
         <br/>
           <div class="table-wrapper" style="padding-left: 2%;">
             <el-table :data="goods_SN_data" class="table-data2"  style="width: 97%" border>
                 <el-table-column prop="testStep" label="Inspection Steps"  :align="centerAlign" width="200"/>
-                <el-table-column prop="testItem" label="Inspection Items" :align="centerAlign" width="300"/>
-                <el-table-column prop="testRequest" label="Inspection Requirements" :header-align="centerAlign" width="550">
+                <el-table-column prop="testItem" label="Inspection Items" :align="centerAlign" width="250"/>
+                <el-table-column prop="testRequest" label="Inspection Requirements" :align="centerAlign" width="605">
                     <template #default="{ row }">
                       <div v-html="formatSkills(row.testRequest)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testProcess" label="Inspection Results"  :header-align="centerAlign"  width="500">
+                <el-table-column prop="testProcess" label="Inspection Results"  :align="centerAlign"  width="300">
                   <template #default="{ row }">
                       <div v-html="formatSkills(row.testProcess)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testResult" label="Determine" :align="centerAlign" width="200">
+                <el-table-column prop="testResult" label="Determine" :align="centerAlign" width="150">
                   <template #default="{ row }" >
                     <span v-if="row.testResult == 1" >PASS</span>
                     <span v-else-if="row.testResult == 0" >FAIL</span>
@@ -577,11 +590,14 @@ align-items: center;  */
 }
 
 .left-row {
-  padding-left: 100px; /* 根据需要调整这个数值 */
+  /* width: 45%; */
+  padding-left: 100px; /* 根据需要调整这个数值 10%*/
 }
 .right-row {
+  /* width: 45%; */
   /*align-items: flex-start;  或 'center'  依据需要调整 */
-  padding-left: 900px; /* 根据需要调整这个数值 */
+  /* padding-left: 700px;  */
+  /* 根据需要调整这个数值70% */
 }
 
 /* 输入框样式可以根据需要调整 */
