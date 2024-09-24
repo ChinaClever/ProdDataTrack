@@ -2,14 +2,15 @@ package cn.iocoder.yudao.module.bus.controller.admin.testdata;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
+import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.*;
+import cn.iocoder.yudao.module.bus.entity.ModulesTest;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
+import cn.iocoder.yudao.module.bus.mapper.ModulesTestMapper;
 import cn.iocoder.yudao.module.bus.mapper.TestDataMapper;
+import cn.iocoder.yudao.module.bus.service.ModulesTestService;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,12 @@ public class BusController {
 
     @Autowired
     private TestDataMapper testDataMapper;
+
+    @Autowired
+    private ModulesTestService modulesTestService;
+
+    @Autowired
+    private ModulesTestMapper modulesTestMapper;
 
     @PostMapping("/testData")
     @PermitAll
@@ -78,6 +85,27 @@ public class BusController {
     @GetMapping("/internal-report")
     public CommonResult<List<TestData>> getInternalReport(ReportReqVO reqVO) {
         List<TestData> pageResult = testDataService.getInternalReport(reqVO);
+        return success(pageResult);
+    }
+
+    @PostMapping("/moduleTest")
+    @PermitAll
+    public ResponseEntity<?> receiveModulesTest(@RequestBody ModulesTest modulesTest) {
+        try {
+            modulesTest.setAllData(modulesTest.toString());
+            modulesTestMapper.insert(modulesTest);
+
+        } catch (Exception e) {
+            log("存储测试数据失败：" + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("存储测试数据失败" + e.getMessage());
+            // 如果保存失败，返回500状态码和错误信息
+        }
+        return ResponseEntity.ok("存储测试数据成功");
+    }
+
+    @GetMapping("/moduleTest-page")
+    public CommonResult<PageResult<ModulesTest>> getModulesTestPa(ModulesTestPageVO pageReqVO) {
+        PageResult<ModulesTest> pageResult = modulesTestService.getModulesTestPage(pageReqVO);
         return success(pageResult);
     }
 
