@@ -12,7 +12,7 @@ public class ModulesTestPageVO {
 
     private String productSN;
 
-    private String testResult;
+    private String judgeResult;
 
     private String language;
 
