@@ -173,16 +173,16 @@ watch(() => queryParams.language, (_newLanguage) => {
 });
 
 const tableColumns = ref([
-  { label: '订单号', align: 'center', prop: 'orderId' , istrue: true, width: '200px'},
-  { label: '成品代码', align: 'center', prop: 'productSn' , istrue: true, width: '230px'},
+  { label: '订单号', align: 'center', prop: 'orderId' , istrue: true, width: '180px'},
+  { label: '成品代码', align: 'center', prop: 'productSn' , istrue: true, width: '200px'},
   { label: '模块序列号', align: 'center', prop: 'moduleSn' , istrue: true, width: '230px'},
   { label: '模块类型', align: 'center', prop: 'moduleType' , istrue: true, width: '150px'},
   { label: '检验步骤', align: 'center', prop: 'testStep', istrue: true, width: '200px'},
-  { label: '检验项目', align: 'center', prop: 'testItem', istrue: true, width: '200px'},
-  { label: '检验要求', align: 'center', prop: 'testRequire', istrue: true, width: '200px'},
-  { label: '检验结果', align: 'center', prop: 'testResult', istrue: true, width: '200px'},
+  { label: '检验项目', align: 'center', prop: 'testItem', istrue: true, width: '220px'},
+  { label: '检验要求', align: 'center', prop: 'testRequire', istrue: true, width: '230px'},
+  { label: '检验结果', align: 'center', prop: 'testResult', istrue: true, width: '180px'},
   { label: '判定结果', align: 'center', prop: 'judgeResult', istrue: true, formatter: formatJudgeResult},
-  { label: '检验时间', align: 'center', prop: 'testTime', istrue: true, formatter: formatTime, width: '200px'},
+  { label: '检验时间', align: 'center', prop: 'testTime', istrue: true,  width: '150px'},
   { label: '软件版本', align: 'center', prop: 'softVersion', istrue: true},
   { label: '语言', align: 'center', prop: 'languageSelect' , istrue: true, formatter: formatLanguage, width: '100px'},
 ]);
