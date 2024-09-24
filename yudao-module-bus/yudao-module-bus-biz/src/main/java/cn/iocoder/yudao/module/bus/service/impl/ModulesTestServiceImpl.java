@@ -33,7 +33,7 @@ public class ModulesTestServiceImpl implements ModulesTestService {
             queryWrapper.eq("product_sn", modulesTestPageVO.getProductSN());
         }
         if(!modulesTestPageVO.getJudgeResult().equals("all")){
-            queryWrapper.eq("test_result", modulesTestPageVO.getJudgeResult());
+            queryWrapper.eq("judge_result", modulesTestPageVO.getJudgeResult());
         }
         if(!modulesTestPageVO.getLanguage().equals("all")){
             queryWrapper.eq("language_select", modulesTestPageVO.getLanguage());
