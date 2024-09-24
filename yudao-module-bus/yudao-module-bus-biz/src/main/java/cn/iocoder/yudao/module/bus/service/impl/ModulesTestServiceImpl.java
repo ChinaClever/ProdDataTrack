@@ -39,7 +39,7 @@ public class ModulesTestServiceImpl implements ModulesTestService {
             queryWrapper.eq("language_select", modulesTestPageVO.getLanguage());
         }
         if(modulesTestPageVO.getTimeRange() != null){
-            queryWrapper.ge("end_time", modulesTestPageVO.getTimeRange()[0]).le("end_time", modulesTestPageVO.getTimeRange()[1]);
+            queryWrapper.ge("data_time", modulesTestPageVO.getTimeRange()[0]).le("data_time", modulesTestPageVO.getTimeRange()[1]);
         }
 
         IPage<ModulesTest> resultPage = modulesTestMapper.selectPage(page, queryWrapper);
