@@ -12,6 +12,8 @@ public class ModulesTestPageVO {
 
     private String productSN;
 
+    private String moduleSN;
+
     private String judgeResult;
 
     private String language;
