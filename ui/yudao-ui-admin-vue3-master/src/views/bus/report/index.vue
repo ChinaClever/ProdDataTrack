@@ -2215,26 +2215,26 @@ const queryParams = reactive({
         if(out_language.value  === true) {
             if(radio1.value  === '1'  && goods_dev_name.value  !== '母线槽')
             {
-                fileName = `订单号 ${queryParams.orderId}${goods_dev_name}-基本型出厂报告.pdf`;
+                fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}-基本型出厂报告.pdf`;
             }
             else if(radio1.value === '2'  && goods_dev_name.value !== '母线槽')
             {
-                fileName = `订单号 ${queryParams.orderId}${goods_dev_name}-智能出厂报告.pdf`;
+                fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}-智能出厂报告.pdf`;
             }
             else{
-                fileName = `订单号 ${queryParams.orderId}${goods_dev_name}出厂报告.pdf`;
+                fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}出厂报告.pdf`;
             }
         } else if(out_language.value === false) {
             if(radio1.value === '1'  && goods_dev_name.value !== 'Busway')
             {
-                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name}-base Ex-factory Report.pdf`;
+                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value}-base Ex-factory Report.pdf`;
             }
             else if(radio1.value === '2'  && goods_dev_name.value !== 'Busway')
             {
-                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name}-smart Ex-factory Report.pdf`;
+                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value}-smart Ex-factory Report.pdf`;
             }
             else{
-                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name} Ex-factory Report.pdf`;
+                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value} Ex-factory Report.pdf`;
             }
         }
         PDF.save(fileName);

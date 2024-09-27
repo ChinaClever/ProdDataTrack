@@ -222,7 +222,7 @@ const goods_order_id = ref<number | null>(null);//订单号
 const goods_order_num = ref<number | null>(5)//订单数量
 const goods_test_num = ref<number | null>(null)//检验数量
 const goods_dev_name = ref<string | null>(null)//测试设备的名字  插接箱  始端箱 母线槽
-const end_judgment = ref(null)//综合判定
+const end_judgment = ref()//综合判定
 const centerAlign = 'center'//标题居中
 const fontSize = 60;// 设置字体大小，可以根据需要调整
 const language = ref(true)
@@ -349,18 +349,24 @@ const queryParams = reactive({
           goods_tool_name.value = goods_SN_data.value[0].toolName;
           goods_soft_version.value = goods_SN_data.value.find(item=>item.softVersion !== '0.0.0').softVersion;
           goods_test_type.value = goods_SN_data.value[0].testType;
-          // goods_start_time.value = goods_SN_data.value[0].startTime;
           goods_order_id.value = goods_SN_data.value[0].orderId;
           goods_order_num.value = goods_SN_data.value[0].orderNum;
           goods_dev_name.value = goods_SN_data.value[0].devName;
           if (goods_SN_data.value.length > 0 ){
             goods_start_time.value = goods_SN_data.value[goods_SN_data.value.length -1].startTime;
             goods_end_time.value = goods_SN_data.value[goods_SN_data.value.length -1].endTime;
-            end_judgment.value = goods_SN_data.value[goods_SN_data.value.length -1].testResult;
+            // end_judgment.value = goods_SN_data.value[goods_SN_data.value.length -1].testResult
           } else {
               goods_end_time.value = null;
               end_judgment.value = null;
           }
+         let testResult = true;
+          for(var i=0;i<goods_SN_data.value.length;i++){
+              if(goods_SN_data.value[i].testResult == 0){
+                testResult = false;
+              }
+        } 
+        end_judgment.value = testResult;
           // const res = await TestDataApi.getReportData(queryParams)
           // goods_test_num.value = res.passTestNum
           dialogVisible.value = true;

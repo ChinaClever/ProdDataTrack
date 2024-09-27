@@ -453,14 +453,14 @@ public class TestDataServiceImpl implements TestDataService {
         List<TestData> testDataList = testDataMapper.selectList(queryWrapper);
 
         List<TestData> newDataList = new ArrayList<>(testDataList.size());
-
+        Collections.reverse(testDataList);
         testDataList.forEach(i ->{
             if(!newDataList.toString().contains(i.getTestRequest())) {
                 newDataList.add(i);
             }
                 }
         );
-
+        Collections.reverse(newDataList);
         return newDataList;
     }
 
