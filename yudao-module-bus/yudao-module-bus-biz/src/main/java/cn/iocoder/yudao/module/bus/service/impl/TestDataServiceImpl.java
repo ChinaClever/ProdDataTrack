@@ -384,6 +384,7 @@ public class TestDataServiceImpl implements TestDataService {
         List<TestData> testDataList = testDataMapper.selectList(queryWrapper1);
         List<String> passTestModuleList = new ArrayList<>();
         List<String> failTestModuleList = new ArrayList<>();
+        List<String> moduleSnList = new ArrayList<>();
         Boolean skipFlag = false;
         // 区分不同模块
         String nowModule = null;
@@ -398,6 +399,9 @@ public class TestDataServiceImpl implements TestDataService {
                 nowStartTime = testData.getStartTime();
             }
 
+            if(!moduleSnList.contains(testData.getModuleSn())){
+                moduleSnList.add(testData.getModuleSn());
+            }
             // 不跳过,同时属于同模块同一次, 不在passTestModuleList和failTestModuleList说明是最新那次
             //需要判断!failTestModuleList.contains(testData.getModule_sn())是为了避免模块最新那次失败了，后续循环到旧检测还执行后续判断，应跳过
             if (!skipFlag && Objects.equals(testData.getModuleSn(), nowModule) && !passTestModuleList.contains(testData.getModuleSn())
@@ -426,8 +430,12 @@ public class TestDataServiceImpl implements TestDataService {
                     failTestModuleList.add(nowModule);
                     skipFlag = true;
                 }
-
             }
+        }
+
+        if(moduleSnList.size() == 1 && passTestModuleList.isEmpty())
+        {
+            passTestModuleList.add(moduleSnList.get(0));
         }
 
         System.out.println("passTestModuleList"+Arrays.toString(passTestModuleList.toArray()));
@@ -451,6 +459,7 @@ public class TestDataServiceImpl implements TestDataService {
                 .eq("module_sn", reqVO.getModuleSN());
 
         List<TestData> testDataList = testDataMapper.selectList(queryWrapper);
+        Collections.reverse(testDataList);
 
         List<TestData> newDataList = new ArrayList<>(testDataList.size());
 
@@ -458,9 +467,8 @@ public class TestDataServiceImpl implements TestDataService {
             if(!newDataList.toString().contains(i.getTestRequest())) {
                 newDataList.add(i);
             }
-                }
-        );
-
+        });
+        Collections.reverse(newDataList);
         return newDataList;
     }
 
