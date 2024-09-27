@@ -253,7 +253,8 @@ const queryParams = reactive({
           const contentWidth = canvas.width
           const contentHeight = canvas.height
           // 一页pdf显示html页面生成的canvas高度;
-          const pageHeight = (contentWidth / 592.28) * 841.89
+          // const pageHeight = (contentWidth / 592.28) * 841.89
+          const pageHeight = (contentWidth / 592.28) * 835.89
           // 页面偏移
           let position = 0
 
@@ -285,7 +286,7 @@ const queryParams = reactive({
 
             // 更新位置
             position += remainingHeight
-
+            
             // 如果还有剩余内容，则添加新的页面
             if (position < contentHeight) {
               PDF.addPage()
@@ -348,11 +349,12 @@ const queryParams = reactive({
           goods_tool_name.value = goods_SN_data.value[0].toolName;
           goods_soft_version.value = goods_SN_data.value.find(item=>item.softVersion !== '0.0.0').softVersion;
           goods_test_type.value = goods_SN_data.value[0].testType;
-          goods_start_time.value = goods_SN_data.value[0].startTime;
+          // goods_start_time.value = goods_SN_data.value[0].startTime;
           goods_order_id.value = goods_SN_data.value[0].orderId;
           goods_order_num.value = goods_SN_data.value[0].orderNum;
           goods_dev_name.value = goods_SN_data.value[0].devName;
           if (goods_SN_data.value.length > 0 ){
+            goods_start_time.value = goods_SN_data.value[goods_SN_data.value.length -1].startTime;
             goods_end_time.value = goods_SN_data.value[goods_SN_data.value.length -1].endTime;
             end_judgment.value = goods_SN_data.value[goods_SN_data.value.length -1].testResult;
           } else {

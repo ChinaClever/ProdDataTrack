@@ -36,6 +36,12 @@
           <el-input 
             v-model="queryParams.productSN" 
             clearable
+            class="!w-170px"/>
+        </el-form-item>
+        <el-form-item label="序列号">
+          <el-input 
+            v-model="queryParams.moduleSN" 
+            clearable
             class="!w-200px"/>
         </el-form-item>
         <el-form-item label="结束时间段" prop="timeRange">
@@ -48,7 +54,7 @@
             start-placeholder="开始时间"
             end-placeholder="结束时间"
             :disabled-date="disabledDate" 
-            class="!w-335px"/>
+            class="!w-255px"/>
         </el-form-item>
         <el-form-item >
           <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-1px" /> 搜索</el-button>
@@ -90,6 +96,7 @@ const queryParams = reactive({
   timeRange: undefined,
   orderId: undefined,
   productSN: undefined,
+  moduleSN: undefined,
   judgeResult: 'all',
   language: '0'
 })
@@ -159,6 +166,11 @@ watch(() => queryParams.orderId, (newOrderId) => {
     queryParams.orderId = undefined; 
   }
 });
+watch(() => queryParams.moduleSN, (newModuleSN) => {
+  if (newModuleSN == null || newModuleSN == '') {
+    queryParams.moduleSN = undefined; 
+  }
+});
 watch(() => queryParams.timeRange, (newTimeRange) => {
   if (newTimeRange == null || newTimeRange == '') {
     queryParams.timeRange = undefined; 
@@ -205,13 +217,6 @@ const getList = async () => {
   }
 }
 
-// 格式化日期列
-function formatTime(_row: any, _column: any, cellValue: number): string {
-  if (!cellValue) {
-    return ''
-  }
-  return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss')
-}
 // 格式化语言列
 function formatLanguage(_row: any, _column: any, cellValue: number): string {
   if (cellValue == 0) {

@@ -2265,7 +2265,7 @@ const queryParams = reactive({
   const getReportData = async () => {
     loading.value = true;
     try {
-      const res = await TestDataApi.getReportData(queryParams);
+      const res = await TestDataApi.getReportInfo(queryParams);
       if (res != null){
         goods_dev_name.value = res.devName
         customerName.value = res.customerName
