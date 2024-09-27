@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.bus.service.impl;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
@@ -36,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.google.zxing.BarcodeFormat;
@@ -450,7 +452,16 @@ public class TestDataServiceImpl implements TestDataService {
 
         List<TestData> testDataList = testDataMapper.selectList(queryWrapper);
 
-        return testDataList;
+        List<TestData> newDataList = new ArrayList<>(testDataList.size());
+
+        testDataList.forEach(i ->{
+            if(!newDataList.toString().contains(i.getTestRequest())) {
+                newDataList.add(i);
+            }
+                }
+        );
+
+        return newDataList;
     }
 
 
