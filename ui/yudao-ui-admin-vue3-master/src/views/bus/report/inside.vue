@@ -43,7 +43,7 @@
           <div>
             <el-row class="table-row">
               <div class="left-row">
-                <el-col  class="table-label">客户名称：</el-col>
+                <!-- <el-col  class="table-label">客户名称：</el-col> -->
                 <el-col  class="table-label-1">订单号：{{goods_order_id}}</el-col>
                 <el-col  class="table-label-2">订单数量：{{goods_order_num}} 台</el-col>
               </div>
@@ -124,7 +124,7 @@
           <div>
             <el-row class="table-row">
               <div class="left-row">
-                <el-col  class="table-label">Customer Name：</el-col>
+                <!-- <el-col  class="table-label">Customer Name：</el-col> -->
                 <el-col  class="table-label-1">Order Number：{{goods_order_id}}</el-col>
                 <el-col  class="table-label-2">Order Quantity：{{goods_order_num}} UNIT</el-col>
               </div>

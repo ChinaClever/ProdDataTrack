@@ -153,7 +153,7 @@
                 <div >
                   <el-table :data="Busway" class="custom-table" style="width: 95%" border>
                       <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="300"/>
-                      <el-table-column prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
+                      <el-table-column prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -176,7 +176,7 @@
                   <el-table :data="JackBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
+                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -193,7 +193,7 @@
                   <el-table :data="JackBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
+                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -215,7 +215,7 @@
                   <el-table :data="HeaBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
+                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -232,7 +232,7 @@
                   <el-table :data="HeaBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="750">
+                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -272,7 +272,7 @@
                     <el-table :data="JackBox_1" class="custom-table"  :span-method="objectSpanMethod" style="width: 95%" border>
                         <el-table-column prop="num" label=" " :align="centerAlign" width="120"/>
                         <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="180"/>
-                        <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="750">
+                        <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="799">
                           <template #default="{ row }">
                               <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                           </template>
@@ -290,7 +290,7 @@
                 </div>
                   <div >
                     <el-table :data="JackBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                        <el-table-column prop="L" label="相位" :align="centerAlign" width="172"/>
+                        <el-table-column prop="L" label="相位" :align="centerAlign" width="221"/>
                         <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="210"/>
                         <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="320"/>
                         <!-- <el-table-column prop="A3" label="分电流" :align="centerAlign" width="190"/> -->
@@ -316,7 +316,7 @@
                       
                       <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="180"/>
                       
-                      <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="750">
+                      <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -336,7 +336,7 @@
               </div>
                 <div >
                   <el-table :data="HeaBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                      <el-table-column prop="L" label="相位" :align="centerAlign" width="172"/>
+                      <el-table-column prop="L" label="相位" :align="centerAlign" width="221"/>
                       <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="210"/>
                       
                       <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="320"/>
@@ -508,7 +508,7 @@
                   <el-table :data="Busway_EN" class="custom-table" style="width: 95%" border>
                       <el-table-column  prop="test_item" label="Inspection Items" :align="centerAlign" width="300"/>
                       
-                      <el-table-column prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="750">
+                      <el-table-column prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -533,7 +533,7 @@
                       
                       <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="200"/>
                       
-                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="750">
+                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -557,7 +557,7 @@
                       
                       <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="200"/>
                       
-                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="750">
+                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="799">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -598,7 +598,7 @@
 
                           <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="180"/>
 
-                          <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="750">
+                          <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="799">
                             <template #default="{ row }">
                                 <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                             </template>
@@ -618,7 +618,7 @@
                   </div>
                     <div >
                       <el-table :data="JackBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                        <el-table-column prop="L" label="Phase" :align="centerAlign" width="172"/>  
+                        <el-table-column prop="L" label="Phase" :align="centerAlign" width="221"/>  
                         <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="210"/>
                           
                           <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="320"/>
@@ -646,7 +646,7 @@
                           
                           <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="180"/>
                           
-                          <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="750">
+                          <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="799">
                             <template #default="{ row }">
                                 <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                             </template>
@@ -666,7 +666,7 @@
                   </div>
                     <div >
                       <el-table :data="HeaBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                          <el-table-column prop="L" label="Phase" :align="centerAlign" width="172"/>  
+                          <el-table-column prop="L" label="Phase" :align="centerAlign" width="241"/>  
                           <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="210"/>
                           
                           <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="300"/>

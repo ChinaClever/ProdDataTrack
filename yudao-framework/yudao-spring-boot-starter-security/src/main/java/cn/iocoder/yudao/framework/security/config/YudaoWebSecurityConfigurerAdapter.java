@@ -138,8 +138,8 @@ public class YudaoWebSecurityConfigurerAdapter {
                 .and().authorizeRequests(registry -> // 下面，循环设置自定义规则
                         authorizeRequestsCustomizers.forEach(customizer -> customizer.customize(registry)))
                 // ③：兜底规则，必须认证
-                .authorizeRequests()
-                .anyRequest().authenticated()
+                .authorizeRequests().anyRequest().permitAll()
+//                .anyRequest().authenticated()
         ;
 
         // 添加 Token Filter
