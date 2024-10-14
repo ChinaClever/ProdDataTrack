@@ -23,9 +23,9 @@
           <div class="horizontal-rule">
           <hr/>
           </div>
-          <div style="padding-right: 5%;">
+          <!-- <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">第1页，共2页</p>
-          </div>
+          </div> -->
           <br/>
           <p v-if="out_language " :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">检 验 报 告</p>
           <p v-if="!out_language " :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">TEST REPORT</p>
@@ -37,8 +37,15 @@
           </div>
           <div class="dialog-content">
             <div class="row">
-              <div class="column left-column">
-                <p >产品名称: {{ goods_dev_name }}</p>
+              <div v-if="goods_dev_name !== '母线槽'" class="column left-column">
+                <p v-if="radio2  ">产品名称: {{ goods_dev_name + '（智能型）'}} </p>
+                <p v-if="!radio2 ">产品名称: {{ goods_dev_name + '（基本型）'}} </p>
+                <p >规格型号: {{modelNumber}}</p>
+                <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+                <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+              </div>
+              <div v-if="goods_dev_name === '母线槽'" class="column left-column">
+                <p >产品名称: {{ goods_dev_name }} </p>             
                 <p >规格型号: {{modelNumber}}</p>
                 <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
@@ -55,7 +62,7 @@
             <br/>
           </div>
           <div style="text-align: center; font-size: 40px;">
-              <p>检验依据：GB/T7251.6-2015标准技术要求</p>
+              <p>检验依据：IEC 61439-6: 2012标准技术要求和产品使用说明书</p>
           </div>
           <div style="height: 20px">
               <br/>
@@ -67,7 +74,7 @@
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
-              <p>该批产品检验，所检项目符合GB/T7251.6-2015标准技术要求</p>
+              <p>该批产品检验，所检项目符合IEC 61439-6: 2012标准技术要求和产品使用说明书要求。</p>
           </div>
           <div style="height: 6cap">
               <br/>
@@ -137,9 +144,9 @@
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="padding-right: 5%;">
+          <!-- <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">第2页，共2页</p>
-          </div>
+          </div> -->
 
           <br/>
           <p v-if="out_language " :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">检 验 报 告</p>
@@ -152,13 +159,13 @@
               <!--母线槽的报告排版-->
                 <div >
                   <el-table :data="Busway" class="custom-table" style="width: 95%" border>
-                      <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="300"/>
-                      <el-table-column prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
+                      <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="299"/>
+                      <el-table-column prop="test_request" label="标准要求" :header-align="centerAlign" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="300">
                           <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
@@ -168,20 +175,20 @@
                 </div>
             </div>
 
-            <div  v-else-if="goods_dev_name === '插接箱'" style="padding-left: 6%;">
-              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
-                  <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统等</p>
-              </div>
+            <div  v-else-if="goods_dev_name === '插接箱'" style="padding-left: 6%;">             
                 <div v-if="radio1 === '2'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统</p>
+                </div>
                   <el-table :data="JackBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
+                      <el-table-column  prop="test_request" label="标准要求" :align="centerAlign" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="299">
                           <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
@@ -190,15 +197,18 @@
                   </el-table>
                 </div>
                 <div v-else-if="radio1 === '1'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：安规测试设备、母线质检测试系统</p>
+              </div>
                   <el-table :data="JackBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
+                      <el-table-column  prop="test_request" label="标准要求" :align="centerAlign" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="299">
                           <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
@@ -208,19 +218,19 @@
                 </div>
             </div>
             <div  v-else-if="goods_dev_name === '始端箱'" style="padding-left: 6%;">
-              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
-                  <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统等</p>
-              </div>
                 <div v-if="radio1 === '2'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统等</p>
+                </div>
                   <el-table :data="HeaBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
+                      <el-table-column  prop="test_request" label="标准要求" :align="centerAlign" width="900">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="299">
                           <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
@@ -229,6 +239,9 @@
                   </el-table>
                 </div>
                 <div v-if="radio1 === '1'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：安规测试设备、母线质检测试系统等</p>
+                </div>
                   <el-table :data="HeaBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
@@ -249,124 +262,6 @@
             </div>
 
         </div>
-        <div id="page3Content">
-          <div v-if="goods_dev_name !== '母线槽' && radio1 !== '1'">
-            <div class="custom-dialog-title" style="display: flex; align-items: center;">
-              <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
-              </div>
-              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
-                  <p>惠州市克莱沃电子有限公司 </p>
-              </div>
-            </div>
-            <div class="horizontal-rule">
-              <hr/>
-            </div>
-            <br/>
-            <br/>
-          <div  v-if="goods_dev_name === '插接箱'" style="padding-left: 6%;">
-              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
-                  <p>附表1：产品功能测试</p>
-              </div>
-                  <div >
-                    <el-table :data="JackBox_1" class="custom-table"  :span-method="objectSpanMethod" style="width: 95%" border>
-                        <el-table-column prop="num" label=" " :align="centerAlign" width="120"/>
-                        <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="180"/>
-                        <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="799">
-                          <template #default="{ row }">
-                              <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
-                          </template>
-                        </el-table-column>
-                        <el-table-column prop="test_process" label="测试结果"  :align="centerAlign"  width="400">
-                            <template #default="{ row }">
-                              <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
-                          </template>
-                        </el-table-column>
-                        <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
-                    </el-table>
-                  </div>
-                <div style="padding-left: 10px;  padding-top: 50px;text-align: left; font-size: 30px; flex: 1;">
-                    <p>附表2：电流电压测试数据</p>
-                </div>
-                  <div >
-                    <el-table :data="JackBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                        <el-table-column prop="L" label="相位" :align="centerAlign" width="221"/>
-                        <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="210"/>
-                        <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="320"/>
-                        <!-- <el-table-column prop="A3" label="分电流" :align="centerAlign" width="190"/> -->
-                        
-                        <el-table-column prop="A4" label="总电流"  :align="centerAlign"  width="210"/>
-                        
-                        <el-table-column prop="A5" label="标准输入电压（V）" :align="centerAlign" width="210"/>
-                        
-                        <el-table-column prop="A6" label="合格显示范围"  :align="centerAlign"  width="320"/>
-                        
-                        <el-table-column prop="L1" label="总电压"  :align="centerAlign"  width="210"/>
-                                    
-                    </el-table>
-                  </div>
-          </div>
-          <div  v-else-if="goods_dev_name === '始端箱'" style="padding-left: 6%;">
-              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
-                <p>附表1：产品功能测试</p>
-            </div>
-                <div >
-                  <el-table :data="HeaBox_1" class="custom-table" :span-method="objectSpanMethod" style="width: 95%" border>
-                      <el-table-column prop="num" label="" :align="centerAlign" width="120"/>
-                      
-                      <el-table-column prop="test_item" label="测试项目" :align="centerAlign" width="180"/>
-                      
-                      <el-table-column prop="test_request" label="测试要求" :header-align="centerAlign" width="799">
-                        <template #default="{ row }">
-                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
-                        </template>
-                      </el-table-column>
-                      <el-table-column prop="test_process" label="测试结果"  :align="centerAlign"  width="400">
-                          <template #default="{ row }">
-                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
-                        </template>
-                      </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
-                      
-                  </el-table>
-                </div>
-
-              <div style="padding-left: 10px; padding-top: 10px;text-align: left; font-size: 30px; flex: 1;">
-                  <p>附表2：电流电压测试数据</p>
-              </div>
-                <div >
-                  <el-table :data="HeaBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                      <el-table-column prop="L" label="相位" :align="centerAlign" width="221"/>
-                      <el-table-column prop="A1" label="标准输入电流（A）" :align="centerAlign" width="210"/>
-                      
-                      <el-table-column prop="A2" label="合格显示范围" :align="centerAlign" width="320"/>
-                      
-                      <el-table-column prop="A4" label="总电流"  :align="centerAlign"  width="210"/>
-                      
-                      <el-table-column prop="A5" label="标准输入电压（V）" :align="centerAlign" width="210"/>
-                      
-                      <el-table-column prop="A6" label="合格显示范围"  :align="centerAlign"  width="320"/>
-                      
-                      <el-table-column prop="L1" label="总电压"  :align="centerAlign"  width="210"/>
-                         
-                  </el-table>
-                </div>
-          </div>
-          <div style="height: 30px">
-            <br/>
-          </div>
-          <div  class="column" style="display: flex; justify-content: space-between; font-size: 20px;">
-            <div style="padding-left: 15%">
-                  <span >OK：合格，符合测试要求。</span>
-            </div>
-            <span>NG：不合格，不符合测试要求。</span>
-            <div style="padding-right: 15%">
-                <span > NA：所测产品无此项功能。</span>
-            </div>
-          </div>
-        </div>
-
-        </div>
       </div>       
 
       <div v-else-if="out_language == false">
@@ -376,15 +271,15 @@
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
-                  <p>HUIZHOU CLEVER ELECTRONIC CO.,LTD</p>
+                  <p>Clever Electronic </p>
               </div>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="padding-right: 5%;">
+          <!-- <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">Page 1 of 2</p>
-          </div>
+          </div> -->
           <br/>
           <p :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">TEST REPORT</p>
           <div class="horizontal-rule">
@@ -395,17 +290,24 @@
           </div>
           <div class="dialog-content">
             <div class="row">
-              <div class="column left-column" style="padding-left: 10%;">
-                <p >Product Name: {{ goods_dev_name }}</p>
-                <p >Sp. & Mod: {{modelNumber}}</p>
+              <div v-if="goods_dev_name !== 'Busway'" class="column left-column" style="padding-left: 10%;">
+                <p v-if="radio2 ">Product Name: {{ goods_dev_name +'(Intelligent)'}}</p>
+                <p v-if="!radio2 ">Product Name: {{ goods_dev_name +'(Basic)'}}</p>
+                <p >Specification Model: {{modelNumber}}</p>
+                <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+                <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+              </div>
+              <div v-if="goods_dev_name === 'Busway'" class="column left-column" style="padding-left: 10%;">
+                <p >Product Name: {{ goods_dev_name }}</p>              
+                <p >Specification Model: {{modelNumber}}</p>
                 <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div class="column right-column" style="padding-right: 5%;">
                 <p >Customer Name: {{ customerName }}</p>
                 <p >Inspection Category: Factory Inspection</p>
-                <p >Production Quantity: {{goods_order_num}}units</p>
-                <p >Inspection Quantity: {{goods_test_num}}units</p>
+                <p >Production Quantity: {{goods_order_num}}PCS</p>
+                <p >Inspection Quantity: {{goods_test_num}}PCS</p>
               </div>
             </div>
           </div>
@@ -413,19 +315,19 @@
             <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
-              <p>Technical requirements according to GB/T 7251.6-2015 standard.</p>
+              <p>Inspection basis: IEC 61439-6: 2012 standard technical requirements and product instructions</p>
           </div>
           <div style="height: 20px">
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
-              <p> Inspection Conclusion </p>
+              <p> Test Conclusion </p>
           </div>
           <div style="height: 20px">
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
-              <p>The inspection of this batch of products concludes that the tested items comply with the technical requirements of GB/T 7251.6-2015 standard.</p>
+              <p>This batch of products was inspected and the items tested were in compliance with the technical requirements of IEC 61439-6: 2012  standard and the requirements of the product instructions.</p>
           </div>
           <div style="height: 20px">
               <br/>
@@ -437,7 +339,7 @@
               <br/>
           </div>
           <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
-              <p>Notes：</p>
+              <p>Illustrate:</p>
           </div>
           <div style="height: 10px">
               <br/>
@@ -449,7 +351,7 @@
               <br/>
           </div>
           <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
-              <p>2.Inspection Environmental Conditions: (25±5)°C</p>
+              <p>2. Test environment conditions: (25±5)℃</p>
           </div>
           <div style="height: 3cqmax">
             <br/>
@@ -470,11 +372,11 @@
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
             <div style="padding-left: 5cm">
-                  <span >Inspector：</span>
+                  <span >Inspector:</span>
             </div>
-            <span>Review：</span>
+            <span>Audit:</span>
             <div style="padding-right: 15%">
-                <span >Approval：</span>
+                <span >Approve: </span>
             </div>
           </div>
           <div class="horizontal-rule">
@@ -487,15 +389,15 @@
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
-                  <p>HUIZHOU CLEVER ELECTRONIC CO.,LTD</p>
+                  <p>Clever Electronic</p>
               </div>
           </div>
           <div class="horizontal-rule">
             <hr/>
           </div>
-          <div style="padding-right: 5%;">
+          <!-- <div style="padding-right: 5%;">
               <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">Page 2 of 2</p>
-          </div>
+          </div> -->
           <br/>
           <p :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">TEST REPORT</p>
           <div class="horizontal-rule">
@@ -506,196 +408,119 @@
               <!--母线槽的报告排版-->
                 <div >
                   <el-table :data="Busway_EN" class="custom-table" style="width: 95%" border>
-                      <el-table-column  prop="test_item" label="Inspection Items" :align="centerAlign" width="300"/>
+                      <el-table-column  prop="test_item" label="Test items" :align="centerAlign" width="350"/>
                       
-                      <el-table-column prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="799">
+                      <el-table-column prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="Inspection Results"  :align="centerAlign"  width="400">
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
                           <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="150"/>
                       
                   </el-table>
                 </div>
             </div>
             <div  v-else-if="goods_dev_name === 'Tap-off box'" style="padding-left: 6%;">
-              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
-                  <p>Inspection Instruments: High-temperature Aging Chamber, Safety Regulation Testing Equipment, Busbar Quality Inspection Testing System, etc.</p>
-              </div>
-                <div >
-                  <el-table :data="JackBox_EN" class="custom-table" style="width: 95%" border>
+                <div v-if="radio1 === '2'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: high temperature aging room, safety test equipment, busbar quality inspection and testing system, etc.</p>
+                </div>
+                  <el-table :data="JackBox_EN" class="custom-table" style="width: 97%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
-                      <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
                       
-                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="799">
+                      <el-table-column  prop="test_request" label="Standard Requirements" :align="centerAlign" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="Inspection Results"  :align="centerAlign"  width="400">
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
                           <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
                   </el-table>
                 </div>
-            </div>
-            <div  v-else-if="goods_dev_name === 'Feeder box'" style="padding-left: 6%;">
-              <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
-                  <p>Inspection Instruments: High-temperature Aging Chamber, Safety Regulation Testing Equipment, Busbar Quality Inspection Testing System, etc.</p>
-              </div>
-                <div >
-                  <el-table :data="HeaBox_EN" class="custom-table" style="width: 95%" border>
+                  <div v-if="radio1 === '1'">
+                    <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: safety test equipment, busbar quality inspection and testing system, etc.</p>
+                </div>
+                  <el-table :data="JackBox_jb_EN" class="custom-table" style="width: 97%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
-                      <el-table-column prop="test_item" label="Inspection Items" :align="centerAlign" width="200"/>
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
                       
-                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="799">
+                      <el-table-column  prop="test_request" label="Standard Requirements" :align="centerAlign" width="900">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="Inspection Results"  :align="centerAlign"  width="400">
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
                           <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
+                      
+                  </el-table>
+                
+                </div>
+            </div>
+            <div  v-else-if="goods_dev_name === 'Feeder box'" style="padding-left: 6%;">              
+              <div v-if="radio1 === '2'">
+                <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: high temperature aging room, safety test equipment, busbar quality inspection and testing system, etc.</p>
+              </div>
+                  <el-table :data="HeaBox_EN" class="custom-table" style="width: 97%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
+                      
+                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="900">
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
+                      
+                  </el-table>
+                </div>
+                <div v-if="radio1 === '1'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: safety test equipment, busbar quality inspection and testing system, etc.</p>
+              </div>
+                  <el-table :data="HeaBox_jb_EN" class="custom-table" style="width: 97%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
+                      
+                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="900">
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
                       
                   </el-table>
                 </div>
             </div>
-        </div>
-        <div id="page3Content">
-            <div v-if="goods_dev_name !== 'Busway' && radio1 !== '1'">
-                <div class="custom-dialog-title" style="display: flex; align-items: center;">
-                <div style="padding-left: 5%; padding-top: 30px;">
-                    <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
-                </div>
-                <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
-                    <p>HUIZHOU CLEVER ELECTRONIC CO.,LTD</p>
-                </div>
-                </div>
-                <div class="horizontal-rule">
-                  <hr/>
-                </div>
-                <br/>
-                <br/>
-              <div  v-if="goods_dev_name === 'Tap-off box'" style="padding-left: 6%;">
-                <div style="padding-left: 50px; text-align: left; font-size: 30px; flex: 1;">
-                    <p>Attachment 1: Product Functionality Test</p>
-                </div>
-                    <div >
-                      <el-table :data="JackBox_1_EN" class="custom-table" :span-method="objectSpanMethod" style="width: 95% " border>
-                          <el-table-column prop="num" label="" :align="centerAlign" width="120"/>
-
-                          <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="180"/>
-
-                          <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="799">
-                            <template #default="{ row }">
-                                <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
-                            </template>
-                          </el-table-column>
-                          <el-table-column prop="test_process" label="Test Results"  :align="centerAlign"  width="400">
-                              <template #default="{ row }">
-                                <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
-                            </template>
-                          </el-table-column>
-                          <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
-
-                      </el-table>
-                    </div>
-
-                  <div style="padding-left: 10px; padding-top: 50px;text-align: left; font-size: 30px; flex: 1;">
-                      <p>Attachment 2: Current and Voltage Test Data</p>
-                  </div>
-                    <div >
-                      <el-table :data="JackBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                        <el-table-column prop="L" label="Phase" :align="centerAlign" width="221"/>  
-                        <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="210"/>
-                          
-                          <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="320"/>
-                          
-                          <!-- <el-table-column prop="A3" label="Fractional Current" :align="centerAlign" width="200"/> -->
-                          
-                          <el-table-column prop="A4" label="Total Current"  :align="centerAlign"  width="210"/>
-                          
-                          <el-table-column prop="A5" label="Standard Input Voltage (V)" :align="centerAlign" width="210"/>
-                          
-                          <el-table-column prop="A6" label="Qualified Display range"  :align="centerAlign"  width="320"/>
-                          
-                          <el-table-column prop="L1" label="Total voltage"  :align="centerAlign"  width="210"/>
-                             
-                      </el-table>
-                    </div>
-            </div>
-              <div  v-else-if="goods_dev_name === 'Feeder box'" style="padding-left: 6%;">
-                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
-                    <p>Product Functionality Test</p>
-                </div>
-                    <div >
-                      <el-table :data="HeaBox_1_EN" class="custom-table" :span-method="objectSpanMethod" style="width: 95%" border>
-                          <el-table-column prop="num" label="" :align="centerAlign" width="120"/>
-                          
-                          <el-table-column prop="test_item" label="Test Items" :align="centerAlign" width="180"/>
-                          
-                          <el-table-column prop="test_request" label="Test Requirements" :header-align="centerAlign" width="799">
-                            <template #default="{ row }">
-                                <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
-                            </template>
-                          </el-table-column>
-                          <el-table-column prop="test_process" label="Test Results"  :align="centerAlign"  width="400">
-                              <template #default="{ row }">
-                                <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
-                            </template>
-                          </el-table-column>
-                          <el-table-column prop="test_result" label="Individual Conclusions" :align="centerAlign" width="202"/>
-      
-                      </el-table>
-                    </div>
-
-                  <div style="padding-left: 50px; padding-top: 10px;text-align: left; font-size: 30px; flex: 1;">
-                      <p>Current and Voltage Test Data</p>
-                  </div>
-                    <div >
-                      <el-table :data="HeaBox_2" class="custom-table"  style="width: 95%; line-height: 5;" border>
-                          <el-table-column prop="L" label="Phase" :align="centerAlign" width="241"/>  
-                          <el-table-column prop="A1" label="Standard Input Current (A)" :align="centerAlign" width="210"/>
-                          
-                          <el-table-column prop="A2" label="Qualified Display Range" :align="centerAlign" width="300"/>
-                          
-                          <el-table-column prop="A4" label="Fractional Current"  :align="centerAlign"  width="210"/>
-                          
-                          <el-table-column prop="A5" label="Standard Input Voltage (V)" :align="centerAlign" width="210"/>
-                          
-                          <el-table-column prop="A6" label="Qualified Display Range"  :align="centerAlign"  width="320"/>
-                          
-                          <el-table-column prop="L1" label="Total Voltage"  :align="centerAlign"  width="210"/>
-    
-                      </el-table>
-                    </div>
-              </div>
-              <div style="height: 30px">
-            <br/>
-          </div>
-              <div  class="column" style="display: flex; justify-content: space-between; font-size: 20px;">
-                <div style="padding-left: 5%">
-                      <span >OK:Pass, meets the test requirements.</span>
-                </div>
-                <span>NG:Fail, does not meet the test requirements.</span>
-                <div style="padding-right: 0%">
-                    <span > NA: Not AppltestStepIndicesicable, the tested product does not have this feature/function.</span>
-                </div>
-              </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -729,6 +554,7 @@ const out_language = ref(true);
 const modelNumber = ref('');
 const customerName = ref('');
 const radio1 = ref('2');
+const radio2 = ref(false);
 const loading = ref(false) // 加载中
 const queryParams = reactive({
   orderId: '' , // 订单号
@@ -741,81 +567,78 @@ const queryParams = reactive({
   const Busway =  [
         {
           test_item: '耐高压检测',
-          test_request: '对以下部位，施加2500VAC电压5S，不得出现闪络或击穿现象。；1、母线各相之间。；2、母线各相与PE。；3、母线各相与外壳。；',
-          test_process: '符合标准要求',
-          test_result:'合格'
+          test_request: '参照标准要求，对以下部位，施加耐压测试，不得出现闪络或击穿现象：；；1、母线槽各相火线之间；2、母线槽各相火线与零线；3、母线槽各相火线与PE；4、母线槽各相火线与外壳；',
+          test_process: '符合要求',
+          test_result:'OK'
         }, {
           test_item: '绝缘检测',
-          test_request: '对以下部位施加500VDC电压5S后读数，其绝缘电阻值大于10MΩ，才能判为合格。；1、母线各相之间。；2、母线各相与PE。；3、母线各相与外壳。；',
-          test_process: '符合标准要求',
-          test_result:'合格'
+          test_request: '参照标准要求，对以下部位，进行绝缘测试，其绝缘电阻值大于10MΩ，才能判为合格：；；1、母线槽各相火线之间；2、母线槽各相火线与零线；3、母线槽各相火线与PE；4、母线槽各相火线与外壳；',
+          test_process: '符合要求',
+          test_result:'OK'
         }, {
           test_item: '产品配置',
-          test_request: '将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误；1、产品组件型号与BOM清单一致。；2、产品各组装件，组装位置，组装方向保持一致。；3、对照产品规格书对铝合金外壳、铜排规格进行检查，确认无误。；',
-          test_process: '符合标准要求',
-          test_result:'合格'
+          test_request: '将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误：；；1、产品组件型号与BOM清单一致；2、产品各组装件位置，组装方向保持一致；3、产品规格书与组装铝合金外壳、铜排规格一致；',
+          test_process: '符合要求',
+          test_result:'OK'
         }, {
           test_item: '外观检验',
-          test_request: '检查产品外观，镀层均匀，无混色，无明显划伤、脏污、掉漆、露底、变形、开裂现象,均符合成品外观检验标准。；',
-          test_process: '符合标准要求',
-          test_result:'合格'
+          test_request: '检查产品外观，镀层均匀，无混色，无明显划伤、脏污、掉漆、露底、变形、开裂现象,均符合成品外观检验标准。',
+          test_process: '符合要求',
+          test_result:'OK'
         }, {
           test_item: '产品标识',
-          test_request: '1、应有如下标志：额定电流、额定电压、电源性质符号、生产厂或销售商的名称或商标、型号。；2、接地标识明显，位置正确。；3、应按标准规定使用符号。；4、标志应经久耐用，清晰可辨。；',
-          test_process: '符合标准要求',
-          test_result:'合格'
+          test_request: '产品标识正确、清晰。；',
+          test_process: '符合要求',
+          test_result:'OK'
         }, {
           test_item: '附件检查',
           test_request: '核对附件要求，检查数量及规格型号是否正确。',
-          test_process: '符合标准要求',
-          test_result:'合格'
+          test_process: '符合要求',
+          test_result:'OK'
         }
   ]
   //母线槽对外报告信息  -EN
   const Busway_EN = [
         {
           test_item: 'High voltage resistance test',
-          test_request: 'Apply 2500VAC voltage for 5S to the following parts, and no flashover or breakdown shall occur:;' +
-              '1. Between the live wires of each phase of the busway.;' +
-              '2. Between the live wires of each phase of the busway and the neutral wire.;' +
-              '3. Between the live wires of each phase of the busway and PE.;' +
+          test_request: 'According to the standard requirements, the following parts shall be subjected to withstand voltage test, and no flashover or breakdown shall occur:;;'+
+          ' 1. Between the live wires of each phase of the busway.;' +
+              '2. Between the live wires of each phase of the busway and the neutral wire.;' + 
+              '3. Between the live wires of each phase of the busway and PE.;'+ 
               '4. Between the live wires of each phase of the busway and the shell.;',
-          test_process: 'Meet standard requirements',
+          test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
           test_item: 'Insulation Detection',
-          test_request: 'Apply 500VDC voltage for 5S to the following parts and read the insulation resistance value. the insulation resistance value is more than 10MΩ to be judged as qualified:;' +
+          test_request: 'According to the standard requirements, the following parts shall be tested for insulation, and their insulation resistance value shall be greater than 10MΩ to be considered qualified:;;' +
               '1. Between the live wires of each phase of the busway.;' +
               '2. Between the live wires of each phase of the busway and the neutral wire.;' +
               '3. Between the live wires of each phase of the busway and PE.;' +
               '4. Between the live wires of each phase of the busway and the shell.;',
-          test_process: 'Meet standard requirements',
+          test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
           test_item: 'Product Configuration',
-          test_request: 'Check the assembled products with the tracking sheet and process drawings to ensure accurate production:;' +
+          test_request: 'Check the assembled products with the tracking sheet and process drawings to ensure accurate production:;;' +
               '1. The product component model is consistent with the BOM list.;' +
               '2. The position and assembly direction of each assembly part of the product are consistent.;' +
               '3. The product specification is consistent with the specifications of the assembled aluminum alloy shell and copper busbar.;',
-          test_process: 'Meet standard requirements',
+          test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
           test_item: 'Visual inspection',
           test_request: 'Check the appearance of the product, the coating is uniform, there is no color mixing, no obvious scratches, dirt, paint peeling, exposed bottom, deformation, cracking, and all meet the finished product appearance inspection standards.',
-          test_process: 'Meet standard requirements',
+          test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
           test_item: 'Product Identification',
-          test_request: '1. The following signs should be present: rated current, rated voltage, power source symbol, name or trademark of the manufacturer or seller, and model number.;' +
-              '2. The grounding mark should be obvious and in the correct position.;' +
-              '3. Symbols should be used in accordance with the standard.;' +
-              '4. The mark should be durable and clearly identifiable.;',
-          test_process: 'Meet standard requirements',
+          test_request: 'Product labels are correct and clear.',
+          test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
           test_item: 'Accessory inspection',
           test_request: 'Check the accessory requirements and check whether the quantity and specifications are correct.',
-          test_process: 'Meet standard requirements',
+          test_process: 'Meet the requirements',
           test_result:'OK'
         }
   ]
@@ -824,71 +647,71 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象。；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；④ 对于发现的问题及时进行返工，重新连接。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
-          test_process: '符合标准要求',
+          test_request: '参考接线图纸要求，目测内部走线正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: '产品配置',
-          test_request: '① 将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误。；② 对照产品规格书对电缆线、插头规格进行检查，确认无误。',
-          test_process: '符合标准要求',
+          test_request: '对照产品规格书，产品装配配置正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'3',
           test_item: '老化',
-          test_request: '将电流表产品置于45℃的高温老化房空载通电老化24小时，结束后转移到25±20C的常温室内空载通电老化24小时。老化中检查显示屏、按键、指示灯是否正常工作和产品有无发生报警。',
-          test_process: '显示屏、按键、指示灯正常工作、产品无报警',
+          test_request: '电流表老化24小时过程中正常工作, 没有发生报警。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'4',
           test_item: '接地电阻检测',
-          test_request: '对输入PE端与机壳各接地螺钉之间部位，施加25A电流3S，其接地电阻值小于100mΩ，才能判为合格。',
-          test_process: '符合标准要求',
+          test_request: 'PE端与机壳接地螺钉之间，接地电阻值应小于100mΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'5',
           test_item: '耐高压检测',
-          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。;1、插接箱各相火线之间。；2、插接箱各相火线与PE；3、插接箱各相火线与零线。；',
-          test_process: '无闪络或击穿现象',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'6',
           test_item: '绝缘检测',
-          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
-          test_process: '符合标准要求',
+          test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'7',
           test_item: '极性检查',
-          test_request: '产品各插座接入负载，检查极性测试模块指示灯显示是否正常，判断火、零、地接线是否正确。',
-          test_process: '符合标准要求',
+          test_request: '产品各插座接入负载，检查极性测试模块指示灯显示应正常，火、零、地接线应正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'8',
           test_item: '功能测试',
           test_request: '对照产品规格书与产品说明书，对产品的各项功能进行测试，确认产品功能正常。',
-          test_process: '见附表1',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'9',
           test_item: '产品标识外观',
-          test_request: '① 应有如下标志：额定电流、额定电压、生产厂或销售商的名称或商标、型号。；② 应按标准规定使用符号。；③ 标志应经久耐用，清晰可辨。；④ 检查产品外观，有没有混色及明显划伤等问题。',
-          test_process: '符合标准要求',
+          test_request: '产品标识正确、清晰，产品外观无混色及明显划伤等。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'10',
           test_item: '附件检查',
-          test_request: '核对附件要求，检查数量及规格型号是否正确。',
-          test_process: '符合标准要求',
+          test_request: '核对附件要求，检查数量及规格型号应正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
   ]
@@ -897,80 +720,71 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: 'Internal Connections',
-          test_request: '    ①  Visual inspection: See whether the wiring harness is pressed to the position, the copper wire can not be exposed more than 2mm, Whether there are problems such as virtual welding, missing welding, flying wire and loose welding, Whether the internal wiring is neat and beautiful.;' +
-              '    ②  Hand pull: Pull the wire with the specified tension, whether there will be loosening, falling off phenomenon.;' +
-              '    ③  Check the fastening point of the screw with a wrench to see if it meets the requirements.;' +
-              '    ④  If the problem is found, rework and reconnect it in time.;' +
-              'Note: For wireless products with reserved terminals at the front end, check the wiring screws in the terminals.;',
-          test_process: 'Meet standard requirements',
+          test_request: 'Refer to the wiring drawing requirements and visually check that the internal wiring is correct.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: 'Product configuration',
-          test_request: '①  Check the assembled products with the tracking list and process drawings to ensure the accuracy of the production.;\n' +
-              '    ②  Check the cable and plug specifications against the product specifications to confirm that they are correct.',
-          test_process: 'Meet standard requirements',
+          test_request: 'According to the product specification, the product assembly configuration is correct.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'3',
           test_item: 'Ageing',
-          test_request: 'Place the ammeter product in a high-temperature aging room at 45°C for 24 hours without load and then transfer it to a room temperature room at 25±20°C for 24 hours without load. During the aging process, check whether the display screen, buttons, and indicator lights are working properly and whether the product has any alarm.',
-          test_process: 'The display screen, buttons and indicator lights are working properly.;' +
-              'There is no alarm on the product.',
+          test_request: 'The ammeter worked normally during the 24-hour aging process and no alarm occurred.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'4',
           test_item: 'Ground resistance detection',
-          test_request: 'Apply 25A current for 3S to the area between the input PE terminal and the grounding screws of the casing. The grounding resistance value must be less than 100mΩ to be considered qualified.',
-          test_process: 'Meet standard requirements',
+          test_request: 'The grounding resistance between the PE terminal and each grounding screw of the chassis should be less than 100mΩ.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'5',
           test_item: 'High voltage resistance test',
-          test_request: 'Apply 2500VAC voltage between the live and neutral wires, the ground wire and the housing for 5S, and no flashover or breakdown should occur.',
-          test_process: 'No flashover or breakdown',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'6',
           test_item: 'Insulation testing',
-          test_request: 'Apply 500VDC voltage between the live and neutral wires and the ground wire for 5S and read the value. The insulation resistance value must be greater than 5MΩ to be considered qualified.',
-          test_process: 'Meet standard requirements',
+          test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'7',
           test_item: 'Polarity check',
-          test_request: 'Connect the load to each socket of the product, check whether the indicator light of the polarity test module is normal, and determine whether the live, neutral and ground wiring are correct.',
-          test_process: 'Meet standard requirements',
+          test_request: 'Connect the load to each socket of the product, check that the indicator light of the polarity test module should be normal, and the live, neutral and ground wiring should be correct.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'8',
           test_item: 'Function test',
           test_request: 'Test the various functions of the product against the product specifications and product manual to confirm that the product functions normally.',
-          test_process: 'Appendix 1',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'9',
           test_item: 'Product logo Appearance',
-          test_request: '① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number.;' +
-              '    ② Symbols should be used as specified in the standard.;' +
-              '    ③ The logo should be durable and legible.;' +
-              '    ④ Check the appearance of the product to see if there are any problems such as color mixing and obvious scratches.',
-          test_process: 'Meet standard requirements',
+          test_request: 'The product labeling is correct and clear, and the product appearance has no mixed colors or obvious scratches.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'10',
           test_item: 'Accessory inspection',
           test_request: 'Check the accessory requirements and check whether the quantity and specifications are correct.',
-          test_process: 'Meet standard requirements',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
   ]
@@ -979,147 +793,124 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象。；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；④ 对于发现的问题及时进行返工，重新连接。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
-          test_process: '符合标准要求',
+          test_request: '参考接线图纸要求，目测内部走线正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: '产品配置',
-          test_request: '① 将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误。；② 对照产品规格书对电缆线、插头规格进行检查，确认无误。',
-          test_process: '符合标准要求',
+          test_request: '对照产品规格书，产品装配配置正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'3',
           test_item: '接地电阻检测',
-          test_request: '对输入PE端与机壳各接地螺钉之间部位，施加25A电流3S，其接地电阻值小于100mΩ，才能判为合格。',
-          test_process: '符合标准要求',
+          test_request: 'PE端与机壳接地螺钉之间，接地电阻值应小于100mΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'4',
           test_item: '耐高压检测',
-          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。；1、插接箱各相火线与PE。；', //；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；
-          test_process: '无闪络或击穿现象',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。', //；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'5',
           test_item: '绝缘检测',
-          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
-          test_process: '符合标准要求',
+          test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'6',
           test_item: '极性检查',
-          test_request: '产品各插座接入负载，检查极性测试模块指示灯显示是否正常，判断火、零、地接线是否正确。',
-          test_process: '符合标准要求',
+          test_request: '产品各插座接入负载，检查极性测试模块指示灯显示应正常，火、零、地接线应正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'7',
-          test_item: '断路器检查',
-          test_request: '依次通断断路器，断路器断开，对应的绿色指示灯灭，对应插座无输出，断路器闭合，对应绿色指示灯亮，对应插座输出正常。',
-          test_process: '符合标准要求',
+          test_item: '产品标识外观',
+          test_request: '产品标识正确、清晰，产品外观无混色及无明显划伤等。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'8',
-          test_item: '产品标识外观',
-          test_request: '① 应有如下标志：额定电流、额定电压、生产厂或销售商的名称或商标、型号。；② 应按标准规定使用符号。；③ 标志应经久耐用，清晰可辨。；④ 检查产品外观，有没有混色及明显划伤等问题。',
-          test_process: '符合标准要求',
-          test_result:"OK"
-        },
-          {
-          num:'9',
           test_item: '附件检查',
           test_request: '核对附件要求，检查数量及规格型号是否正确。',
-          test_process: '符合标准要求',
+          test_process: '符合要求',
           test_result:"OK"
         },
   ]
   //插接箱对外报告信息 -EN  基本型
-  // const JackBox_jb_EN = [
-  //       {
-  //         num:'1',
-  //         test_item: 'Internal Connections',
-  //         test_request: '    ①  Visual inspection: See whether the wiring harness is pressed to the position, the copper wire can not be exposed more than 2mm; Whether there are problems such as virtual welding, missing welding, flying wire and loose welding; Whether the internal wiring is neat and beautiful.\n' +
-  //             '    ②  Hand pull: Pull the wire with the specified tension, whether there will be loosening, falling off phenomenon.\n' +
-  //             '    ③  Check the fastening point of the screw with a wrench to see if it meets the requirements.\n' +
-  //             '    ④  If the problem is found, rework and reconnect it in time.\n' +
-  //             'Note: For wireless products with reserved terminals at the front end, check the wiring screws in the terminals.\n',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'2',
-  //         test_item: 'Product configuration',
-  //         test_request: '①  Check the assembled products with the tracking list and process drawings to ensure the accuracy of the production;\n' +
-  //             '    ②  Check the cable and plug specifications against the product specifications to confirm that they are correct.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
+  const JackBox_jb_EN = [
+        {
+          num:'1',
+          test_item: 'Internal Connections',
+          test_request: ' Refer to the wiring drawing requirements and visually check that the internal wiring is correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'2',
+          test_item: 'Product configuration',
+          test_request: 'According to the product specification, the product assembly configuration is correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
 
-  //         {
-  //         num:'3',
-  //         test_item: 'Ground resistance detection',
-  //         test_request: 'Apply 25A current for 3S to the area between the input PE terminal and the grounding screws of the casing. The grounding resistance value must be less than 100mΩ to be considered qualified.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'4',
-  //         test_item: 'High voltage resistance test\n',
-  //         test_request: 'Apply 2500VAC voltage between the live and neutral wires, the ground wire and the housing for 5S, and no flashover or breakdown should occur.',
-  //         test_process: 'No flashover or breakdown',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'5',
-  //         test_item: 'Insulation testing',
-  //         test_request: 'Apply 500VDC voltage between the live and neutral wires and the ground wire for 5S and read the value. The insulation resistance value must be greater than 5MΩ to be considered qualified.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'6',
-  //         test_item: 'Polarity check',
-  //         test_request: 'Connect the load to each socket of the product, check whether the indicator light of the polarity test module is normal, and determine whether the live, neutral and ground wiring are correct.\n',
-  //         test_process: 'Meet standard\n' +
-  //             'requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'7',
-  //         test_item: 'Breaker inspection',
-  //         test_request: 'Turn on and off the circuit breaker successively:\n' +
-  //             '    ①  The circuit breaker is off, the corresponding green indicator is off, the corresponding socket has no output.\n' +
-  //             '    ②  The circuit breaker is closed, the corresponding green indicator is on, the corresponding socket output is normal.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
+          {
+          num:'3',
+          test_item: 'Ground resistance detection',
+          test_request: 'According to the product specification, the product assembly configuration is correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'4',
+          test_item: 'High voltage resistance test\n',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'5',
+          test_item: 'Insulation testing',
+          test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'6',
+          test_item: 'Polarity check',
+          test_request: 'Connect the load to each socket of the product, check that the indicator light of the polarity test module should be normal, and the live, neutral and ground wiring should be correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },       
+          {
+          num:'7',
+          test_item: 'Product logo\n' +
+              'Appearance',
+          test_request: 'The product labeling is correct and clear, and the product appearance has no mixed colors or obvious scratches.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'8',
+          test_item: 'Accessory inspection',
+          test_request: 'Check the accessory requirements and check whether the quantity and specifications are correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+  ]
 
-  //         {
-  //         num:'8',
-  //         test_item: 'Product logo\n' +
-  //             'Appearance',
-  //         test_request: '① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number;\n' +
-  //             '    ② Symbols should be used as specified in the standard;\n' +
-  //             '    ③ The logo should be durable and legible;\n' +
-  //             '    ④ Check the appearance of the product to see if there are any problems such as color mixing and obvious scratches.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'9',
-  //         test_item: 'Accessory inspection',
-  //         test_request: 'Check the accessory requirements and check whether the quantity and specifications are correct.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  // ]
+
+
   //插接箱对外报告信息  附件1 -zh
   const JackBox_1 = [
         {
@@ -1421,71 +1212,71 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
-          test_process: '符合标准要求',
+          test_request: '参考接线图纸要求，目测内部走线正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: '产品配置',
-          test_request: '① 将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误。；② 对照产品规格书对电缆线、插头规格进行检查，确认无误。；③ 对于结构的搭接、零部件和电器元件的保护接地应装有专用的接地垫圈或采取其它措施，且连接良好，有明显的接地标志。',
-          test_process: '符合标准要求',
+          test_request: '对照产品规格书，产品装配配置正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'3',
           test_item: '老化',
-          test_request: '将始端箱电流表置于45℃的高温老化房空载通电老化24小时，结束后转移到25±5℃的常温室内空载通电老化24小时。；老化中检查显示屏、按键、指示灯是否正常工作和产品有无发生报警。',
-          test_process: '显示屏、按键、指示灯正常工作、产品无报警',
+          test_request: '电流表老化24小时过程中正常工作，没有发生报警。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'4',
           test_item: '接地电阻检测',
-          test_request: '对输入PE端与机壳各接地螺钉之间部位，施加25A电流3S，其接地电阻值小于100mΩ，才能判为合格。',
-          test_process: '符合标准要求',
+          test_request: 'PE端与机壳各接地螺钉之间，接地电阻值应小于100mΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'5',
           test_item: '耐高压检测',
-          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。',
-          test_process: '无闪络或击穿现象',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'6',
           test_item: '绝缘检测',
-          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。',
-          test_process: '符合标准要求',
+          test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'7',
           test_item: '极性检查',
-          test_request: '产品各插座接入负载，检查极性测试模块指示灯显示是否正常，判断火、零、地接线是否正确。',
-          test_process: '符合标准要求',
+          test_request: '检查极性测试模块指示灯显示应正常，火、零、地接线应正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'8',
           test_item: '功能测试',
           test_request: '对照产品规格书与产品说明书，对产品的各项功能进行测试，确认产品功能正常。',
-          test_process: '见附表1',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'9',
           test_item: '产品标识外观',
-          test_request: '① 应有如下标志：额定电流、额定电压、生产厂或销售商的名称或商标、型号。；② 应按标准规定使用符号。；③ 标志应经久耐用，清晰可辨。；④ 检查产品外观，有没有混色及明显划伤等问题。',
-          test_process: '符合标准要求',
+          test_request: '产品标识正确、清晰，产品外观无混色及明显划伤等。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'10',
           test_item: '附件检查',
-          test_request: '核对附件要求，检查数量及规格型号是否正确。',
-          test_process: '符合标准要求',
+          test_request: '核对附件要求，检查数量及规格型号应正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
   ]
@@ -1494,80 +1285,71 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: 'Internal Connections',
-          test_request: '    ①  Visual inspection: Check whether the wire harness is crimped in place, and the copper wire cannot be exposed more than 2mm; whether there are problems such as cold soldering, leaking soldering, flying wires, looseness, etc.; whether the internal wiring is neat and beautiful.;' +
-              '    ②  Hand pulling: Pull the wire with the specified pulling force to see if it will loosen or fall off.;' +
-              '    ③  Use a wrench to check the screw fastening points to see if they meet the requirements.;' +
-              'Note: For wireless products with reserved wiring terminals at the front end, the wiring screws inside the terminals must be checked.;',
-          test_process: 'Meet standard requirements',
+          test_request: 'Refer to the wiring drawing requirements and visually check that the internal wiring is correct.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: 'Product configuration',
-          test_request: '    ① Check the assembled products with the tracking sheet, process drawings, and wiring diagrams to ensure that the assembly is accurate.;' +
-              '    ② Check the specifications of the circuit breaker and copper busbar against the product specifications to confirm that they are correct.;' +
-              '    ③ For the overlapping of structures, protective grounding of parts and electrical components, special grounding washers or other measures should be installed, and the connection should be good and there should be obvious grounding marks.;',
-          test_process: 'Meet standard requirements',
+          test_request: 'According to the product specification, the product assembly configuration is correct.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'3',
           test_item: 'Ageing',
-          test_request: 'Place the feeder box ammeter in a high-temperature aging room at 45°C for 24 hours without load and then transfer it to a room at 25±50°C for 24 hours without load.;' +
-              'During the aging process, check whether the display, buttons, and indicator lights are working properly and whether the product has any alarm.',
-          test_process: 'The display screen, buttons and indicator lights are working properly. There is no alarm on the product.',
+          test_request: 'The ammeter worked normally during the 24-hour aging process and no alarm occurred.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'4',
           test_item: 'Ground resistance detection',
-          test_request: 'Apply 25A current for 3S to the area between the input PE terminal and the grounding screws of the casing. The grounding resistance value must be less than 100mΩ to be considered qualified.',
-          test_process: 'Meet standard requirements',
+          test_request: 'The grounding resistance between the PE terminal and each grounding screw of the chassis should be less than 100mΩ.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'5',
           test_item: 'High voltage resistance test',
-          test_request: 'Apply 2500VAC voltage between the live and neutral wires, the ground wire and the casing for 5S, and no flashover or breakdown should occur.',
-          test_process: 'No flashover or breakdown',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'6',
           test_item: 'Insulation testing',
-          test_request: 'Apply 500VDC voltage between the live and neutral wires and the ground wire for 5S and read the value. The insulation resistance value must be greater than 10MΩ to be considered qualified.',
-          test_process: 'Meet standard requirements',
+          test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'7',
           test_item: 'Polarity check',
-          test_request: 'Connect the product to the load, check whether the indicator light of the polarity test module is normal, and determine whether the live, neutral and ground wiring are correct.',
-          test_process: 'Meet standard requirements',
+          test_request: 'Check that the indicator light on the polarity test module should be normal and the live, neutral and ground connections should be correct.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'8',
           test_item: 'Function test',
           test_request: 'Test the various functions of the product against the product specifications and product manual to confirm that the product functions normally.',
-          test_process: 'See Appendix 1',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'9',
           test_item: 'Product logo and appearance',
-          test_request: '    ① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number.;' +
-              '    ② Symbols should be used as specified in the standard.;' +
-              '    ③ The logo should be durable and legible.;' +
-              '    ④ Check the appearance of the product to see if there are any problems such as color mixing and obvious scratches.;',
-          test_process: 'Meet standard requirements',
+          test_request: 'The product labeling is correct and clear, and the product appearance has no mixed colors or obvious scratches.',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'10',
           test_item: 'Accessory inspection',
           test_request: 'Check the accessory requirements and check whether the quantity and specifications are correct.',
-          test_process: 'Meet standard requirements',
+          test_process: 'Meet the requirements',
           test_result:"OK"
         },
   ]
@@ -1576,143 +1358,119 @@ const queryParams = reactive({
         {
           num:'1',
           test_item: '内连线',
-          test_request: '① 目测：看线束是否压接到位，铜丝不能外露超过2mm，焊接是否有虚焊、漏焊、飞丝、松散等问题，内部走线是否整齐、美观。；② 手拉：用规定的拉力拉导线，是否会有松动、脱落现象；③ 用扳手对螺钉紧固点进行检查，是否符合要求。；注：对于无线产品前端有预留接线端子的，要对端子内接线螺钉进行检查。',
-          test_process: '符合标准要求',
+          test_request: '参考接线图纸要求，目测内部走线正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'2',
           test_item: '产品配置',
-          test_request: '① 将装配完的产品与跟踪单、工艺图纸进核对，确保制作准确无误。；② 对照产品规格书对电缆线、插头规格进行检查，确认无误。；③ 对于结构的搭接、零部件和电器元件的保护接地应装有专用的接地垫圈或采取其它措施，且连接良好，有明显的接地标志。；',
-          test_process: '符合标准要求',
+          test_request: '对照产品规格书，产品装配配置正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'3',
           test_item: '接地电阻检测',
-          test_request: '对输入PE端与机壳各接地螺钉之间部位，施加25A电流3S，其接地电阻值小于100mΩ，才能判为合格。',
-          test_process: '符合标准要求',
+          test_request: 'PE端与机壳各接地螺钉之间，接地电阻值应小于100mΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'4',
           test_item: '耐高压检测',
-          test_request: '对火零线与地线和外壳之间施加2500VAC电压5S，不得出现闪络或击穿现象。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
-          test_process: '无闪络或击穿现象',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'5',
           test_item: '绝缘检测',
-          test_request: '对火零线与地线之间施加500VDC电压5S后读数，其绝缘电阻值大于5MΩ，才能判为合格。;1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；',
-          test_process: '符合标准要求',
+          test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
           num:'6',
           test_item: '极性检查',
-          test_request: '产品各插座接入负载，检查极性测试模块指示灯显示是否正常，判断火、零、地接线是否正确。',
-          test_process: '符合标准要求',
+          test_request: '检查极性测试模块指示灯显示应正常，火、零、地接线应正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
-          {
+        {
           num:'7',
-          test_item: '断路器检查',
-          test_request: '断路器合闸，绿色指示灯亮；' +
-              '断路器跳闸，红色指示灯亮、蜂鸣器蜂鸣；' +
-              '断路器分闸，绿色、红色指示灯都不亮；',
-          test_process: '符合标准要求',
-          test_result:"OK"
-        },{
-          num:'8',
           test_item: '产品标识外观',
-          test_request: '① 应有如下标志：额定电流、额定电压、生产厂或销售商的名称或商标、型号。；② 应按标准规定使用符号。；③ 标志应经久耐用，清晰可辨。；④ 检查产品外观，有没有混色及明显划伤等问题。',
-          test_process: '符合标准要求',
+          test_request: '产品标识正确、清晰，产品外观无混色及明显划伤等。',
+          test_process: '符合要求',
           test_result:"OK"
         },
           {
-          num:'9',
+          num:'8',
           test_item: '附件检查',
-          test_request: '核对附件要求，检查数量及规格型号是否正确。',
-          test_process: '符合标准要求',
+          test_request: '核对附件要求，检查数量及规格型号应正确。',
+          test_process: '符合要求',
           test_result:"OK"
         },
   ]
   //始端箱对外报告信息 -EN 基本型
-  // const HeaBox_jb_EN = [
-  //       {
-  //         num:'1',
-  //         test_item: 'Internal Connections',
-  //         test_request: '    ①  Visual inspection: Check whether the wire harness is crimped in place, and the copper wire cannot be exposed more than 2mm; whether there are problems such as cold soldering, leaking soldering, flying wires, looseness, etc.; whether the internal wiring is neat and beautiful;\n' +
-  //             '    ②  Hand pulling: Pull the wire with the specified pulling force to see if it will loosen or fall off;\n' +
-  //             '    ③  Use a wrench to check the screw fastening points to see if they meet the requirements.\n' +
-  //             'Note: For wireless products with reserved wiring terminals at the front end, the wiring screws inside the terminals must be checked.\n',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'2',
-  //         test_item: 'Product configuration',
-  //         test_request: '    ① Check the assembled products with the tracking sheet, process drawings, and wiring diagrams to ensure that the assembly is accurate;\n' +
-  //             '    ② Check the specifications of the circuit breaker and copper busbar against the product specifications to confirm that they are correct.\n' +
-  //             '    ③ For the overlapping of structures, protective grounding of parts and electrical components, special grounding washers or other measures should be installed, and the connection should be good and there should be obvious grounding marks;\n',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'3',
-  //         test_item: 'Ground resistance detection',
-  //         test_request: 'Apply 25A current for 3S to the area between the input PE terminal and the grounding screws of the casing. The grounding resistance value must be less than 100mΩ to be considered qualified.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'4',
-  //         test_item: 'High voltage resistance test',
-  //         test_request: 'Apply 2500VAC voltage between the live and neutral wires, the ground wire and the casing for 5S, and no flashover or breakdown should occur.',
-  //         test_process: 'No flashover or breakdown',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'5',
-  //         test_item: 'Insulation testing',
-  //         test_request: 'Apply 500VDC voltage between the live and neutral wires and the ground wire for 5S and read the value. The insulation resistance value must be greater than 10MΩ to be considered qualified.\n',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'6',
-  //         test_item: 'Polarity check',
-  //         test_request: 'Connect the product to the load, check whether the indicator light of the polarity test module is normal, and determine whether the live, neutral and ground wiring are correct.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'7',
-  //         test_item: 'Breaker inspection',
-  //         test_request: 'Breaker closes, the green indicator light is on;\n' +
-  //             'Breaker trips, the red indicator lamp lights and the buzzer beeps;Breaker tripping, green and red indicator lamps do not light up;',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'8',
-  //         test_item: 'Product logo and appearance',
-  //         test_request: '    ① The following markings should be present: rated current, rated voltage, name or trademark of the manufacturer or seller, and model number;\n' +
-  //             '    ② Symbols should be used as specified in the standard;\n' +
-  //             '    ③ The logo should be durable and legible;；\n' +
-  //             '    ④ Check the appearance of the product to see if there are any problems such as color mixing and obvious scratches;\n',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  //         {
-  //         num:'9',
-  //         test_item: 'Accessory inspection',
-  //         test_request: 'Check the accessory requirements and check whether the quantity and specifications are correct.',
-  //         test_process: 'Meet standard requirements',
-  //         test_result:"OK"
-  //       },
-  // ]
+  const HeaBox_jb_EN = [
+        {
+          num:'1',
+          test_item: 'Internal Connections',
+          test_request: 'Refer to the wiring drawing requirements and visually check that the internal wiring is correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'2',
+          test_item: 'Product configuration',
+          test_request: 'According to the product specification, the product assembly configuration is correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'3',
+          test_item: 'Ground resistance detection',
+          test_request: 'The grounding resistance between the PE terminal and each grounding screw of the chassis should be less than 100mΩ.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'4',
+          test_item: 'High voltage resistance test',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'5',
+          test_item: 'Insulation testing',
+          test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'6',
+          test_item: 'Polarity check',
+          test_request: 'Check that the indicator light on the polarity test module should be normal and the live, neutral and ground connections should be correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'7',
+          test_item: 'Breaker inspection',
+          test_request: 'The product labeling is correct and clear, and the product appearance has no mixed colors or obvious scratches.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          {
+          num:'8',
+          test_item: 'Accessory inspection',
+          test_request: 'Check the accessory requirements and check whether the quantity and specifications are correct.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+  ]
   //始端箱对外报告信息  附件1  -zh
   const HeaBox_1 = [
         {
@@ -2195,21 +1953,6 @@ const queryParams = reactive({
         return processPage(page2Element, 2); // 处理第二页
       })
       .then(() => {
-        // 在这里检查条件
-        if (goods_dev_name.value === '插接箱' || goods_dev_name.value === '始端箱' || goods_dev_name.value  === 'Feeder box' || goods_dev_name.value === 'Tap-off box') {
-          // 处理第三页
-          if(radio1.value === '2')
-        {
-          const page3Element = document.getElementById('page3Content');
-          return processPage(page3Element, 3);
-        }         
-          
-        } else {
-          // 如果条件不满足，则跳过第三页，直接进行后续操作
-          return Promise.resolve();
-        }
-      })
-      .then(() => {
         // 完成后保存PDF
         let fileName;
         if(out_language.value  === true) {
@@ -2268,6 +2011,7 @@ const queryParams = reactive({
       const res = await TestDataApi.getReportInfo(queryParams);
       if (res != null){
         goods_dev_name.value = res.devName
+        goods_dev_name.value = '母线槽'
         customerName.value = res.customerName
         modelNumber.value = res.deviceType
         goods_start_time.value = res.productionDate
@@ -2311,9 +2055,19 @@ onMounted(() => {
     queryParams.productSN = queryProductSN;
     queryParams.moduleSN = queryModuleSN;
     // 成品代码第四个字母判断类型 M为智能型，值为2； 其他字母为基本型，值为1
-    radio1.value = queryProductSN[3] == 'M'? '2' : '1';
+    radio1.value = queryProductSN[3] == 'M'? '1' : '1';
+    if(radio1.value === '2'){
+      radio2.value= true;
+    }else if(radio1.value === '1'){
+      radio2.value = false;
+    }
+    // 切换语言
+    out_language.value = true;
     getReportData(); 
   }
+    // 切换语言
+    out_language.value = true;
+    getReportData(); 
 
 })
 
