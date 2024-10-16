@@ -2011,7 +2011,6 @@ const queryParams = reactive({
       const res = await TestDataApi.getReportInfo(queryParams);
       if (res != null){
         goods_dev_name.value = res.devName
-        goods_dev_name.value = '母线槽'
         customerName.value = res.customerName
         modelNumber.value = res.deviceType
         goods_start_time.value = res.productionDate
@@ -2061,13 +2060,7 @@ onMounted(() => {
     }else if(radio1.value === '1'){
       radio2.value = false;
     }
-    // 切换语言
-    out_language.value = true;
-    getReportData(); 
   }
-    // 切换语言
-    out_language.value = true;
-    getReportData(); 
 
 })
 
