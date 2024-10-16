@@ -2055,7 +2055,7 @@ onMounted(() => {
     queryParams.productSN = queryProductSN;
     queryParams.moduleSN = queryModuleSN;
     // 成品代码第四个字母判断类型 M为智能型，值为2； 其他字母为基本型，值为1
-    radio1.value = queryProductSN[3] == 'M'? '1' : '1';
+    radio1.value = queryProductSN[3] == 'M'? '2' : '1';
     if(radio1.value === '2'){
       radio2.value= true;
     }else if(radio1.value === '1'){

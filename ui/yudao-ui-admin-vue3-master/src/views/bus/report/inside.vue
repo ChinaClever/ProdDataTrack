@@ -15,7 +15,7 @@
 
         <el-form-item>
           <el-input
-            placeholder="扫码枪扫码输入 产品SN号" 
+            placeholder="输入格式：“订单号+成品代码+模块序列号” " 
             v-model="inputdata" 
             clearable
             class="!w-500px"
@@ -47,7 +47,7 @@
                 <el-col  class="table-label-1">订单号：{{goods_order_id}}</el-col>
                 <el-col  class="table-label-2">订单数量：{{goods_order_num}} 台</el-col>
               </div>
-              <div class="right-row"  style= "padding-left: 895px;">
+              <div class="right-row"  style= "padding-left: 800px;">
                 <el-col  class="table-label">产品型号：{{goods_dev_name}}</el-col>
                 <el-col  class="table-label-1">检验日期：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
                 <!-- <el-col  class="table-label-2">检验数量：{{goods_test_num}}</el-col> -->
@@ -68,7 +68,7 @@
           <div>
             <el-row class="table-row">
               <div class="left-row" >
-                <el-col  class="table-label">SN编号：{{goods_product_sn}}</el-col>
+                <el-col  class="table-label">成品代码：{{goods_product_sn}}</el-col>
                 <el-col  class="table-label-1">检验开始时间：{{goods_start_time}}</el-col>
                 <el-col  class="table-label-2">检验结束时间：{{goods_end_time}}</el-col>
               </div>
@@ -96,17 +96,17 @@
             <el-table :data="goods_SN_data" class="table-data2" style="width: 97%" border>
                 <el-table-column prop="testStep" label="检验步骤" :align="centerAlign" width="200"/>
                 <el-table-column prop="testItem" label="检验项" :align="centerAlign" width="300"/>
-                <el-table-column prop="testRequest" label="检验要求" :align="centerAlign" width="550">
+                <el-table-column prop="testRequest" label="检验要求" :align="centerAlign" width="600">
                   <template #default="{ row }">
                       <div v-html="formatSkills(row.testRequest)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testProcess" label="检验结果"  :align="centerAlign"  width="350">
+                <el-table-column prop="testProcess" label="检验结果"  :align="centerAlign"  width="309">
                     <template #default="{ row }">
                       <div v-html="formatSkills(row.testProcess)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testResult" label="判定" :align="centerAlign" width="105">
+                <el-table-column prop="testResult" label="判定" :align="centerAlign" width="150">
                   <template #default="{ row }" >
                     <span v-if="row.testResult == 1" >通过</span>
                     <span v-else-if="row.testResult == 0" >失败</span>
@@ -126,9 +126,9 @@
               <div class="left-row">
                 <!-- <el-col  class="table-label">Customer Name：</el-col> -->
                 <el-col  class="table-label-1">Order Number：{{goods_order_id}}</el-col>
-                <el-col  class="table-label-2">Order Quantity：{{goods_order_num}} UNIT</el-col>
+                <el-col  class="table-label-2">Order Quantity：{{goods_order_num}} PCS</el-col>
               </div>
-              <div class="right-row" style= "padding-left: 590px;">
+              <div class="right-row" style= "padding-left: 506px;">
                 <el-col  class="table-label">Product Model：{{goods_dev_name}}</el-col>
                 <el-col  class="table-label-1">Inspection Date：{{formattedGoodsStartTime(goods_end_time)}}</el-col>
               </div>
@@ -148,7 +148,7 @@
           <div>
             <el-row class="table-row">
               <div class="left-row">
-                <el-col  class="table-label">SN Number：{{goods_product_sn}}</el-col>
+                <el-col  class="table-label">Product code：{{goods_product_sn}}</el-col>
                 <el-col  class="table-label-1">Inspection Start Time：{{goods_start_time}}</el-col>
                 <el-col  class="table-label-2">Inspection End Time：{{goods_end_time}}</el-col>
             </div>
@@ -174,19 +174,19 @@
         <br/>
           <div class="table-wrapper" style="padding-left: 2%;">
             <el-table :data="goods_SN_data" class="table-data2"  style="width: 97%" border>
-                <el-table-column prop="testStep" label="Inspection Steps"  :align="centerAlign" width="200"/>
-                <el-table-column prop="testItem" label="Inspection Items" :align="centerAlign" width="250"/>
-                <el-table-column prop="testRequest" label="Inspection Requirements" :align="centerAlign" width="605">
+                <el-table-column prop="testStep" label="Inspection Steps"  :align="centerAlign" width="250"/>
+                <el-table-column prop="testItem" label="Inspection Items" :align="centerAlign" width="300"/>
+                <el-table-column prop="testRequest" label="Inspection Requirements" :align="centerAlign" width="609">
                     <template #default="{ row }">
                       <div v-html="formatSkills(row.testRequest)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testProcess" label="Inspection Results"  :align="centerAlign"  width="300">
+                <el-table-column prop="testProcess" label="Inspection Results"  :align="centerAlign"  width="280">
                   <template #default="{ row }">
                       <div v-html="formatSkills(row.testProcess)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testResult" label="Determine" :align="centerAlign" width="150">
+                <el-table-column prop="testResult" label="Determine" :align="centerAlign" width="120">
                   <template #default="{ row }" >
                     <span v-if="row.testResult == 1" >PASS</span>
                     <span v-else-if="row.testResult == 0" >FAIL</span>
@@ -254,7 +254,7 @@ const queryParams = reactive({
           const contentHeight = canvas.height
           // 一页pdf显示html页面生成的canvas高度;
           // const pageHeight = (contentWidth / 592.28) * 841.89
-          const pageHeight = (contentWidth / 592.28) * 835.89
+          const pageHeight = (contentWidth / 592.28) * 832.0
           // 页面偏移
           let position = 0
 
@@ -347,13 +347,13 @@ const queryParams = reactive({
           }
           goods_product_sn.value = goods_SN_data.value[0].productSn;
           goods_tool_name.value = goods_SN_data.value[0].toolName;
-          goods_soft_version.value = goods_SN_data.value.find(item=>item.softVersion !== '0.0.0').softVersion;
+          goods_soft_version.value = goods_SN_data.value.find(item=>item.softVersion !== 'V0.0').softVersion;
           goods_test_type.value = goods_SN_data.value[0].testType;
           goods_order_id.value = goods_SN_data.value[0].orderId;
           goods_order_num.value = goods_SN_data.value[0].orderNum;
           goods_dev_name.value = goods_SN_data.value[0].devName;
           if (goods_SN_data.value.length > 0 ){
-            goods_start_time.value = goods_SN_data.value[goods_SN_data.value.length -1].startTime;
+            goods_start_time.value = goods_SN_data.value[0].startTime;
             goods_end_time.value = goods_SN_data.value[goods_SN_data.value.length -1].endTime;
             // end_judgment.value = goods_SN_data.value[goods_SN_data.value.length -1].testResult
           } else {
@@ -417,6 +417,7 @@ const queryParams = reactive({
     }
     goods_dev_name.value = goods_SN_data.value[0].devName;
   }
+
 
 </script>
 <style scoped>
