@@ -566,13 +566,8 @@ const queryParams = reactive({
   //母线槽对外报告信息  -zh
   const Busway =  [
         {
-          test_item: '耐高压检测',
-          test_request: '参照标准要求，对以下部位，施加耐压测试，不得出现闪络或击穿现象：；；1、母线槽各相火线之间；2、母线槽各相火线与零线；3、母线槽各相火线与PE；4、母线槽各相火线与外壳；',
-          test_process: '符合要求',
-          test_result:'OK'
-        }, {
-          test_item: '绝缘检测',
-          test_request: '参照标准要求，对以下部位，进行绝缘测试，其绝缘电阻值大于10MΩ，才能判为合格：；；1、母线槽各相火线之间；2、母线槽各相火线与零线；3、母线槽各相火线与PE；4、母线槽各相火线与外壳；',
+          test_item: '外观检验',
+          test_request: '检查产品外观，镀层均匀，无混色，无明显划伤、脏污、掉漆、露底、变形、开裂现象,均符合成品外观检验标准。',
           test_process: '符合要求',
           test_result:'OK'
         }, {
@@ -581,16 +576,21 @@ const queryParams = reactive({
           test_process: '符合要求',
           test_result:'OK'
         }, {
-          test_item: '外观检验',
-          test_request: '检查产品外观，镀层均匀，无混色，无明显划伤、脏污、掉漆、露底、变形、开裂现象,均符合成品外观检验标准。',
-          test_process: '符合要求',
-          test_result:'OK'
-        }, {
           test_item: '产品标识',
           test_request: '产品标识正确、清晰。；',
           test_process: '符合要求',
           test_result:'OK'
         }, {
+          test_item: '绝缘检测',
+          test_request: '参照标准要求，对火零线与外壳之间进行绝缘测试，其绝缘电阻值大于10MΩ，才能判为合格。；',
+          test_process: '符合要求',
+          test_result:'OK'
+        }, {
+          test_item: '耐高压检测',
+          test_request: '参照标准要求，对火零线与外壳之间进行耐压测试， 不得出现闪络或击穿现象。；',
+          test_process: '符合要求',
+          test_result:'OK'
+        } ,{
           test_item: '附件检查',
           test_request: '核对附件要求，检查数量及规格型号是否正确。',
           test_process: '符合要求',
@@ -600,21 +600,8 @@ const queryParams = reactive({
   //母线槽对外报告信息  -EN
   const Busway_EN = [
         {
-          test_item: 'High voltage resistance test',
-          test_request: 'According to the standard requirements, the following parts shall be subjected to withstand voltage test, and no flashover or breakdown shall occur:;;'+
-          ' 1. Between the live wires of each phase of the busway.;' +
-              '2. Between the live wires of each phase of the busway and the neutral wire.;' + 
-              '3. Between the live wires of each phase of the busway and PE.;'+ 
-              '4. Between the live wires of each phase of the busway and the shell.;',
-          test_process: 'Meet the requirements',
-          test_result:'OK'
-        }, {
-          test_item: 'Insulation Detection',
-          test_request: 'According to the standard requirements, the following parts shall be tested for insulation, and their insulation resistance value shall be greater than 10MΩ to be considered qualified:;;' +
-              '1. Between the live wires of each phase of the busway.;' +
-              '2. Between the live wires of each phase of the busway and the neutral wire.;' +
-              '3. Between the live wires of each phase of the busway and PE.;' +
-              '4. Between the live wires of each phase of the busway and the shell.;',
+          test_item: 'Visual inspection',
+          test_request: 'Check the appearance of the product, the coating is uniform, there is no color mixing, no obvious scratches, dirt, paint peeling, exposed bottom, deformation, cracking, and all meet the finished product appearance inspection standards.',
           test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
@@ -626,13 +613,18 @@ const queryParams = reactive({
           test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
-          test_item: 'Visual inspection',
-          test_request: 'Check the appearance of the product, the coating is uniform, there is no color mixing, no obvious scratches, dirt, paint peeling, exposed bottom, deformation, cracking, and all meet the finished product appearance inspection standards.',
+          test_item: 'Product Identification',
+          test_request: 'Product labels are correct and clear.',
           test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
-          test_item: 'Product Identification',
-          test_request: 'Product labels are correct and clear.',
+          test_item: 'Insulation Detection',
+          test_request: 'Referring to the standard requirements, conduct an insulation test between the live neutral wire and the shell. Only when the insulation resistance value is greater than 10MΩ can it be judged qualified.;',
+          test_process: 'Meet the requirements',
+          test_result:'OK'
+        }, {
+          test_item: 'High voltage resistance test',
+          test_request: 'Referring to the standard requirements, conduct a voltage withstand test between the fire neutral line and the outer casing, and no flashover or breakdown should occur.;',
           test_process: 'Meet the requirements',
           test_result:'OK'
         }, {
@@ -2061,7 +2053,9 @@ onMounted(() => {
       radio2.value = false;
     }
   }
-
+ // 切换语言
+ out_language.value = true;
+  getReportData(); 
 })
 
     
