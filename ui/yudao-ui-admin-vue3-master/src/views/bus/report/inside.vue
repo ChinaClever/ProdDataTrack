@@ -174,19 +174,19 @@
         <br/>
           <div class="table-wrapper" style="padding-left: 2%;">
             <el-table :data="goods_SN_data" class="table-data2"  style="width: 97%" border>
-                <el-table-column prop="testStep" label="Inspection Steps"  :align="centerAlign" width="250"/>
+                <el-table-column prop="testStep" label="Inspection Steps"  :align="centerAlign" width="200"/>
                 <el-table-column prop="testItem" label="Inspection Items" :align="centerAlign" width="300"/>
                 <el-table-column prop="testRequest" label="Inspection Requirements" :align="centerAlign" width="609">
                     <template #default="{ row }">
                       <div v-html="formatSkills(row.testRequest)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testProcess" label="Inspection Results"  :align="centerAlign"  width="280">
+                <el-table-column prop="testProcess" label="Inspection Results"  :align="centerAlign"  width="360">
                   <template #default="{ row }">
                       <div v-html="formatSkills(row.testProcess)" ></div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="testResult" label="Determine" :align="centerAlign" width="120">
+                <el-table-column prop="testResult" label="Determine" :align="centerAlign" width="90">
                   <template #default="{ row }" >
                     <span v-if="row.testResult == 1" >PASS</span>
                     <span v-else-if="row.testResult == 0" >FAIL</span>
@@ -230,6 +230,7 @@ const language = ref(true)
 // const customerName = ref('')
 // const radio1 = ref('2')
 const loading = ref(false) // 加载中
+const HeightValue = ref(0)
 const queryParams = reactive({
   orderId: '' , // 订单号
   productSN: '',// 成品代码
@@ -254,7 +255,10 @@ const queryParams = reactive({
           const contentHeight = canvas.height
           // 一页pdf显示html页面生成的canvas高度;
           // const pageHeight = (contentWidth / 592.28) * 841.89
-          const pageHeight = (contentWidth / 592.28) * 820.0
+          
+          if(language.value == false) HeightValue.value = 840.0
+          else HeightValue.value = 825.0
+          const pageHeight = (contentWidth / 592.28) * HeightValue.value
           // 页面偏移
           let position = 0
 
