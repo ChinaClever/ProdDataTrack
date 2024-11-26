@@ -62,7 +62,7 @@
             <br/>
           </div>
           <div style="text-align: center; font-size: 40px;">
-              <p>检验依据：IEC 61439-6: 2012标准技术要求和产品使用说明书</p>
+              <p>检验依据：GB/T7251.6-2015 标准技术要求和产品使用说明书</p>
           </div>
           <div style="height: 20px">
               <br/>
@@ -74,7 +74,7 @@
               <br/>
           </div>
           <div  style="text-align: center; font-size: 40px;">
-              <p>该批产品检验，所检项目符合IEC 61439-6: 2012标准技术要求和产品使用说明书要求。</p>
+              <p>该批产品检验，所检项目符合 GB/T7251.6-2015 标准技术要求和产品使用说明书要求。</p>
           </div>
           <div style="height: 6cap">
               <br/>
@@ -663,18 +663,18 @@ const queryParams = reactive({
           test_request: 'PE端与机壳接地螺钉之间，接地电阻值应小于100mΩ。',
           test_process: '符合要求',
           test_result:"OK"
-        },
+        },         
           {
           num:'5',
-          test_item: '耐高压检测',
-          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
+          test_item: '绝缘检测',
+          test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
           test_process: '符合要求',
           test_result:"OK"
         },
-          {
+        {
           num:'6',
-          test_item: '绝缘检测',
-          test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
+          test_item: '耐高压检测',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
           test_process: '符合要求',
           test_result:"OK"
         },
@@ -737,20 +737,21 @@ const queryParams = reactive({
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
-          {
+        {
           num:'5',
-          test_item: 'High voltage resistance test',
-          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
-          test_process: 'Meet the requirements',
-          test_result:"OK"
-        },
-          {
-          num:'6',
           test_item: 'Insulation testing',
           test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
+          {
+          num:'6',
+          test_item: 'High voltage resistance test',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          
           {
           num:'7',
           test_item: 'Polarity check',
@@ -803,20 +804,20 @@ const queryParams = reactive({
           test_process: '符合要求',
           test_result:"OK"
         },
-          {
+        {
           num:'4',
-          test_item: '耐高压检测',
-          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。', //；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；
-          test_process: '符合要求',
-          test_result:"OK"
-        },
-          {
-          num:'5',
           test_item: '绝缘检测',
           test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
           test_process: '符合要求',
           test_result:"OK"
         },
+          {
+          num:'5',
+          test_item: '耐高压检测',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。', //；1、插接箱各相火线之间。；2、插接箱各相火线与PE。；3、插接箱各相火线与零线。；
+          test_process: '符合要求',
+          test_result:"OK"
+        }, 
           {
           num:'6',
           test_item: '极性检查',
@@ -863,20 +864,21 @@ const queryParams = reactive({
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
-          {
+        {
           num:'4',
-          test_item: 'High voltage resistance test\n',
-          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
-          test_process: 'Meet the requirements',
-          test_result:"OK"
-        },
-          {
-          num:'5',
           test_item: 'Insulation testing',
           test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
+          {
+          num:'5',
+          test_item: 'High voltage resistance test\n',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          
           {
           num:'6',
           test_item: 'Polarity check',
@@ -1229,20 +1231,21 @@ const queryParams = reactive({
           test_process: '符合要求',
           test_result:"OK"
         },
-          {
+        {
           num:'5',
-          test_item: '耐高压检测',
-          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
-          test_process: '符合要求',
-          test_result:"OK"
-        },
-          {
-          num:'6',
           test_item: '绝缘检测',
           test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
           test_process: '符合要求',
           test_result:"OK"
         },
+          {
+          num:'6',
+          test_item: '耐高压检测',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
+          test_process: '符合要求',
+          test_result:"OK"
+        },
+          
           {
           num:'7',
           test_item: '极性检查',
@@ -1302,20 +1305,21 @@ const queryParams = reactive({
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
-          {
+        {
           num:'5',
-          test_item: 'High voltage resistance test',
-          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
-          test_process: 'Meet the requirements',
-          test_result:"OK"
-        },
-          {
-          num:'6',
           test_item: 'Insulation testing',
           test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
+          {
+          num:'6',
+          test_item: 'High voltage resistance test',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_process: 'Meet the requirements',
+          test_result:"OK"
+        },
+          
           {
           num:'7',
           test_item: 'Polarity check',
@@ -1368,20 +1372,21 @@ const queryParams = reactive({
           test_process: '符合要求',
           test_result:"OK"
         },
-          {
+        {
           num:'4',
-          test_item: '耐高压检测',
-          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
-          test_process: '符合要求',
-          test_result:"OK"
-        },
-          {
-          num:'5',
           test_item: '绝缘检测',
           test_request: '参照标准要求，火零线与地线之间绝缘测试，其绝缘电阻值应≥10MΩ。',
           test_process: '符合要求',
           test_result:"OK"
         },
+          {
+          num:'5',
+          test_item: '耐高压检测',
+          test_request: '参照标准要求，火零线与地线和外壳之间耐压测试，不得出现闪络或击穿现象。',
+          test_process: '符合要求',
+          test_result:"OK"
+        },
+          
           {
           num:'6',
           test_item: '极性检查',
@@ -1427,17 +1432,17 @@ const queryParams = reactive({
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
-          {
+        {
           num:'4',
-          test_item: 'High voltage resistance test',
-          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
+          test_item: 'Insulation testing',
+          test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
           {
           num:'5',
-          test_item: 'Insulation testing',
-          test_request: 'According to the standard requirements, the insulation resistance value of the insulation test between the live neutral wire and the ground wire should be ≥10MΩ.',
+          test_item: 'High voltage resistance test',
+          test_request: 'According to the standard requirements, the voltage test between the live and neutral wires, the ground wire and the casing shall not show flashover or breakdown.',
           test_process: 'Meet the requirements',
           test_result:"OK"
         },
@@ -2003,6 +2008,7 @@ const queryParams = reactive({
       const res = await TestDataApi.getReportInfo(queryParams);
       if (res != null){
         goods_dev_name.value = res.devName
+        goods_dev_name.value = '插接箱'
         customerName.value = res.customerName
         modelNumber.value = res.deviceType
         goods_start_time.value = res.productionDate
