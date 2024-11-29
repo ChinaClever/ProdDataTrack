@@ -2008,7 +2008,6 @@ const queryParams = reactive({
       const res = await TestDataApi.getReportInfo(queryParams);
       if (res != null){
         goods_dev_name.value = res.devName
-        goods_dev_name.value = '插接箱'
         customerName.value = res.customerName
         modelNumber.value = res.deviceType
         goods_start_time.value = res.productionDate
