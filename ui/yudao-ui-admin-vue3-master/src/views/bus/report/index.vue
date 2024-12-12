@@ -2050,8 +2050,8 @@ onMounted(() => {
     queryParams.orderId = queryOrderId;
     queryParams.productSN = queryProductSN;
     queryParams.moduleSN = queryModuleSN;
-    // 成品代码第四个字母判断类型 M为智能型，值为2； 其他字母为基本型，值为1
-    radio1.value = queryProductSN[3] == 'M'? '2' : '1';
+    // 成品代码第四个字母判断类型 B为基本型，值为1； 其他字母为智能型，值为2
+    radio1.value = queryProductSN[3] == 'B'? '1' : '2';
     if(radio1.value === '2'){
       radio2.value= true;
     }else if(radio1.value === '1'){
