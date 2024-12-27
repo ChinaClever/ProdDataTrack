@@ -109,7 +109,7 @@
           <div style="height: 30px">
             <br/>
           </div>
-          <div style="text-align: right; font-size: 20px; padding-right: 5%;">
+          <div style="text-align: right; font-size: 25px; padding-right: 5%;">
             <p>
               <span style="display: inline-block; ">{{ formattedTime(goods_end_time).year}} 年</span>
               <span style="display: inline-block; ">{{ formattedTime(goods_end_time).month}} 月</span>
@@ -124,7 +124,7 @@
                   <span >检验员：欧阳中强</span>
             </div>
             <span>审核：国漫</span>
-            <div style="padding-right: 15%">
+            <div style="padding-right: 10%">
                 <span >批准：吴美文</span>
             </div>
           </div>
@@ -370,7 +370,7 @@
           <div style="height: 10px">
             <br/>
           </div>
-          <div style="text-align: right; font-size: 20px; padding-right: 5%;">
+          <div style="text-align: right; font-size: 25px; padding-right: 5%;">
             <p>
               <span>Date:{{formattedTime(goods_end_time).year}}/{{formattedTime(goods_end_time).month}}/{{formattedTime(goods_end_time).day}}</span>
             </p>
@@ -379,11 +379,11 @@
             <br/>
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
-            <div style="padding-left: 5cm">
+            <div style="padding-left: 3cm">
                   <span >Inspector: Zhongqiang Ouyang </span>
             </div>
             <span>Audit: Man Guo</span>
-            <div style="padding-right: 15%">
+            <div style="padding-right: 7%">
                 <span >Approve: Meiwen Wu</span>
             </div>
           </div>
@@ -441,7 +441,7 @@
                   <el-table :data="JackBox_EN" class="custom-table" style="width: 97%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
-                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign"  width="250"/>
                       
                       <el-table-column  prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
                         <template #default="{ row }" >
@@ -546,6 +546,7 @@
 <script setup lang="ts">
 import { TestDataApi } from '@/api/bus/testData'
 import { ElMessageBox } from 'element-plus'
+import { isVisible } from 'element-plus/es/utils';
 import html2canvas from "html2canvas";
 import JsPDF from "jspdf";
 
@@ -2173,8 +2174,12 @@ align-items: center;  */
   line-height: 10; /* 调整行高 */
   white-space: pre-wrap; /* 允许换行 */
   padding: 0px; /* 调整内边距 */
+  overflow: visible
 }
 
+.el-table-column.el-table .cell{
+  overflow: visible
+}
 .container-button{
      margin-left: auto; /* 将按钮容器中的文本右对齐 */
 }
@@ -2187,11 +2192,11 @@ align-items: center;  */
   align-items: center;
 }
 /* 使用 scoped 样式限制作用范围 */
-.no-wrap .el-table__header th > .cell {
+ .no-wrap .el-table__header th > .cell {
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
   text-overflow: ellipsis;
-}
+} 
 .full-width-input {
   white-space: normal !important; /* 允许文本换行 */
   overflow: visible !important; /* 显示溢出内容 */
