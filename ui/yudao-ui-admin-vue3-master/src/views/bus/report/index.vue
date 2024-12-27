@@ -111,9 +111,9 @@
           </div>
           <div style="text-align: right; font-size: 20px; padding-right: 5%;">
             <p>
-              <span style="display: inline-block; margin-right: 50px;">年</span>
-              <span style="display: inline-block; margin-right: 50px;">月</span>
-              <span>日</span>
+              <span style="display: inline-block; ">{{ formattedTime(goods_end_time).year}} 年</span>
+              <span style="display: inline-block; ">{{ formattedTime(goods_end_time).month}} 月</span>
+              <span>{{ formattedTime(goods_end_time).day}} 日</span>
             </p>
           </div>
           <div style="height: 40px">
@@ -121,11 +121,11 @@
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
             <div style="padding-left: 5%">
-                  <span >检验员：</span>
+                  <span >检验员：欧阳中强</span>
             </div>
-            <span>审核：</span>
+            <span>审核：国漫</span>
             <div style="padding-right: 15%">
-                <span >批准：</span>
+                <span >批准：吴美文</span>
             </div>
           </div>
           <div class="horizontal-rule">
@@ -160,7 +160,7 @@
                 <div >
                   <el-table :data="Busway" class="custom-table" style="width: 95%" border>
                       <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="299"/>
-                      <el-table-column prop="test_request" label="标准要求" :header-align="centerAlign" width="900">
+                      <el-table-column prop="test_request" label="标准要求" header-align="center" align="left" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -183,7 +183,7 @@
                   <el-table :data="JackBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :align="centerAlign" width="900">
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -203,7 +203,7 @@
                   <el-table :data="JackBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :align="centerAlign" width="900">
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -225,7 +225,7 @@
                   <el-table :data="HeaBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :align="centerAlign" width="900">
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -245,7 +245,7 @@
                   <el-table :data="HeaBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" :header-align="centerAlign" width="799">
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="799">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -259,8 +259,16 @@
                   </el-table>
                 </div>
        
+            </div><br/>
+            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+                  <p>OK：合格，符合测试要求。</p>
             </div>
-
+            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+                  <p>NG：不合格，不符合测试要求。 </p>
+            </div>
+            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+                  <p>NA：所测产品无此项功能。</p>
+            </div>
         </div>
       </div>       
 
@@ -364,7 +372,7 @@
           </div>
           <div style="text-align: right; font-size: 20px; padding-right: 5%;">
             <p>
-              <span>Date: _______/_______/_______</span>
+              <span>Date:{{formattedTime(goods_end_time).year}}/{{formattedTime(goods_end_time).month}}/{{formattedTime(goods_end_time).day}}</span>
             </p>
           </div>
           <div style="height: 10px">
@@ -372,11 +380,11 @@
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
             <div style="padding-left: 5cm">
-                  <span >Inspector:</span>
+                  <span >Inspector: Zhongqiang Ouyang </span>
             </div>
-            <span>Audit:</span>
+            <span>Audit: Man Guo</span>
             <div style="padding-right: 15%">
-                <span >Approve: </span>
+                <span >Approve: Meiwen Wu</span>
             </div>
           </div>
           <div class="horizontal-rule">
@@ -410,7 +418,7 @@
                   <el-table :data="Busway_EN" class="custom-table" style="width: 95%" border>
                       <el-table-column  prop="test_item" label="Test items" :align="centerAlign" width="350"/>
                       
-                      <el-table-column prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="900">
+                      <el-table-column prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
                         <template #default="{ row }">
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -435,8 +443,8 @@
                       
                       <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
                       
-                      <el-table-column  prop="test_request" label="Standard Requirements" :align="centerAlign" width="900">
-                        <template #default="{ row }">
+                      <el-table-column  prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
+                        <template #default="{ row }" >
                             <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
@@ -457,7 +465,7 @@
                       
                       <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
                       
-                      <el-table-column  prop="test_request" label="Standard Requirements" :align="centerAlign" width="900">
+                      <el-table-column  prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -520,6 +528,15 @@
                       
                   </el-table>
                 </div>
+            </div><br/>
+            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+                  <p>OK: Qualified and meets the test requirements.</p>
+            </div>
+            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+                  <p>NG: Failed and did not meet the test requirements. </p>
+            </div>
+            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+                  <p>NA: The tested product does not have this function.</p>
             </div>
         </div>
       </div>
@@ -1756,6 +1773,19 @@ const queryParams = reactive({
       }
       return ''
     }
+
+    const formattedTime = (time) => {
+      if (time != null) {
+        let date = new Date(time);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需要加1，并补0
+        const day = String(date.getDate()).padStart(2, '0'); // 补0
+        return { year, month, day };
+      }
+      return { year: '', month: '', day: '' }; // 如果没有日期信息，则返回空字符串
+    };
+
+
   
   // 使用正则表达式同时匹配中英文分号
   // const formatSkills = (skills)=>{
