@@ -2049,16 +2049,16 @@ const queryParams = reactive({
         ElMessageBox.alert('暂无数据！')
       }
   } finally {
-    loading.value = false;
-    if (goods_order_num.value != null && goods_test_num.value != null && goods_order_num.value != goods_test_num.value){
-      ElMessageBox.alert('检验暂未完成，生产数量：'+ goods_order_num.value + '台，当前检验数量：'+ goods_test_num.value + '台', 
-      '订单号：'+ queryParams.orderId, 
-      {
-        showClose:false,
-        showConfirmButton: false,
-        showCancelButton: false,
-      })
-    }
+    // loading.value = false;
+    // if (goods_order_num.value != null && goods_test_num.value != null && goods_order_num.value != goods_test_num.value){
+    //   ElMessageBox.alert('检验暂未完成，生产数量：'+ goods_order_num.value + '台，当前检验数量：'+ goods_test_num.value + '台', 
+    //   '订单号：'+ queryParams.orderId, 
+    //   {
+    //     showClose:false,
+    //     showConfirmButton: false,
+    //     showCancelButton: false,
+    //   })
+    // }
     
   }
 }
