@@ -454,9 +454,10 @@ public class TestDataServiceImpl implements TestDataService {
     public List<TestData> getInternalReport(ReportReqVO reqVO) {
 
         QueryWrapper<TestData> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("order_id", reqVO.getOrderId())
-                .eq("product_sn", reqVO.getProductSN())
-                .eq("module_sn", reqVO.getModuleSN());
+        queryWrapper.eq("module_sn", reqVO.getModuleSN());
+//        queryWrapper.eq("order_id", reqVO.getOrderId())
+//                .eq("product_sn", reqVO.getProductSN())
+//                .eq("module_sn", reqVO.getModuleSN());
 
         List<TestData> testDataList = testDataMapper.selectList(queryWrapper);
         Collections.reverse(testDataList);

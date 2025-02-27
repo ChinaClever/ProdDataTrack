@@ -15,7 +15,7 @@
 
         <el-form-item>
           <el-input
-            placeholder="输入格式：“订单号+成品代码+模块序列号” " 
+            placeholder="输入格式：“模块序列号” " 
             v-model="inputdata" 
             clearable
             class="!w-500px"
@@ -304,7 +304,7 @@ const queryParams = reactive({
           }
           else
           {
-            PDF.save(`Product SN ${inputdata.value} Ex-factory Report.pdf`)
+            PDF.save(`Product SN ${goods_product_sn} Ex-factory Report.pdf`)
           }
 
           // 导出完隐藏隐藏测试步骤div 关闭弹窗
@@ -327,13 +327,13 @@ const queryParams = reactive({
       goods_SN_data.value = []
       ChineseItems.value = []
       EnglishItems.value = []
-      let values = inputdata.value.split('+');
+      let values = inputdata.value;
       if (values.length == 0){
         return;
       }
-      queryParams.orderId = values[0]
-      queryParams.productSN = values[1]
-      queryParams.moduleSN = values[2]
+      // queryParams.orderId = values[0]
+      // queryParams.productSN = values[1]
+      queryParams.moduleSN = values
       loading.value = true
       try {
         const data = await TestDataApi.getInternalReport(queryParams)
