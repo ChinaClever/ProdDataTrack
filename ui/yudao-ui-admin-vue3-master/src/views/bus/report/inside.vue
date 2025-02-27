@@ -15,7 +15,7 @@
 
         <el-form-item>
           <el-input
-            placeholder="输入格式：“模块序列号” " 
+            placeholder="请输入序列号" 
             v-model="inputdata" 
             clearable
             class="!w-500px"
