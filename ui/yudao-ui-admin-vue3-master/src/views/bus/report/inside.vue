@@ -211,14 +211,14 @@ const dialogVisible= ref(false)      //控制报告弹窗的显示与隐藏  对
 const goods_SN_data = ref<Array<{ }>>([]) as any//获取到的总的数据
 const ChineseItems = ref<Array<{ }>>([]) as any//获取到的总的数据 中文部分
 const EnglishItems = ref<Array<{ }>>([]) as any//获取到的总的数据 英文部分
-const goods_product_sn = ref(false)//产品SN号
+const goods_product_sn = ref('')//产品SN号
 // const goods_language_select = ref(null);//语言选择
 const goods_tool_name = ref<string | null>(null);
 const goods_soft_version = ref<string | null>(null);
 const goods_test_type = ref<string | null>(null);
 const goods_start_time = ref<Date | null>(null)
 const goods_end_time = ref<Date | null>(null)
-const goods_order_id = ref<number | null>(null);//订单号
+const goods_order_id = ref('');//订单号
 const goods_order_num = ref<number | null>(5)//订单数量
 const goods_test_num = ref<number | null>(null)//检验数量
 const goods_dev_name = ref<string | null>(null)//测试设备的名字  插接箱  始端箱 母线槽
@@ -375,6 +375,9 @@ const queryParams = reactive({
           // goods_test_num.value = res.passTestNum
           dialogVisible.value = true;
 
+            queryParams.orderId = goods_order_id.value
+            queryParams.productSN = goods_product_sn.value
+          
           const NumData = await TestDataApi.getReportInfo(queryParams);
           if (NumData != null){
             goods_order_num.value = NumData.productionNum;

@@ -370,9 +370,14 @@ public class TestDataServiceImpl implements TestDataService {
                 respVO.setDeviceType(jsonObject.getString("MODELCODE"));
                 respVO.setProductionNum(jsonObject.getInteger("QUANTITY"));
             }else {
-                return null;
+                respVO.setCustomerName("CUSTOMERNAME");     //临时===========================================
+                respVO.setDeviceType("MODELCODE");          //临时===========================================
+
+//                return null;
             }
 
+//            respVO.setCustomerName("CUSTOMERNAME");     //临时===========================================
+//            respVO.setDeviceType("MODELCODE");          //临时===========================================
         }
 
         QueryWrapper<TestData> queryWrapper1 = new QueryWrapper<>();
@@ -443,6 +448,7 @@ public class TestDataServiceImpl implements TestDataService {
         if (!testDataList.isEmpty()){
             respVO.setDevName(testDataList.get(0).getDevName());
             respVO.setPassTestNum(passTestModuleList.size());
+            respVO.setProductionNum(passTestModuleList.size());//临时==============================================
             respVO.setProductionDate(testDataList.get(0).getStartTime());
             respVO.setTestDate(testDataList.get(0).getEndTime());
         }
