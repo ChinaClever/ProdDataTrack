@@ -37,4 +37,8 @@ public interface TestDataService {
     ReportRespVO getReportInfo(ReportReqVO reqVO);
 
     List<TestData> getInternalReport(ReportReqVO reqVO);
+
+    void updateTestData(TestData testData);
+
+    void deleteTestData(Integer id);
 }

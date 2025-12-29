@@ -13,6 +13,12 @@ public class TestDataPageReqVO{
 
     private String productSN;
 
+    private String moduleSn;
+
+    private String testItem;
+
+    private String testRequest;
+
     private String testResult;
 
     private String language;

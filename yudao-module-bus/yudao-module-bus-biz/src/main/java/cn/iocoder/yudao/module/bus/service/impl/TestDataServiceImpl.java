@@ -1,6 +1,5 @@
 package cn.iocoder.yudao.module.bus.service.impl;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
@@ -37,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.google.zxing.BarcodeFormat;
@@ -89,6 +87,15 @@ public class TestDataServiceImpl implements TestDataService {
         }
         if(pageReqVO.getProductSN() != null){
             queryWrapper.like("product_sn", pageReqVO.getProductSN());
+        }
+        if(pageReqVO.getProductSN() != null){
+            queryWrapper.like("module_sn", pageReqVO.getModuleSn());
+        }
+        if(pageReqVO.getProductSN() != null){
+            queryWrapper.like("test_item", pageReqVO.getTestItem());
+        }
+        if(pageReqVO.getProductSN() != null){
+            queryWrapper.like("test_request", pageReqVO.getTestRequest());
         }
         if(!pageReqVO.getTestResult().equals("all")){
             queryWrapper.eq("test_result", pageReqVO.getTestResult());
@@ -479,5 +486,14 @@ public class TestDataServiceImpl implements TestDataService {
         return newDataList;
     }
 
+    @Override
+    public void updateTestData(TestData testData) {
+        testDataMapper.updateById(testData);
+    }
+
+    @Override
+    public void deleteTestData(Integer id) {
+        testDataMapper.deleteById(id);
+    }
 
 }

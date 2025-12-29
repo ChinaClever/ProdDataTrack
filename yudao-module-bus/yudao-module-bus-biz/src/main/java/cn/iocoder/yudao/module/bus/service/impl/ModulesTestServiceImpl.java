@@ -35,6 +35,15 @@ public class ModulesTestServiceImpl implements ModulesTestService {
         if(modulesTestPageVO.getModuleSN() != null){
             queryWrapper.like("module_sn", modulesTestPageVO.getModuleSN());
         }
+        if(modulesTestPageVO.getModuleSN() != null){
+            queryWrapper.like("test_item", modulesTestPageVO.getTestItem());
+        }
+        if(modulesTestPageVO.getModuleSN() != null){
+            queryWrapper.like("test_require", modulesTestPageVO.getTestRequire());
+        }
+        if(modulesTestPageVO.getModuleSN() != null){
+            queryWrapper.like("test_result", modulesTestPageVO.getTestResult());
+        }
         if(!modulesTestPageVO.getJudgeResult().equals("all")){
             queryWrapper.eq("judge_result", modulesTestPageVO.getJudgeResult());
         }
@@ -50,5 +59,15 @@ public class ModulesTestServiceImpl implements ModulesTestService {
         pageResult.setList(resultPage.getRecords());
         pageResult.setTotal(resultPage.getTotal());
         return pageResult;
+    }
+
+    @Override
+    public void updateModuleTest(ModulesTest modulesTest) {
+        modulesTestMapper.updateById(modulesTest);
+    }
+
+    @Override
+    public void deleteModuleTest(Integer id) {
+        modulesTestMapper.deleteById(id);
     }
 }

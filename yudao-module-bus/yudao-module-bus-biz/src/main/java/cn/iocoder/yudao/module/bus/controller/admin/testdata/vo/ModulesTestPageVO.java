@@ -14,6 +14,12 @@ public class ModulesTestPageVO {
 
     private String moduleSN;
 
+    private String testItem;
+
+    private String testRequire;
+
+    private String testResult;
+
     private String judgeResult;
 
     private String language;

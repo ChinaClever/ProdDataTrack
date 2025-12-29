@@ -7,4 +7,8 @@ import cn.iocoder.yudao.module.bus.entity.ModulesTest;
 public interface ModulesTestService {
 
     PageResult<ModulesTest> getModulesTestPage(ModulesTestPageVO modulesTestPageVO);
+
+    void updateModuleTest(ModulesTest modulesTest);
+
+    void deleteModuleTest(Integer id);
 }
