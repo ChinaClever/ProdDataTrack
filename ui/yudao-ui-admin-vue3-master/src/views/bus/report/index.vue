@@ -175,7 +175,7 @@
                 </div>
             </div>
 
-            <div  v-else-if="goods_dev_name === '插接箱'" style="padding-left: 6%;">             
+            <div  v-else-if="goods_dev_name === '插接箱' || '基本型插接箱'" style="padding-left: 6%;">             
                 <div v-if="radio1 === '2'">
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统</p>
@@ -1911,6 +1911,8 @@ const queryParams = reactive({
         }
         else if(goods_dev_name.value == '插接箱'){
             goods_dev_name.value = 'Tap-off box';
+        } else if (goods_dev_name.value == '基本型插接箱'){
+            goods_dev_name.value = 'Basic type Tap-off box';
         }
       }
     else {
@@ -1924,6 +1926,9 @@ const queryParams = reactive({
         }
         else if(goods_dev_name.value == 'Tap-off box')
         {
+            goods_dev_name.value = '插接箱'
+        }
+        else if(goods_dev_name.value == 'Basic type Tap-off box'){
             goods_dev_name.value = '插接箱'
         }
     }
