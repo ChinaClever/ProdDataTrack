@@ -27,8 +27,8 @@ public class FactoryReportClerkController {
     @PutMapping("/updateFactoryReportClerk")
     @Operation(summary = "更新FactoryReportClerk")
     public CommonResult<String> updateFactoryReportClerk(@RequestBody FactoryReportClerk factoryReportClerk) {
-        int i = clerkService.updateFactoryReportClerk(factoryReportClerk);
-        return null;
+        clerkService.updateFactoryReportClerk(factoryReportClerk);
+        return CommonResult.success("更新成功");
     }
 
 }
