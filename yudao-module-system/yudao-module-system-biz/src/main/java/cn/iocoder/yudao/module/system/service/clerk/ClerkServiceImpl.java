@@ -18,6 +18,7 @@ public class ClerkServiceImpl implements ClerkService {
 
     @Override
     public int updateFactoryReportClerk(FactoryReportClerk factoryReportClerk) {
+        factoryReportClerk.setId(1L);
         return clerkMapper.updateById(factoryReportClerk);
     }
 }
