@@ -85,10 +85,10 @@ public class TestDataServiceImpl implements TestDataService {
         queryWrapper.orderByDesc("id");
 
         if(pageReqVO.getOrderId() != null){
-            queryWrapper.eq("order_id", pageReqVO.getOrderId());
+            queryWrapper.like("order_id", pageReqVO.getOrderId());
         }
         if(pageReqVO.getProductSN() != null){
-            queryWrapper.eq("product_sn", pageReqVO.getProductSN());
+            queryWrapper.like("product_sn", pageReqVO.getProductSN());
         }
         if(!pageReqVO.getTestResult().equals("all")){
             queryWrapper.eq("test_result", pageReqVO.getTestResult());

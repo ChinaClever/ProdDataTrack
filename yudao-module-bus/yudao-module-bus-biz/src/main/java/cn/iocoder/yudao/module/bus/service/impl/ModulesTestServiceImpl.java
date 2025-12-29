@@ -27,13 +27,13 @@ public class ModulesTestServiceImpl implements ModulesTestService {
         queryWrapper.orderByDesc("id");
 
         if(modulesTestPageVO.getOrderId() != null){
-            queryWrapper.eq("order_id", modulesTestPageVO.getOrderId());
+            queryWrapper.like("order_id", modulesTestPageVO.getOrderId());
         }
         if(modulesTestPageVO.getProductSN() != null){
-            queryWrapper.eq("product_sn", modulesTestPageVO.getProductSN());
+            queryWrapper.like("product_sn", modulesTestPageVO.getProductSN());
         }
         if(modulesTestPageVO.getModuleSN() != null){
-            queryWrapper.eq("module_sn", modulesTestPageVO.getModuleSN());
+            queryWrapper.like("module_sn", modulesTestPageVO.getModuleSN());
         }
         if(!modulesTestPageVO.getJudgeResult().equals("all")){
             queryWrapper.eq("judge_result", modulesTestPageVO.getJudgeResult());
