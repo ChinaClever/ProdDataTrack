@@ -26,31 +26,31 @@ public class ModulesTestServiceImpl implements ModulesTestService {
         QueryWrapper<ModulesTest> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
 
-        if(modulesTestPageVO.getOrderId() != null){
+        if (modulesTestPageVO.getOrderId() != null) {
             queryWrapper.like("order_id", modulesTestPageVO.getOrderId());
         }
-        if(modulesTestPageVO.getProductSN() != null){
+        if (modulesTestPageVO.getProductSN() != null) {
             queryWrapper.like("product_sn", modulesTestPageVO.getProductSN());
         }
-        if(modulesTestPageVO.getModuleSN() != null){
+        if (modulesTestPageVO.getModuleSN() != null) {
             queryWrapper.like("module_sn", modulesTestPageVO.getModuleSN());
         }
-        if(modulesTestPageVO.getModuleSN() != null){
+        if (modulesTestPageVO.getModuleSN() != null) {
             queryWrapper.like("test_item", modulesTestPageVO.getTestItem());
         }
-        if(modulesTestPageVO.getModuleSN() != null){
+        if (modulesTestPageVO.getModuleSN() != null) {
             queryWrapper.like("test_require", modulesTestPageVO.getTestRequire());
         }
-        if(modulesTestPageVO.getModuleSN() != null){
+        if (modulesTestPageVO.getModuleSN() != null) {
             queryWrapper.like("test_result", modulesTestPageVO.getTestResult());
         }
-        if(!modulesTestPageVO.getJudgeResult().equals("all")){
+        if (!modulesTestPageVO.getJudgeResult().equals("all")) {
             queryWrapper.eq("judge_result", modulesTestPageVO.getJudgeResult());
         }
-        if(!modulesTestPageVO.getLanguage().equals("all")){
+        if (!modulesTestPageVO.getLanguage().equals("all")) {
             queryWrapper.eq("language_select", modulesTestPageVO.getLanguage());
         }
-        if(modulesTestPageVO.getTimeRange() != null){
+        if (modulesTestPageVO.getTimeRange() != null) {
             queryWrapper.ge("date_time", modulesTestPageVO.getTimeRange()[0]).le("date_time", modulesTestPageVO.getTimeRange()[1]);
         }
 
@@ -69,5 +69,10 @@ public class ModulesTestServiceImpl implements ModulesTestService {
     @Override
     public void deleteModuleTest(Integer id) {
         modulesTestMapper.deleteById(id);
+    }
+
+    @Override
+    public int deleteBatchModuleTest(String moduleSn) {
+        return modulesTestMapper.deleteBatchModuleTest(moduleSn);
     }
 }

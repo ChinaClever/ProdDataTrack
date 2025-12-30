@@ -11,4 +11,6 @@ public interface ModulesTestService {
     void updateModuleTest(ModulesTest modulesTest);
 
     void deleteModuleTest(Integer id);
+
+    int deleteBatchModuleTest(String moduleSn);
 }

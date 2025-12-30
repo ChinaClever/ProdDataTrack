@@ -41,4 +41,6 @@ public interface TestDataService {
     void updateTestData(TestData testData);
 
     void deleteTestData(Integer id);
+
+    int deleteBatchTestData(String moduleSn);
 }

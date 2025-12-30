@@ -69,9 +69,16 @@ public class BusController {
 
     @DeleteMapping("/deleteTestData")
     @Operation(summary = "删除成品质检数据")
-    public CommonResult<String> deleteTestData(@RequestParam("id") Integer id){
+    public CommonResult<String> deleteTestData(@RequestParam("id") Integer id) {
         testDataService.deleteTestData(id);
         return success("删除成功");
+    }
+
+    @DeleteMapping("/deleteBatchTestData")
+    @Operation(summary = "批量删除成品质检数据")
+    public CommonResult<String> deleteBatchTestData(@RequestParam("moduleSn") String moduleSn) {
+        int count = testDataService.deleteBatchTestData(moduleSn);
+        return success("成功删除" + count + "条数据");
     }
 
 
@@ -125,17 +132,23 @@ public class BusController {
 
     @PutMapping("/updateModuleTest")
     @Operation(summary = "更新模块质检数据")
-    public CommonResult<String> updateModuleTest(@RequestBody ModulesTest modulesTest){
-        CommonResult<String> commonResult = new CommonResult<>();
+    public CommonResult<String> updateModuleTest(@RequestBody ModulesTest modulesTest) {
         modulesTestService.updateModuleTest(modulesTest);
         return success("更新成功");
     }
 
     @DeleteMapping("/deleteModuleTest")
     @Operation(summary = "删除模块质检数据")
-    public CommonResult<String> deleteModuleTest(@RequestParam("id") Integer id){
+    public CommonResult<String> deleteModuleTest(@RequestParam("id") Integer id) {
         modulesTestService.deleteModuleTest(id);
         return success("删除成功");
+    }
+
+    @DeleteMapping("/deleteBatchModuleTest")
+    @Operation(summary = "批量删除模块质检数据")
+    public CommonResult<String> deleteBatchModuleTest(@RequestParam("moduleSn") String moduleSn) {
+        int count = modulesTestService.deleteBatchModuleTest(moduleSn);
+        return success("成功删除" + count + "条数据");
     }
 
 

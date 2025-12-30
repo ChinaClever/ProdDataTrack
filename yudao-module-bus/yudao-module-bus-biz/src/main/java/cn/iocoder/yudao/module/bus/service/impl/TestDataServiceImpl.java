@@ -82,28 +82,28 @@ public class TestDataServiceImpl implements TestDataService {
         QueryWrapper<TestData> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
 
-        if(pageReqVO.getOrderId() != null){
+        if (pageReqVO.getOrderId() != null) {
             queryWrapper.like("order_id", pageReqVO.getOrderId());
         }
-        if(pageReqVO.getProductSN() != null){
+        if (pageReqVO.getProductSN() != null) {
             queryWrapper.like("product_sn", pageReqVO.getProductSN());
         }
-        if(pageReqVO.getProductSN() != null){
+        if (pageReqVO.getProductSN() != null) {
             queryWrapper.like("module_sn", pageReqVO.getModuleSn());
         }
-        if(pageReqVO.getProductSN() != null){
+        if (pageReqVO.getProductSN() != null) {
             queryWrapper.like("test_item", pageReqVO.getTestItem());
         }
-        if(pageReqVO.getProductSN() != null){
+        if (pageReqVO.getProductSN() != null) {
             queryWrapper.like("test_request", pageReqVO.getTestRequest());
         }
-        if(!pageReqVO.getTestResult().equals("all")){
+        if (!pageReqVO.getTestResult().equals("all")) {
             queryWrapper.eq("test_result", pageReqVO.getTestResult());
         }
-        if(!pageReqVO.getLanguage().equals("all")){
+        if (!pageReqVO.getLanguage().equals("all")) {
             queryWrapper.eq("language_select", pageReqVO.getLanguage());
         }
-        if(pageReqVO.getTimeRange() != null){
+        if (pageReqVO.getTimeRange() != null) {
             queryWrapper.ge("end_time", pageReqVO.getTimeRange()[0]).le("end_time", pageReqVO.getTimeRange()[1]);
         }
 
@@ -188,7 +188,7 @@ public class TestDataServiceImpl implements TestDataService {
             XWPFTable tablerow = document.getTables().get(0);
             XWPFTableCell firstCell = tablerow.getRow(0).getCell(0);
 
-            String imgFile = baseUrl+ qrcodePath + usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode() + ".jpeg";
+            String imgFile = baseUrl + qrcodePath + usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode() + ".jpeg";
             // 插入图片
             insertQRPicture(firstCell, imgFile, 50, 50, 0);
 
@@ -232,33 +232,33 @@ public class TestDataServiceImpl implements TestDataService {
                     existsOrder = true;
                 } else if (dataStr[i].equals("设计编号")) {
                     usedOrderInfo.setDesignNumber(dataStr[++i]);
-                }else if (dataStr[i].equals("编制日期")) {
+                } else if (dataStr[i].equals("编制日期")) {
                     usedOrderInfo.setDesignDate(dataStr[++i]);
-                }else if (dataStr[i].equals("设计单位")) {
+                } else if (dataStr[i].equals("设计单位")) {
                     usedOrderInfo.setArchitect(dataStr[++i]);
-                }else if (dataStr[i].equals("数量")) {
+                } else if (dataStr[i].equals("数量")) {
                     usedOrderInfo.setNumber(dataStr[++i]);
-                }else if (dataStr[i].equals("产品类别")) {
+                } else if (dataStr[i].equals("产品类别")) {
                     usedOrderInfo.setProductCategory(dataStr[++i]);
-                }else if (dataStr[i].equals("产品系列")) {
+                } else if (dataStr[i].equals("产品系列")) {
                     usedOrderInfo.setProductLine(dataStr[++i]);
-                }else if (dataStr[i].equals("交货日期")) {
+                } else if (dataStr[i].equals("交货日期")) {
                     usedOrderInfo.setDeliveryDate(dataStr[++i]);
-                }else if (dataStr[i].equals("运输方式")) {
+                } else if (dataStr[i].equals("运输方式")) {
                     usedOrderInfo.setModeOfShipping(dataStr[++i]);
-                }else if (dataStr[i].equals("部门")) {
+                } else if (dataStr[i].equals("部门")) {
                     usedOrderInfo.setDepartment(dataStr[++i]);
-                }else if (dataStr[i].equals("设计人")) {
+                } else if (dataStr[i].equals("设计人")) {
                     usedOrderInfo.setDesigner(dataStr[++i]);
-                }else if (dataStr[i].equals("客户编码")) {
+                } else if (dataStr[i].equals("客户编码")) {
                     usedOrderInfo.setCustomerCode(dataStr[++i]);
-                }else if (dataStr[i].equals("生产车间")) {
+                } else if (dataStr[i].equals("生产车间")) {
                     usedOrderInfo.setManufacturingShop(dataStr[++i]);
-                }else if (dataStr[i].equals("客户名称")) {
+                } else if (dataStr[i].equals("客户名称")) {
                     usedOrderInfo.setCustomerName(dataStr[++i]);
-                }else if (dataStr[i].equals("客户型号")) {
+                } else if (dataStr[i].equals("客户型号")) {
                     usedOrderInfo.setCustomerModel(dataStr[++i]);
-                }else if (dataStr[i].equals("规格型号")) {
+                } else if (dataStr[i].equals("规格型号")) {
                     usedOrderInfo.setDeviceType(dataStr[++i]);
                 }
             }
@@ -269,10 +269,10 @@ public class TestDataServiceImpl implements TestDataService {
             existsOrder = false;
             System.out.println("成品代码:" + usedOrderInfo.getDeviceCode() + ";" + "受订单号:" + usedOrderInfo.getOrderNumber());
             relaseQR = usedOrderInfo.getOrderNumber() + "+" + usedOrderInfo.getDeviceCode();
-            System.out.println("usedOrderInfo:"+usedOrderInfo);
-            try{
+            System.out.println("usedOrderInfo:" + usedOrderInfo);
+            try {
                 generateQRCode(relaseQR, baseUrl);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println(relaseQR);
             }
         }
@@ -282,7 +282,7 @@ public class TestDataServiceImpl implements TestDataService {
     public void generateQRCode(String text, String baseUrl) throws IOException, WriterException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, QR_CODE_SIZE, QR_CODE_SIZE);
-        Path path = FileSystems.getDefault().getPath(baseUrl + qrcodePath + text +".jpeg");
+        Path path = FileSystems.getDefault().getPath(baseUrl + qrcodePath + text + ".jpeg");
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
         System.out.println("二维码已生成：" + path);
     }
@@ -337,7 +337,7 @@ public class TestDataServiceImpl implements TestDataService {
             CTAnchor anchor1 = getAnchorWithGraphic(graphicalObject, "Seal",
                     Units.toEMU(50), Units.toEMU(50), // 图片大小
                     Units.toEMU(480), Units.toEMU(0), true);// 相对当前段落位置及偏移
-            drawing.setAnchorArray(new CTAnchor[] { anchor1 });// 添加浮动属性
+            drawing.setAnchorArray(new CTAnchor[]{anchor1});// 添加浮动属性
             drawing.removeInline(0);// 删除行内属性
         } finally {
             if (fis != null) {
@@ -359,11 +359,11 @@ public class TestDataServiceImpl implements TestDataService {
         UsedOrderInfo usedOrderInfo = usedOrderInfoMapper.selectOne(queryWrapper);
         // 查mysql所需返回数据
         ReportRespVO respVO = new ReportRespVO();
-        if (usedOrderInfo != null){
+        if (usedOrderInfo != null) {
             respVO.setCustomerName(usedOrderInfo.getCustomerName());
             respVO.setDeviceType(usedOrderInfo.getDeviceType());
             respVO.setProductionNum(Integer.valueOf(usedOrderInfo.getNumber()));
-        }else{
+        } else {
             // 查不到就请求其他接口 据说一定能查到
             String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx?Type=GetSpecPrints&UserId=BBFC8115-8EF5-42E1-B1CB-A1154291F9CD" +
                     "&OrderNo=" + reqVO.getOrderId() +
@@ -376,7 +376,7 @@ public class TestDataServiceImpl implements TestDataService {
                 respVO.setCustomerName(jsonObject.getString("CUSTOMERNAME"));
                 respVO.setDeviceType(jsonObject.getString("MODELCODE"));
                 respVO.setProductionNum(jsonObject.getInteger("QUANTITY"));
-            }else {
+            } else {
                 respVO.setCustomerName("CUSTOMERNAME");     //临时===========================================
                 respVO.setDeviceType("MODELCODE");          //临时===========================================
 
@@ -404,55 +404,54 @@ public class TestDataServiceImpl implements TestDataService {
         String nowStartTime = null;
 
         // 查到的数据已经按时间倒序排序 最新一次在前面
-        for(TestData testData : testDataList){
+        for (TestData testData : testDataList) {
             // 初始化当前循环在哪个模块哪一次 第一次循环才执行
-            if (nowModule == null ){
+            if (nowModule == null) {
                 nowModule = testData.getModuleSn();
                 nowStartTime = testData.getStartTime();
             }
 
-            if(!moduleSnList.contains(testData.getModuleSn())){
+            if (!moduleSnList.contains(testData.getModuleSn())) {
                 moduleSnList.add(testData.getModuleSn());
             }
             // 不跳过,同时属于同模块同一次, 不在passTestModuleList和failTestModuleList说明是最新那次
             //需要判断!failTestModuleList.contains(testData.getModule_sn())是为了避免模块最新那次失败了，后续循环到旧检测还执行后续判断，应跳过
             if (!skipFlag && Objects.equals(testData.getModuleSn(), nowModule) && !passTestModuleList.contains(testData.getModuleSn())
-                    && !failTestModuleList.contains(testData.getModuleSn())){
+                    && !failTestModuleList.contains(testData.getModuleSn())) {
 
                 // 同一模块的同一检测次 出现失败 则这个模块失败 直接跳过到下一模块
-                if (Objects.equals(testData.getTestResult(), "0")){
+                if (Objects.equals(testData.getTestResult(), "0")) {
                     failTestModuleList.add(nowModule);
                     skipFlag = true;
                     continue;
                 }
             }
             // 到了下一个模块执行 或者同一模块旧一次检测
-            if ( !Objects.equals(testData.getModuleSn(), nowModule) || !Objects.equals(nowStartTime, testData.getStartTime())
+            if (!Objects.equals(testData.getModuleSn(), nowModule) || !Objects.equals(nowStartTime, testData.getStartTime())
                     && !passTestModuleList.contains(testData.getModuleSn())
-                    && !failTestModuleList.contains(testData.getModuleSn())){
+                    && !failTestModuleList.contains(testData.getModuleSn())) {
                 // 如果skipFlag == false  说明上一个模块通过测试 需加入passTestModuleList
-                if ( !skipFlag && !passTestModuleList.contains(testData.getModuleSn())){
+                if (!skipFlag && !passTestModuleList.contains(testData.getModuleSn())) {
                     passTestModuleList.add(nowModule);
                 }
                 skipFlag = false;
                 nowModule = testData.getModuleSn();
                 nowStartTime = testData.getStartTime();
                 // 看本项测试是否失败 如果失败就继续跳过到下一个模块
-                if (Objects.equals(testData.getTestResult(), "0")){
+                if (Objects.equals(testData.getTestResult(), "0")) {
                     failTestModuleList.add(nowModule);
                     skipFlag = true;
                 }
             }
         }
 
-        if(moduleSnList.size() == 1 && passTestModuleList.isEmpty())
-        {
+        if (moduleSnList.size() == 1 && passTestModuleList.isEmpty()) {
             passTestModuleList.add(moduleSnList.get(0));
         }
 
-        System.out.println("passTestModuleList"+Arrays.toString(passTestModuleList.toArray()));
-        System.out.println("failTestModuleList"+Arrays.toString(failTestModuleList.toArray()));
-        if (!testDataList.isEmpty()){
+        System.out.println("passTestModuleList" + Arrays.toString(passTestModuleList.toArray()));
+        System.out.println("failTestModuleList" + Arrays.toString(failTestModuleList.toArray()));
+        if (!testDataList.isEmpty()) {
             respVO.setDevName(testDataList.get(0).getDevName());
             respVO.setPassTestNum(passTestModuleList.size());
             respVO.setProductionNum(passTestModuleList.size());//临时==============================================
@@ -477,8 +476,8 @@ public class TestDataServiceImpl implements TestDataService {
 
         List<TestData> newDataList = new ArrayList<>(testDataList.size());
 
-        testDataList.forEach(i ->{
-            if(!newDataList.toString().contains(i.getTestRequest())) {
+        testDataList.forEach(i -> {
+            if (!newDataList.toString().contains(i.getTestRequest())) {
                 newDataList.add(i);
             }
         });
@@ -494,6 +493,11 @@ public class TestDataServiceImpl implements TestDataService {
     @Override
     public void deleteTestData(Integer id) {
         testDataMapper.deleteById(id);
+    }
+
+    @Override
+    public int deleteBatchTestData(String moduleSn) {
+        return testDataMapper.deleteBatchTestData(moduleSn);
     }
 
 }
