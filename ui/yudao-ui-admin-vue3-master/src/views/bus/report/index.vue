@@ -435,7 +435,7 @@
                   </el-table>
                 </div>
             </div>
-            <div  v-else-if="goods_dev_name === 'Tap-off box'" style="padding-left: 6%;">
+            <div  v-else-if="goods_dev_name === 'Tap-off box' ||'Basic type Tap-off box' " style="padding-left: 6%;">
                 <div v-if="radio1 === '2'">
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>Inspection instruments: high temperature aging room, safety test equipment, busbar quality inspection and testing system, etc.</p>
