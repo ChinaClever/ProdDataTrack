@@ -1929,7 +1929,7 @@ const queryParams = reactive({
             goods_dev_name.value = '插接箱'
         }
         else if(goods_dev_name.value == 'Basic type Tap-off box'){
-            goods_dev_name.value = '插接箱'
+            goods_dev_name.value = '基本型插接箱'
         }
     }
   }
