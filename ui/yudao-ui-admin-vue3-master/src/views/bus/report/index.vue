@@ -125,7 +125,7 @@
             </div>
             <span>审核：国漫</span>
             <div style="padding-right: 10%">
-                <span >批准：吴美文</span>
+                <span >批准：张贵陵</span>
             </div>
           </div>
           <div class="horizontal-rule">
