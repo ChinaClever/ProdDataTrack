@@ -10,11 +10,13 @@
         <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
 
+      <div class="report-preview-outer" :class="{ 'no-zoom': !supportsZoom }" :style="previewOuterStyle">
+        <div class="report-preview-inner" :class="{ 'is-exporting': exporting }" :style="previewInnerStyle">
       <div v-if="out_language == true">
         <div id="page1Content">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
               <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo1.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
@@ -78,7 +80,7 @@
           </div>
           <div style="height: 6cap">
               <br/>
-          </div>
+          </div>  
           <div class="horizontal-rule">
             <hr/>
           </div>
@@ -540,6 +542,8 @@
             </div>
         </div>
       </div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -574,6 +578,36 @@ const customerName = ref('');
 const radio1 = ref('2');
 const radio2 = ref(false);
 const loading = ref(false) // 加载中
+const exporting = ref(false)
+
+// 预览使用“固定设计宽度 + 缩放”来适配手机（避免逐机型写样式）
+const REPORT_DESIGN_WIDTH_PX = 1800
+const previewScale = ref(1)
+const supportsZoom =
+  typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('zoom', '1')
+
+const updatePreviewScale = () => {
+  const viewportWidth = document.documentElement?.clientWidth || window.innerWidth
+  const horizontalPadding = 24
+  const scale = Math.min(1, (viewportWidth - horizontalPadding) / REPORT_DESIGN_WIDTH_PX)
+  previewScale.value = Number.isFinite(scale) && scale > 0 ? Number(scale.toFixed(3)) : 1
+}
+
+const previewOuterStyle = computed((): Record<string, string | number> => {
+  const scale = exporting.value ? 1 : previewScale.value
+  if (supportsZoom) return {}
+  return { width: `${Math.round(REPORT_DESIGN_WIDTH_PX * scale)}px` }
+})
+
+const previewInnerStyle = computed((): Record<string, string | number> => {
+  const scale = exporting.value ? 1 : previewScale.value
+  if (supportsZoom) return { width: `${REPORT_DESIGN_WIDTH_PX}px`, zoom: scale }
+  return {
+    width: `${REPORT_DESIGN_WIDTH_PX}px`,
+    transform: `scale(${scale})`,
+    transformOrigin: 'top left'
+  }
+})
 const queryParams = reactive({
   orderId: '' , // 订单号
   productSN: '',// 成品代码
@@ -1979,7 +2013,9 @@ const queryParams = reactive({
     };
 
     // 处理第一页
-    processPage(page1Element, 1)
+    exporting.value = true
+    nextTick()
+      .then(() => processPage(page1Element, 1))
       .then(() => {
         // 假设我们有第二页内容需要处理，这里的ID应替换为实际的第二页元素ID
         const page2Element = document.getElementById('page2Content');
@@ -2017,6 +2053,9 @@ const queryParams = reactive({
       })
       .catch(error => {
         console.error('导出PDF时出错：', error);
+      })
+      .finally(() => {
+        exporting.value = false
       });
     }
   const out_handleExport = () =>{
@@ -2069,6 +2108,9 @@ const queryParams = reactive({
 }
 
 onMounted(() => { 
+  updatePreviewScale()
+  window.addEventListener('resize', updatePreviewScale)
+
   const queryOrderId = useRoute().query.orderId as string;
   const queryProductSN = useRoute().query.productSN as string;
   const queryModuleSN = useRoute().query.moduleSN as string;
@@ -2097,6 +2139,10 @@ onMounted(() => {
  // 切换语言
  out_language.value = true;
   getReportData(); 
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updatePreviewScale)
 })
 
     
@@ -2306,5 +2352,25 @@ input {
 }
 .radio-buttons-1{
   padding-left: 40px;
+}
+
+.report-preview-outer {
+  padding: 12px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.report-preview-outer.no-zoom {
+  overflow: hidden;
+}
+
+.report-preview-inner {
+  margin: 0 auto;
+  background: #fff;
+}
+
+.report-preview-inner:not(.is-exporting) {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 </style>
