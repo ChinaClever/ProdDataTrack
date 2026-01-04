@@ -30,13 +30,13 @@
           <el-input 
             v-model="queryParams.orderId" 
             clearable
-            class="!w-170px"/>
+            class="!w-140px"/>
         </el-form-item>
         <el-form-item label="成品代码">
           <el-input 
             v-model="queryParams.productSN" 
             clearable
-            class="!w-200px"/>
+            class="!w-180px"/>
         </el-form-item>
         <el-form-item label="结束时间段" prop="timeRange">
           <el-date-picker
@@ -52,6 +52,7 @@
         </el-form-item>
         <el-form-item >
           <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-1px" /> 搜索</el-button>
+          <el-button  type="danger" @click="()=> dialogStatus = true" >批量删除</el-button>
         </el-form-item> 
     </el-form>
   </ContentWrap>
@@ -64,8 +65,29 @@
         </template>
       </el-table-column>
       <!-- 遍历其他列 -->  
-      <template v-for="column in tableColumns">
-        <el-table-column :key="column.prop" :label="column.label" :align="column.align" :prop="column.prop" :formatter="column.formatter" :width="column.width" v-if="column.istrue"/>
+      <template v-for="column in tableColumns" :key="column.prop">
+  <!-- 普通列 -->
+        <el-table-column
+          v-if="column.istrue && column.prop !== 'id'"
+          :label="column.label"
+          :align="column.align"
+          :prop="column.prop"
+          :formatter="column.formatter"
+          :width="column.width"
+        />
+
+        <!-- 操作列 -->
+        <el-table-column
+          v-else-if="column.istrue && column.prop === 'id'"
+          :label="column.label"
+          :align="column.align"
+          :width="column.width"
+        >
+          <template #default="{ row }">
+            <el-button type="primary" link @click="handleAction(row.id)">删除</el-button>
+            <el-button type="primary" link @click="()=> {resetQuery = true; handleReset(row)}" >更新</el-button>
+          </template>
+        </el-table-column>
       </template>
     </el-table>
     <Pagination
@@ -76,14 +98,136 @@
       v-model:limit="queryParams.pageSize"
       @pagination="getList"/>
   </ContentWrap>
+
+
+  <el-dialog v-model="dialogStatus" width="600px" @before-close="()=> dialogStatus = false">
+    <div>
+      <span class=" mr-2">填写模拟序列号：</span>
+      <el-input v-model="moduleSn"  style="width: 220px;"/>
+      <el-button type="primary" class=" ml-2" @click="handlesubmit">提交</el-button>
+    </div>
+  </el-dialog>
+
+  <el-dialog v-model="resetQuery" width="800px" @before-close="()=> {resetQuery = false; }">
+    <div>
+      
+     <el-form ref="formRef" :model="form" label-width="80px">
+      <el-row :gutter="16">
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="订单号" prop="orderId">
+            <el-input v-model="form.orderId" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="成品代码" prop="productSn">
+            <el-input v-model="form.productSn" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="模块序列" prop="moduleSn">
+            <el-input v-model="form.moduleSn" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="设备名称" prop="devName">
+            <el-input v-model="form.devName" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="测试结果" prop="testResult">
+            <!-- <el-input v-model="form.testResult" style="width: 100%" /> -->
+            <el-select
+              v-model="form.testResult"
+              placeholder="请选择测试结果"
+              class="!w-90px">
+              <el-option label="通过" value="1" />
+              <el-option label="失败" value="0" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="测试项目" prop="testItem">
+            <el-input v-model="form.testItem" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="24">
+          <el-form-item label="测试要求" prop="testRequest">
+            <el-input v-model="form.testRequest" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="结果判定" prop="testProcess">
+            <el-input v-model="form.testProcess" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12">
+        <el-form-item label="开始时间" prop="startTime">
+          <el-date-picker
+            v-model="form.startTime"
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"
+          />
+        </el-form-item>
+      </el-col>
+
+      <el-col :xs="24" :sm="12">
+        <el-form-item label="结束时间" prop="endTime">
+          <el-date-picker
+            v-model="form.endTime"
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            format="YYYY-MM-DD HH:mm:ss"
+            style="width: 100%"
+          />
+        </el-form-item>
+      </el-col>
+        <el-col :span="24">
+          <el-form-item>
+            <el-button type="primary" @click="handleUpdate">提交</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    </div>
+  </el-dialog>
+
 </template>
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import { TestDataApi } from '@/api/bus/testData'
+import { ElMessage } from 'element-plus';
 const loading = ref(true)
 const list = ref<Array<{ }>>([]) as any; 
 const total = ref(0)
+const dialogStatus = ref(false)
+const moduleSn = ref("")
+const resetQuery = ref(false)
+const formRef = ref()
+
+const form = reactive({
+  id: 0,
+  productSn:'',
+  moduleSn:'',
+  orderId:'',
+  devName:'',
+  testResult:'',
+  testItem:'',
+  testRequest:'',
+  testProcess:'',
+  endTime:'',
+  startTime:'',
+})
+
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 15,
@@ -189,7 +333,33 @@ const tableColumns = ref([
   { label: '结束时间', align: 'center', prop: 'endTime', istrue:true, formatter: formatTime, width: '200px'},  
   { label: '软件版本', align: 'center', prop: 'softVersion', istrue: true},
   { label: '语言', align: 'center', prop: 'languageSelect' , istrue: true, formatter: formatLanguage, width: '100px'},
+  { label:'操作',align:'center',prop:'id',istrue: true,width:'120px'}
 ]);
+
+const handleReset =(row)=>{
+  console.log("row",row)
+  form.id = row.id
+  form.productSn = row.productSn
+  form.moduleSn = row.moduleSn
+  form.orderId = row.orderId
+  form.devName = row.devName
+  form.testResult = row.testResult
+  form.testItem = row.testItem
+  form.testRequest = row.testRequest
+  form.testProcess = row.testProcess
+  form.startTime = row.startTime
+  form.endTime = row.endTime
+}
+
+
+const handleUpdate = async ()=>{
+  const res = await TestDataApi.updateTestData(form)
+  if(res){
+    ElMessage.success('修改成功')
+    getList()
+  }
+}
+
 
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -208,6 +378,25 @@ const getList = async () => {
     loading.value = false
   }
 }
+
+const handleAction = async (id: number | string) => {
+  // 这里拿到的就是这一行的 id
+  console.log('id =', id)
+  const res = await TestDataApi.deleteTestData(id)
+  if(res){
+    ElMessage.success('删除成功')
+    getList()
+  }
+}
+
+const handlesubmit =async ()=>{
+  const res = await TestDataApi.deleteBatchTestData(moduleSn.value)
+  if(res){
+    ElMessage.success('删除成功')
+    getList()
+  }
+}
+
 
 // 格式化日期列
 function formatTime(_row: any, _column: any, cellValue: number): string {
@@ -245,6 +434,8 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+:deep(.el-form-item){
+  margin-right: 10px;
+}
 </style>

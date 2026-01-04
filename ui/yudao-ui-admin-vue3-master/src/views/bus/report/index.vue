@@ -123,11 +123,11 @@
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
             <div style="padding-left: 5%">
-                  <span >检验员：欧阳中强</span>
+                  <span >检验员：{{form.inspector}}</span>
             </div>
-            <span>审核：张玲</span>
+            <span>审核：{{form.auditor}}</span>
             <div style="padding-right: 10%">
-                <span >批准：李佳</span>
+                <span >批准：{{form.signer}}</span>
             </div>
           </div>
           <div class="horizontal-rule">
@@ -553,6 +553,8 @@ import { ElMessageBox } from 'element-plus'
 import { isVisible } from 'element-plus/es/utils';
 import html2canvas from "html2canvas";
 import JsPDF from "jspdf";
+import { systemapi } from '@/api/system/systemset';
+
 
 defineOptions({ name: 'BusReport' })
 const Out_dialogVisible = ref(true);
@@ -579,7 +581,11 @@ const radio1 = ref('2');
 const radio2 = ref(false);
 const loading = ref(false) // 加载中
 const exporting = ref(false)
-
+const form = reactive({
+  auditor:'克莱沃',
+  signer: "克莱沃",
+  inspector: "克莱沃",
+})
 // 预览使用“固定设计宽度 + 缩放”来适配手机（避免逐机型写样式）
 const REPORT_DESIGN_WIDTH_PX = 1800
 const previewScale = ref(1)
@@ -2105,9 +2111,19 @@ const queryParams = reactive({
     // }
     
   }
+
+}
+
+const handleRequest =async()=>{
+  const res = await systemapi.getFactoryReportClerk('bus')
+  console.log("res",res)
+  form.auditor = res.auditor
+  form.inspector = res.inspector
+  form.signer = res.signer
 }
 
 onMounted(() => { 
+  handleRequest()
   updatePreviewScale()
   window.addEventListener('resize', updatePreviewScale)
 
