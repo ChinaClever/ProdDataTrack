@@ -125,9 +125,9 @@
             <div style="padding-left: 5%">
                   <span >检验员：欧阳中强</span>
             </div>
-            <span>审核：国漫</span>
+            <span>审核：张玲</span>
             <div style="padding-right: 10%">
-                <span >批准：张贵陵</span>
+                <span >批准：李佳</span>
             </div>
           </div>
           <div class="horizontal-rule">
