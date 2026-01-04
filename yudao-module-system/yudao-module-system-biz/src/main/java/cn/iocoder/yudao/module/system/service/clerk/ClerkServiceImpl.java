@@ -12,13 +12,13 @@ public class ClerkServiceImpl implements ClerkService {
     private ClerkMapper clerkMapper;
 
     @Override
-    public FactoryReportClerk getFactoryReportClerk() {
-        return clerkMapper.selectById(1);
+    public FactoryReportClerk getFactoryReportClerk(String identification) {
+        return clerkMapper.selectOne("identification", identification);
     }
 
     @Override
     public int updateFactoryReportClerk(FactoryReportClerk factoryReportClerk) {
-        factoryReportClerk.setId(1L);
+        factoryReportClerk.setId(factoryReportClerk.getId());
         return clerkMapper.updateById(factoryReportClerk);
     }
 }

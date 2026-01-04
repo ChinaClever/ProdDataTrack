@@ -15,11 +15,13 @@ public class FactoryReportClerk {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @Schema(description = "检验员", requiredMode = Schema.RequiredMode.REQUIRED, example = "克莱沃")
+    @Schema(description = "检验员", requiredMode = Schema.RequiredMode.AUTO, example = "克莱沃")
     private String inspector;
-    @Schema(description = "审核人", requiredMode = Schema.RequiredMode.REQUIRED, example = "克莱沃")
+    @Schema(description = "审核人", requiredMode = Schema.RequiredMode.AUTO, example = "克莱沃")
     private String auditor;
-    @Schema(description = "批准人", requiredMode = Schema.RequiredMode.REQUIRED, example = "克莱沃")
+    @Schema(description = "批准人", requiredMode = Schema.RequiredMode.AUTO, example = "克莱沃")
     private String signer;
+    @Schema(description = "业务标识", requiredMode = Schema.RequiredMode.AUTO, example = "bus")
+    private String identification;
 
 }

@@ -18,17 +18,22 @@ public class FactoryReportClerkController {
 
     @GetMapping("/getFactoryReportClerk")
     @Operation(summary = "获取FactoryReportClerk")
-    public CommonResult<FactoryReportClerk> getFactoryReportClerk() {
+    public CommonResult<FactoryReportClerk> getFactoryReportClerk(@RequestParam("identification") String identification) {
         CommonResult<FactoryReportClerk> commonResult = new CommonResult<>();
-        FactoryReportClerk factoryReportClerk = clerkService.getFactoryReportClerk();
+        FactoryReportClerk factoryReportClerk = clerkService.getFactoryReportClerk(identification);
         return commonResult.setCode(200).setData(factoryReportClerk);
     }
 
     @PutMapping("/updateFactoryReportClerk")
     @Operation(summary = "更新FactoryReportClerk")
     public CommonResult<String> updateFactoryReportClerk(@RequestBody FactoryReportClerk factoryReportClerk) {
-        clerkService.updateFactoryReportClerk(factoryReportClerk);
-        return CommonResult.success("更新成功");
+        int i = clerkService.updateFactoryReportClerk(factoryReportClerk);
+        if (i == 1) {
+            return CommonResult.success("更新成功");
+        } else {
+            return CommonResult.error(500, "更新失败");
+        }
+
     }
 
 }
