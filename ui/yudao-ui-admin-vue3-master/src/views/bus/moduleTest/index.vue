@@ -44,13 +44,13 @@
           <el-input 
             v-model.trim="queryParams.moduleSn" 
             clearable
-            class="!w-140px"/>
+            class="!w-170px"/>
         </el-form-item>
         <el-form-item label="测试项目">
           <el-input 
             v-model.trim="queryParams.testItem" 
             clearable
-            class="!w-140px"/>
+            class="!w-170px"/>
         </el-form-item>
         
         
