@@ -28,16 +28,35 @@
         </el-form-item>
         <el-form-item label="订单号">
           <el-input 
-            v-model="queryParams.orderId" 
+            v-model.trim="queryParams.orderId" 
             clearable
             class="!w-140px"/>
         </el-form-item>
         <el-form-item label="成品代码">
           <el-input 
-            v-model="queryParams.productSN" 
+            v-model.trim="queryParams.productSN" 
             clearable
             class="!w-180px"/>
         </el-form-item>
+        <el-form-item label="模块序列号">
+          <el-input 
+            v-model.trim="queryParams.moduleSn" 
+            clearable
+            class="!w-140px"/>
+        </el-form-item>
+        <el-form-item label="测试项目">
+          <el-input 
+            v-model.trim="queryParams.testItem" 
+            clearable
+            class="!w-140px"/>
+        </el-form-item>
+        <el-form-item label="测试要求">
+          <el-input 
+            v-model.trim="queryParams.testRequire" 
+            clearable
+            class="!w-140px"/>
+        </el-form-item>
+        
         <el-form-item label="结束时间段" prop="timeRange">
           <el-date-picker
             value-format="YYYY-MM-DD HH:mm:ss"
@@ -51,7 +70,7 @@
             class="!w-335px"/>
         </el-form-item>
         <el-form-item >
-          <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-1px" /> 搜索</el-button>
+          <!-- <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-1px" /> 搜索</el-button> -->
           <el-button  type="danger" @click="()=> dialogStatus = true" >批量删除</el-button>
         </el-form-item> 
     </el-form>
@@ -86,6 +105,7 @@
           <template #default="{ row }">
             <el-button type="primary" link @click="handleAction(row.id)">删除</el-button>
             <el-button type="primary" link @click="()=> {resetQuery = true; handleReset(row)}" >更新</el-button>
+            <el-button type="primary" link @click="()=> {openUrlOpen = true;antherArr = row}">查看报告</el-button>
           </template>
         </el-table-column>
       </template>
@@ -102,7 +122,7 @@
 
   <el-dialog v-model="dialogStatus" width="600px" @before-close="()=> dialogStatus = false">
     <div>
-      <span class=" mr-2">填写模拟序列号：</span>
+      <span class=" mr-2">填写模块序列号：</span>
       <el-input v-model="moduleSn"  style="width: 220px;"/>
       <el-button type="primary" class=" ml-2" @click="handlesubmit">提交</el-button>
     </div>
@@ -200,19 +220,41 @@
     </div>
   </el-dialog>
 
+  <el-dialog
+    v-model="openUrlOpen"
+    width="350px"
+    title="查看报告"
+    :before-close="(done) => {
+      openUrlOpen = false
+      antherArr = null
+      done()
+    }"
+  >
+    <div>
+       <el-button type="primary" @click="handleOpenReport">查看外部出厂报告</el-button>
+    <el-button type="primary" @click="handleOutReport">查看内部出厂报告</el-button>
+    </div>
+  </el-dialog>
+
+
 </template>
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import { TestDataApi } from '@/api/bus/testData'
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useDebounceFn } from '@vueuse/core'
+
+import router from '@/router';
 const loading = ref(true)
 const list = ref<Array<{ }>>([]) as any; 
 const total = ref(0)
 const dialogStatus = ref(false)
 const moduleSn = ref("")
 const resetQuery = ref(false)
+const openUrlOpen = ref(false)
 const formRef = ref()
+const antherArr = ref<any | null>(null)
 
 const form = reactive({
   id: 0,
@@ -235,7 +277,10 @@ const queryParams = reactive({
   orderId: undefined,
   productSN: undefined,
   testResult: 'all',
-  language: '0'
+  language: '0',
+  moduleSn:undefined,
+  testItem:undefined,
+  testRequire:undefined
 })
 const pageSizeArr = ref([15,30,50,100])
 // 时间段快捷选项
@@ -292,29 +337,58 @@ const disabledDate = (date) => {
   return date > today;
 }
 
+const runQuery = () => {
+  queryParams.pageNo = 1
+  getList()
+}
+const runQueryDebounced = useDebounceFn(runQuery, 300)
+
 // 监听 queryParams.productSN,orderId,timeRange 的变化 如果是空或 null，设置为 undefined 不然搜索不到
 watch(() => queryParams.productSN, (newProductSN) => {
   if (newProductSN == null || newProductSN == '') {
     queryParams.productSN = undefined; 
   }
+  runQueryDebounced()
 });
 watch(() => queryParams.orderId, (newOrderId) => {
   if (newOrderId == null || newOrderId == '') {
     queryParams.orderId = undefined; 
   }
+  runQueryDebounced()
 });
 watch(() => queryParams.timeRange, (newTimeRange) => {
   if (newTimeRange == null || newTimeRange == '') {
     queryParams.timeRange = undefined; 
   }
+  runQueryDebounced()
 });
 
 watch(() => queryParams.testResult, (_newTestResult) => {
-  handleQuery()
+  runQueryDebounced()
 });
 watch(() => queryParams.language, (_newLanguage) => {
-  handleQuery()
+  runQueryDebounced()
 });
+
+watch(() => queryParams.moduleSn, (newModuleSn) => {
+  if (newModuleSn == null || newModuleSn === '') {
+    queryParams.moduleSn = undefined
+  }
+  runQueryDebounced()
+})
+
+watch(() => queryParams.testItem, (newTestItem) => {
+  if (newTestItem == null || newTestItem === '') {
+    queryParams.testItem = undefined
+  }
+  runQueryDebounced()
+})
+watch(() => queryParams.testRequire, (newTestRequire) => {
+  if (newTestRequire == null || newTestRequire === '') {
+    queryParams.testRequire = undefined
+  }
+  runQueryDebounced()
+})
 
 const tableColumns = ref([
   { label: '订单号', align: 'center', prop: 'orderId' , istrue: true, width: '200px'},
@@ -333,7 +407,7 @@ const tableColumns = ref([
   { label: '结束时间', align: 'center', prop: 'endTime', istrue:true, formatter: formatTime, width: '200px'},  
   { label: '软件版本', align: 'center', prop: 'softVersion', istrue: true},
   { label: '语言', align: 'center', prop: 'languageSelect' , istrue: true, formatter: formatLanguage, width: '100px'},
-  { label:'操作',align:'center',prop:'id',istrue: true,width:'120px'}
+  { label:'操作',align:'center',prop:'id',istrue: true,width:'200px'}
 ]);
 
 const handleReset =(row)=>{
@@ -360,12 +434,47 @@ const handleUpdate = async ()=>{
   }
 }
 
+const handleOpenReport = () => {
+  const row = antherArr.value
+  if (!row) {
+    ElMessage.warning('请先选择一条数据')
+    return
+  }
+  const productSN = row.productSn ?? row.productSN
+  const moduleSN = row.moduleSn ?? row.moduleSN
+  const orderId = row.orderId
+  if (!productSN || !moduleSN || !orderId) {
+    ElMessage.warning('报告参数不完整，请检查数据')
+    return
+  }
+  const url = router.resolve({
+    path: '/report',
+    query: { productSN: String(productSN), orderId: String(orderId), moduleSN: String(moduleSN) }
+  }).href
+  window.open(url, '_blank', 'noopener,noreferrer')
+}
+
+
+const handleOutReport = () => {
+  const row = antherArr.value
+  if (!row) {
+    ElMessage.warning('请先选择一条数据')
+    return
+  }
+  const moduleSN = row.moduleSn ?? row.moduleSN
+  if (!moduleSN) {
+    ElMessage.warning('模块序列号为空，无法打开内部报告')
+    return
+  }
+  openUrlOpen.value = false
+  router.push({
+    path: '/bus/busreport',
+    query: { moduleSN: String(moduleSN) }
+  })
+}
+
 
 /** 搜索按钮操作 */
-const handleQuery = () => {
-    queryParams.pageNo = 1
-    getList()
-}
 
 /** 初始化数据 */
 const getList = async () => {
@@ -380,8 +489,13 @@ const getList = async () => {
 }
 
 const handleAction = async (id: number | string) => {
-  // 这里拿到的就是这一行的 id
+  
   console.log('id =', id)
+  await ElMessageBox.confirm('确定要删除吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
   const res = await TestDataApi.deleteTestData(id)
   if(res){
     ElMessage.success('删除成功')

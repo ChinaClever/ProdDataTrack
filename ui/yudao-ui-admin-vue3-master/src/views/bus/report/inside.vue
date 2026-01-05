@@ -206,6 +206,8 @@ import html2canvas from "html2canvas";
 import JsPDF from "jspdf";
 import { ElMessage } from 'element-plus'
 
+const route = useRoute()
+
 const inputdata = ref('')
 const dialogVisible= ref(false)      //控制报告弹窗的显示与隐藏  对内
 const goods_SN_data = ref<Array<{ }>>([]) as any//获取到的总的数据
@@ -394,6 +396,17 @@ const queryParams = reactive({
       }
       
     }
+
+    const autoRunFromQuery = () => {
+      const moduleSN = String(route.query.moduleSN ?? route.query.moduleSn ?? route.query.order ?? '')
+      if (!moduleSN) return
+      inputdata.value = moduleSN
+      getReport()
+    }
+
+    watch(() => [route.query.moduleSN, route.query.moduleSn, route.query.order], autoRunFromQuery, {
+      immediate: true
+    })
 
     const clearSearchHandle=()=>{
       goods_SN_data.value = {};
