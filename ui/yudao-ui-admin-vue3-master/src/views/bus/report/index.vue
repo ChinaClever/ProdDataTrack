@@ -10,7 +10,7 @@
         <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
 
-      <div class="report-preview-outer" :class="{ 'no-zoom': !supportsZoom }" :style="previewOuterStyle">
+      <div ref="previewOuterRef" class="report-preview-outer" :class="{ 'no-zoom': !supportsZoom }" :style="previewOuterStyle">
         <div class="report-preview-inner" :class="{ 'is-exporting': exporting }" :style="previewInnerStyle">
       <div v-if="out_language == true">
         <div id="page1Content">
@@ -160,7 +160,7 @@
             <div v-if="goods_dev_name === '母线槽'" style="padding-left: 6%;">
               <!--母线槽的报告排版-->
                 <div >
-                  <el-table :data="Busway" class="custom-table" style="width: 95%" border>
+                  <el-table ref="reportTableRef" :data="Busway" class="custom-table" style="width: 95%" border>
                       <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="299"/>
                       <el-table-column prop="test_request" label="标准要求" header-align="center" align="left" width="900">
                         <template #default="{ row }">
@@ -182,7 +182,7 @@
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统</p>
                 </div>
-                  <el-table :data="JackBox" class="custom-table" style="width: 95%" border>
+                  <el-table ref="reportTableRef" :data="JackBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
                       <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
@@ -202,7 +202,7 @@
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>检验仪器：安规测试设备、母线质检测试系统</p>
               </div>
-                  <el-table :data="JackBox_jb" class="custom-table" style="width: 95%" border>
+                  <el-table ref="reportTableRef" :data="JackBox_jb" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
                       <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
@@ -224,7 +224,7 @@
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统等</p>
                 </div>
-                  <el-table :data="HeaBox" class="custom-table" style="width: 95%" border>
+                  <el-table ref="reportTableRef" :data="HeaBox" class="custom-table" style="width: 95%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
                       <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
@@ -232,22 +232,22 @@
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="299">
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  min-width="120">
                           <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" min-width="120"/>
                   </el-table>
                 </div>
                 <div v-if="radio1 === '1'">
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>检验仪器：安规测试设备、母线质检测试系统等</p>
                 </div>
-                  <el-table :data="HeaBox_jb" class="custom-table" style="width: 95%" border>
-                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                  <el-table ref="reportTableRef" :data="HeaBox_jb" class="custom-table" style="width: 100%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="50"/>
                       <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
-                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="799">
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" min-width="799">
                         <template #default="{ row }">
                             <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
                         </template>
@@ -382,11 +382,11 @@
           </div>
           <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
             <div style="padding-left: 3cm">
-                  <span >Inspector: Zhongqiang Ouyang </span>
+                  <span >Inspector:{{form.inspectorEnglish}} </span>
             </div>
-            <span>Audit: Man Guo</span>
+            <span>Audit:{{form.auditorEnglish}} </span>
             <div style="padding-right: 7%">
-                <span >Approve: Meiwen Wu</span>
+                <span >Approve:{{form.signerEnglish}} </span>
             </div>
           </div>
           <div class="horizontal-rule">
@@ -417,7 +417,7 @@
             <div v-if="goods_dev_name === 'Busway'" style="padding-left: 6%;">
               <!--母线槽的报告排版-->
                 <div >
-                  <el-table :data="Busway_EN" class="custom-table" style="width: 95%" border>
+                  <el-table ref="reportTableRef" :data="Busway_EN" class="custom-table" style="width: 95%" border>
                       <el-table-column  prop="test_item" label="Test items" :align="centerAlign" width="350"/>
                       
                       <el-table-column prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
@@ -440,7 +440,7 @@
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>Inspection instruments: high temperature aging room, safety test equipment, busbar quality inspection and testing system, etc.</p>
                 </div>
-                  <el-table :data="JackBox_EN" class="custom-table" style="width: 97%" border>
+                  <el-table ref="reportTableRef" :data="JackBox_EN" class="custom-table" style="width: 97%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
                       <el-table-column prop="test_item" label="Test items" :align="centerAlign"  width="250"/>
@@ -462,7 +462,7 @@
                     <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>Inspection instruments: safety test equipment, busbar quality inspection and testing system, etc.</p>
                 </div>
-                  <el-table :data="JackBox_jb_EN" class="custom-table" style="width: 97%" border>
+                  <el-table ref="reportTableRef" :data="JackBox_jb_EN" class="custom-table" style="width: 97%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
                       <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
@@ -488,7 +488,7 @@
                 <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>Inspection instruments: high temperature aging room, safety test equipment, busbar quality inspection and testing system, etc.</p>
               </div>
-                  <el-table :data="HeaBox_EN" class="custom-table" style="width: 97%" border>
+                  <el-table ref="reportTableRef" :data="HeaBox_EN" class="custom-table" style="width: 97%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
                       <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
@@ -511,7 +511,7 @@
                   <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
                   <p>Inspection instruments: safety test equipment, busbar quality inspection and testing system, etc.</p>
               </div>
-                  <el-table :data="HeaBox_jb_EN" class="custom-table" style="width: 97%" border>
+                  <el-table ref="reportTableRef" :data="HeaBox_jb_EN" class="custom-table" style="width: 97%" border>
                       <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
                       
                       <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
@@ -585,18 +585,36 @@ const form = reactive({
   auditor:'克莱沃',
   signer: "克莱沃",
   inspector: "克莱沃",
+  auditorEnglish:'legrand',
+  signerEnglish: "legrand",
+  inspectorEnglish: "legrand",
 })
 // 预览使用“固定设计宽度 + 缩放”来适配手机（避免逐机型写样式）
-const REPORT_DESIGN_WIDTH_PX = 1800
+const REPORT_DESIGN_WIDTH_PX = 1900
 const previewScale = ref(1)
+const previewOuterRef = ref<HTMLElement | null>(null)
+const reportTableRef = ref<any>(null)
+let previewOuterResizeObserver: ResizeObserver | undefined
 const supportsZoom =
   typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('zoom', '1')
 
+const doReportTableLayout = () => {
+  nextTick(() => {
+    const tableRef = reportTableRef.value
+    if (!tableRef) return
+
+    const tables = Array.isArray(tableRef) ? tableRef : [tableRef]
+    tables.forEach((table) => table?.doLayout?.())
+  })
+}
+
 const updatePreviewScale = () => {
-  const viewportWidth = document.documentElement?.clientWidth || window.innerWidth
+  const viewportWidth =
+    previewOuterRef.value?.clientWidth || document.documentElement?.clientWidth || window.innerWidth
   const horizontalPadding = 24
   const scale = Math.min(1, (viewportWidth - horizontalPadding) / REPORT_DESIGN_WIDTH_PX)
   previewScale.value = Number.isFinite(scale) && scale > 0 ? Number(scale.toFixed(3)) : 1
+  doReportTableLayout()
 }
 
 const previewOuterStyle = computed((): Record<string, string | number> => {
@@ -1972,6 +1990,7 @@ const queryParams = reactive({
             goods_dev_name.value = '基本型插接箱'
         }
     }
+    nextTick(() => updatePreviewScale())
   }
 
       //对外导出的pdf
@@ -2120,12 +2139,23 @@ const handleRequest =async()=>{
   form.auditor = res.auditor
   form.inspector = res.inspector
   form.signer = res.signer
+  form.auditorEnglish = res.auditorEnglish
+  form.inspectorEnglish = res.inspectorEnglish
+  form.signerEnglish = res.signerEnglish
+
 }
 
 onMounted(() => { 
   handleRequest()
-  updatePreviewScale()
-  window.addEventListener('resize', updatePreviewScale)
+  nextTick(() => {
+    updatePreviewScale()
+    window.addEventListener('resize', updatePreviewScale)
+
+    if (typeof ResizeObserver !== 'undefined') {
+      previewOuterResizeObserver = new ResizeObserver(() => updatePreviewScale())
+      if (previewOuterRef.value) previewOuterResizeObserver.observe(previewOuterRef.value)
+    }
+  })
 
   const queryOrderId = useRoute().query.orderId as string;
   const queryProductSN = useRoute().query.productSN as string;
@@ -2159,6 +2189,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updatePreviewScale)
+  previewOuterResizeObserver?.disconnect()
 })
 
     

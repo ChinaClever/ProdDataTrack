@@ -30,7 +30,21 @@
         <el-input v-model="form.signer" placeholder="请输入" clearable class="w-full" />
       </el-form-item>
       </el-col>
-
+      <el-col :span="6">
+         <el-form-item label="inspector" prop="inspectorEnglish">
+        <el-input v-model="form.inspectorEnglish" placeholder="请输入" clearable class="w-full" />
+      </el-form-item>
+      </el-col>
+      <el-col :span="6">
+        <el-form-item label="auditor" prop="auditorEnglish">
+        <el-input v-model="form.auditorEnglish" placeholder="请输入" clearable class="w-full" />
+      </el-form-item>
+      </el-col>
+      <el-col :span="6">
+        <el-form-item label="signer" prop="signerEnglish">
+        <el-input v-model="form.signerEnglish" placeholder="请输入" clearable class="w-full" />
+      </el-form-item>
+      </el-col>
       <el-form-item>
         <el-button type="primary" @click="formsave">保存</el-button>
       </el-form-item>
@@ -53,8 +67,11 @@ const form = reactive({
   inspector:'克莱沃',
   auditor:'克莱沃',
   signer:'克莱沃',
+  inspectorEnglish:'legrand',
+  auditorEnglish:'legrand',
+  signerEnglish:'legrand',
   identification:'bus',
-  id:0
+  id:0  
 })
 
 const handleRequest = async()=>{
@@ -64,6 +81,9 @@ const handleRequest = async()=>{
   form.inspector = res.inspector
   form.signer = res.signer
   form.id = res.id
+  form.inspectorEnglish = res.inspectorEnglish
+  form.auditorEnglish = res.auditorEnglish
+  form.signerEnglish = res.signerEnglish
   form.identification = res.identification
 }
 
