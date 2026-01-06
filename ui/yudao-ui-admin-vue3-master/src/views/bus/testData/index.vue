@@ -52,7 +52,7 @@
         </el-form-item>
         <el-form-item label="测试要求">
           <el-input 
-            v-model.trim="queryParams.testRequire" 
+            v-model.trim="queryParams.testRequest" 
             clearable
             class="!w-140px"/>
         </el-form-item>
@@ -280,7 +280,7 @@ const queryParams = reactive({
   language: '0',
   moduleSn:undefined,
   testItem:undefined,
-  testRequire:undefined
+  testRequest:undefined
 })
 const pageSizeArr = ref([15,30,50,100])
 // 时间段快捷选项
@@ -383,9 +383,9 @@ watch(() => queryParams.testItem, (newTestItem) => {
   }
   runQueryDebounced()
 })
-watch(() => queryParams.testRequire, (newTestRequire) => {
-  if (newTestRequire == null || newTestRequire === '') {
-    queryParams.testRequire = undefined
+watch(() => queryParams.testRequest, (testRequest) => {
+  if (testRequest == null || testRequest === '') {
+    queryParams.testRequest = undefined
   }
   runQueryDebounced()
 })

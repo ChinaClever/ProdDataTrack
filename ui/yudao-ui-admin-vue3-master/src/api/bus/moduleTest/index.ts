@@ -10,12 +10,12 @@ export const ModuleTestApi = {
     return await request.put({url:`/bus/updateModuleTest`,data})
   },
   // 删除模块质检数据
-  deleteModuleTest:async(params)=>{
-    return await request.delete({url:`/bus/deleteModuleTest`,params})
+  deleteModuleTest:async(id)=>{
+    return await request.delete({url:`/bus/deleteModuleTest`,params:{id}})
   },
   // 批量删除模块质检数据
-  deleteBatchModuleTest: async(params:any)=>{
-    return await request.delete({url:`/bus/deleteBatchModuleTest`,params})
+  deleteBatchModuleTest: async (moduleSn: string) => {
+    return await request.delete({url:`/bus/deleteBatchModuleTest`,params:{moduleSn}})
   },
 
 }

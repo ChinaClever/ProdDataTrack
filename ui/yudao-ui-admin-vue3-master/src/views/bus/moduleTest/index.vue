@@ -46,7 +46,7 @@
             clearable
             class="!w-170px"/>
         </el-form-item>
-        <el-form-item label="测试项目">
+        <el-form-item label="检验项目">
           <el-input 
             v-model.trim="queryParams.testItem" 
             clearable
@@ -63,7 +63,7 @@
             clearable
             class="!w-200px"/>
         </el-form-item> -->
-        <el-form-item label="测试要求">
+        <el-form-item label="检验要求">
           <el-input 
             v-model.trim="queryParams.testRequire" 
             clearable
@@ -81,7 +81,7 @@
             :disabled-date="disabledDate"
             class="!w-255px"/>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item >
           <!-- <el-button @click="handleQuery"><Icon icon="ep:search" /> 搜索</el-button> -->
           <el-button  type="danger" @click="()=> dialogStatus = true" >批量删除</el-button>
         </el-form-item> 
@@ -415,7 +415,7 @@ const handlesubmit = async()=>{
     cancelButtonText: '取消',
     type: 'warning',
 })
-const res = await ModuleTestApi.deleteModuleTest(moduleSn)
+const res = await ModuleTestApi.deleteBatchModuleTest(moduleSn.value)
 if(res){
   ElMessage.success('删除成功')
   getList()
@@ -467,7 +467,8 @@ const handleUpdate = async()=>{
 }
 
 const handleDelete =async(id)=>{
-
+  try{
+     console.log('id =', id)
   await ElMessageBox.confirm('确定要删除吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
@@ -481,6 +482,9 @@ const handleDelete =async(id)=>{
     ElMessage.success('删除成功')
     getList()
   
+}
+  }catch(err){
+  console.log(err)
 }
 }
 
