@@ -35,13 +35,13 @@ public class ModulesTestServiceImpl implements ModulesTestService {
         if (modulesTestPageVO.getModuleSN() != null) {
             queryWrapper.like("module_sn", modulesTestPageVO.getModuleSN());
         }
-        if (modulesTestPageVO.getModuleSN() != null) {
+        if (modulesTestPageVO.getTestItem() != null) {
             queryWrapper.like("test_item", modulesTestPageVO.getTestItem());
         }
-        if (modulesTestPageVO.getModuleSN() != null) {
+        if (modulesTestPageVO.getTestRequire() != null) {
             queryWrapper.like("test_require", modulesTestPageVO.getTestRequire());
         }
-        if (modulesTestPageVO.getModuleSN() != null) {
+        if (modulesTestPageVO.getTestResult() != null) {
             queryWrapper.like("test_result", modulesTestPageVO.getTestResult());
         }
         if (!modulesTestPageVO.getJudgeResult().equals("all")) {

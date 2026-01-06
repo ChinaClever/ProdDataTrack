@@ -88,13 +88,13 @@ public class TestDataServiceImpl implements TestDataService {
         if (pageReqVO.getProductSN() != null) {
             queryWrapper.like("product_sn", pageReqVO.getProductSN());
         }
-        if (pageReqVO.getProductSN() != null) {
+        if (pageReqVO.getModuleSn() != null) {
             queryWrapper.like("module_sn", pageReqVO.getModuleSn());
         }
-        if (pageReqVO.getProductSN() != null) {
+        if (pageReqVO.getTestItem() != null) {
             queryWrapper.like("test_item", pageReqVO.getTestItem());
         }
-        if (pageReqVO.getProductSN() != null) {
+        if (pageReqVO.getTestRequest() != null) {
             queryWrapper.like("test_request", pageReqVO.getTestRequest());
         }
         if (!pageReqVO.getTestResult().equals("all")) {
