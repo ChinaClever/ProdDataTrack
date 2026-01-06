@@ -42,7 +42,7 @@
         </el-form-item>
          <el-form-item label="模块序列号">
           <el-input 
-            v-model.trim="queryParams.moduleSn" 
+            v-model.trim="queryParams.moduleSN" 
             clearable
             class="!w-170px"/>
         </el-form-item>
@@ -229,7 +229,7 @@ const queryParams = reactive({
   productSN: undefined,
   judgeResult: 'all',
   language: '0',
-  moduleSn: undefined,
+  moduleSN: undefined,
   testItem: undefined,
   testRequire: undefined
 })
@@ -314,9 +314,9 @@ watch(() => queryParams.orderId, (newOrderId) => {
     queryParams.orderId = undefined; 
   }
 });
-watch(() => queryParams.moduleSn, (newModuleSn) => {
-  if (newModuleSn == null || newModuleSn == '') {
-    queryParams.moduleSn = undefined
+watch(() => queryParams.moduleSN, (moduleSN) => {
+  if (moduleSN == null || moduleSN == '') {
+    queryParams.moduleSN = undefined
   }
 })
 watch(() => queryParams.timeRange, (newTimeRange) => {
@@ -396,7 +396,7 @@ watch(()=> queryParams.productSN,()=>{
   runQueryDebounced()
 })
 
-watch(()=> queryParams.moduleSn,()=>{
+watch(()=> queryParams.moduleSN,()=>{
   runQueryDebounced()
 })
 
