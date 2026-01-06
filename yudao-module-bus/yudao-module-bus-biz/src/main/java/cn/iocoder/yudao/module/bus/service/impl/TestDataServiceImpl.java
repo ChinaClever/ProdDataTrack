@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -57,6 +58,7 @@ import java.util.*;
 
 
 @Service
+@Slf4j
 public class TestDataServiceImpl implements TestDataService {
     @Resource
     private FileService fileService;
@@ -73,44 +75,98 @@ public class TestDataServiceImpl implements TestDataService {
     private static boolean existsOrder = false;
     public final static String qrcodePath = "/";
 
+//    @Override
+//    public PageResult<TestData> getTestDataPage(TestDataPageReqVO pageReqVO) {
+//
+//        System.out.println(pageReqVO);
+//        Page<TestData> page = new Page<>(pageReqVO.getPageNo(), pageReqVO.getPageSize());
+//
+//        QueryWrapper<TestData> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.orderByDesc("id");
+//
+//        if (pageReqVO.getOrderId() != null) {
+//            queryWrapper.like("order_id", pageReqVO.getOrderId());
+//        }
+//        if (pageReqVO.getProductSN() != null) {
+//            queryWrapper.like("product_sn", pageReqVO.getProductSN());
+//        }
+//        if (pageReqVO.getModuleSn() != null) {
+//            queryWrapper.like("module_sn", pageReqVO.getModuleSn());
+//        }
+//        if (pageReqVO.getTestItem() != null) {
+//            queryWrapper.like("test_item", pageReqVO.getTestItem());
+//        }
+//        if (pageReqVO.getTestRequest() != null) {
+//            queryWrapper.like("test_request", pageReqVO.getTestRequest());
+//        }
+//        if (!pageReqVO.getTestResult().equals("all")) {
+//            queryWrapper.eq("test_result", pageReqVO.getTestResult());
+//        }
+//        if (!pageReqVO.getLanguage().equals("all")) {
+//            queryWrapper.eq("language_select", pageReqVO.getLanguage());
+//        }
+//        if (pageReqVO.getTimeRange() != null) {
+//            queryWrapper.ge("end_time", pageReqVO.getTimeRange()[0]).le("end_time", pageReqVO.getTimeRange()[1]);
+//        }
+//
+//        IPage<TestData> resultPage = testDataMapper.selectPage(page, queryWrapper);
+//        PageResult<TestData> pageResult = new PageResult<>();
+//        pageResult.setList(resultPage.getRecords());
+//        pageResult.setTotal(resultPage.getTotal());
+//        return pageResult;
+//    }
+
+    /**
+     * 获取测试数据的分页结果
+     *
+     * @param pageReqVO 分页查询请求参数
+     * @return 分页结果
+     */
     @Override
     public PageResult<TestData> getTestDataPage(TestDataPageReqVO pageReqVO) {
-
+        // 打印请求参数
         System.out.println(pageReqVO);
+
+        // 创建分页对象
         Page<TestData> page = new Page<>(pageReqVO.getPageNo(), pageReqVO.getPageSize());
 
+        // 创建查询条件对象
         QueryWrapper<TestData> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
 
-        if (pageReqVO.getOrderId() != null) {
-            queryWrapper.like("order_id", pageReqVO.getOrderId());
-        }
-        if (pageReqVO.getProductSN() != null) {
-            queryWrapper.like("product_sn", pageReqVO.getProductSN());
-        }
-        if (pageReqVO.getModuleSn() != null) {
-            queryWrapper.like("module_sn", pageReqVO.getModuleSn());
-        }
-        if (pageReqVO.getTestItem() != null) {
-            queryWrapper.like("test_item", pageReqVO.getTestItem());
-        }
-        if (pageReqVO.getTestRequest() != null) {
-            queryWrapper.like("test_request", pageReqVO.getTestRequest());
-        }
-        if (!pageReqVO.getTestResult().equals("all")) {
+        // 根据请求参数设置查询条件
+        Optional.ofNullable(pageReqVO.getOrderId()).ifPresent(orderId -> queryWrapper.like("order_id", orderId));
+        Optional.ofNullable(pageReqVO.getProductSN()).ifPresent(productSN -> queryWrapper.like("product_sn", productSN));
+        Optional.ofNullable(pageReqVO.getModuleSn()).ifPresent(moduleSn -> queryWrapper.like("module_sn", moduleSn));
+        Optional.ofNullable(pageReqVO.getTestItem()).ifPresent(testItem -> queryWrapper.like("test_item", testItem));
+        Optional.ofNullable(pageReqVO.getTestRequest()).ifPresent(testRequest -> queryWrapper.like("test_request", testRequest));
+
+        if (pageReqVO.getTestResult() != null && !pageReqVO.getTestResult().equals("all")) {
             queryWrapper.eq("test_result", pageReqVO.getTestResult());
         }
-        if (!pageReqVO.getLanguage().equals("all")) {
+
+        if (pageReqVO.getLanguage() != null && !pageReqVO.getLanguage().equals("all")) {
             queryWrapper.eq("language_select", pageReqVO.getLanguage());
         }
+
         if (pageReqVO.getTimeRange() != null) {
             queryWrapper.ge("end_time", pageReqVO.getTimeRange()[0]).le("end_time", pageReqVO.getTimeRange()[1]);
         }
 
-        IPage<TestData> resultPage = testDataMapper.selectPage(page, queryWrapper);
+        // 执行分页查询
+        IPage<TestData> resultPage;
+        try {
+            resultPage = testDataMapper.selectPage(page, queryWrapper);
+        } catch (Exception e) {
+            log.error("Error executing query for page request: {}", pageReqVO, e);
+            throw new RuntimeException("查询数据时发生错误", e);
+        }
+
+        // 构建分页结果对象
         PageResult<TestData> pageResult = new PageResult<>();
         pageResult.setList(resultPage.getRecords());
         pageResult.setTotal(resultPage.getTotal());
+
         return pageResult;
     }
 

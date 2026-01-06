@@ -21,6 +21,14 @@ public class FactoryReportClerk {
     private String auditor;
     @Schema(description = "批准人", requiredMode = Schema.RequiredMode.AUTO, example = "克莱沃")
     private String signer;
+
+    @Schema(description = "检验员（英文）", requiredMode = Schema.RequiredMode.AUTO, example = "克莱沃")
+    private String inspectorEnglish;
+    @Schema(description = "审核人（英文）", requiredMode = Schema.RequiredMode.AUTO, example = "克莱沃")
+    private String auditorEnglish;
+    @Schema(description = "批准人（英文）", requiredMode = Schema.RequiredMode.AUTO, example = "克莱沃")
+    private String signerEnglish;
+
     @Schema(description = "业务标识", requiredMode = Schema.RequiredMode.AUTO, example = "bus")
     private String identification;
 

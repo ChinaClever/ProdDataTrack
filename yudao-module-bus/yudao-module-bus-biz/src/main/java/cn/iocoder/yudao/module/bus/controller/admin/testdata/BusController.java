@@ -152,6 +152,7 @@ public class BusController {
 
 
     @GetMapping("/moduleTest-page")
+    @Operation(summary = "模块质检数据查询")
     public CommonResult<PageResult<ModulesTest>> getModulesTestPa(ModulesTestPageVO pageReqVO) {
         PageResult<ModulesTest> pageResult = modulesTestService.getModulesTestPage(pageReqVO);
         return success(pageResult);
