@@ -104,7 +104,7 @@
         >
           <template #default="{ row }">
             <el-button type="primary" link @click="handleAction(row.id)">删除</el-button>
-            <el-button type="primary" link @click="()=> {resetQuery = true; handleReset(row)}" >更新</el-button>
+            <el-button type="primary" link @click="()=> {resetQuery = true; handleReset(row)}" >修改</el-button>
             <el-button type="primary" link @click="()=> {openUrlOpen = true;antherArr = row}">查看报告</el-button>
           </template>
         </el-table-column>
