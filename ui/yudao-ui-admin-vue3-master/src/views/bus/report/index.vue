@@ -609,8 +609,8 @@ const doReportTableLayout = () => {
 }
 
 const updatePreviewScale = () => {
-  const viewportWidth =
-    previewOuterRef.value?.clientWidth || document.documentElement?.clientWidth || window.innerWidth
+  const viewportWidth = 
+    previewOuterRef.value?.clientWidth || document.documentElement?.clientWidth || window.innerWidth 
   const horizontalPadding = 24
   const scale = Math.min(1, (viewportWidth - horizontalPadding) / REPORT_DESIGN_WIDTH_PX)
   previewScale.value = Number.isFinite(scale) && scale > 0 ? Number(scale.toFixed(3)) : 1

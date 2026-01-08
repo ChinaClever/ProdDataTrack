@@ -87,14 +87,19 @@
       <template v-for="column in tableColumns" :key="column.prop">
   <!-- 普通列 -->
         <el-table-column
-          v-if="column.istrue && column.prop !== 'id'"
+          v-if="column.istrue && column.prop !== 'id' && column.prop !== 'testResult'"
           :label="column.label"
           :align="column.align"
           :prop="column.prop"
           :formatter="column.formatter"
           :width="column.width"
         />
-
+        <el-table-column v-else-if="column.prop==='testResult' && column.istrue" label="测试结果" align="center">
+          <template #default="{ row }">
+            <el-tag v-if="row.testResult === '1'" type="success">通过</el-tag>
+            <el-tag v-else type="danger">失败</el-tag>
+          </template>
+        </el-table-column>
         <!-- 操作列 -->
         <el-table-column
           v-else-if="column.istrue && column.prop === 'id'"

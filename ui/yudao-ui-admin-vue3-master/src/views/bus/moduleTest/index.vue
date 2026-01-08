@@ -99,13 +99,19 @@
       <!-- 遍历其他列 -->  
       <template v-for="column in tableColumns" :key="column.prop">
           <el-table-column
-            v-if="column.istrue && column.prop !== 'id'"
+            v-if="column.istrue && column.prop !== 'id' && column.prop !=='judgeResult'"
             :label="column.label"
             :align="column.align"
             :prop="column.prop"
             :formatter="column.formatter"
             :width="column.width"
           />
+          <el-table-column v-else-if="column.istrue && column.prop === 'judgeResult'" label="判定结果" align="center">
+            <template #default="{row}" >
+              <el-tag v-if="row.judgeResult === '1'" type="success">通过</el-tag>
+              <el-tag v-else type="danger">失败</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             v-else-if="column.istrue && column.prop === 'id'"
             :label="column.label"
