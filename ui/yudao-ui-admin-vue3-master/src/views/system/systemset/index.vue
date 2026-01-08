@@ -26,22 +26,22 @@
       </el-col>
       
       <el-col :span="6">
-        <el-form-item label="批准" prop="signer">
+        <el-form-item label="批准人" prop="signer">
         <el-input v-model="form.signer" placeholder="请输入" clearable class="w-full" />
       </el-form-item>
       </el-col>
       <el-col :span="6">
-         <el-form-item label="inspector" prop="inspectorEnglish">
+         <el-form-item label="检验员(英文)" prop="inspectorEnglish">
         <el-input v-model="form.inspectorEnglish" placeholder="请输入" clearable class="w-full" />
       </el-form-item>
       </el-col>
       <el-col :span="6">
-        <el-form-item label="auditor" prop="auditorEnglish">
+        <el-form-item label="审核员(英文)" prop="auditorEnglish">
         <el-input v-model="form.auditorEnglish" placeholder="请输入" clearable class="w-full" />
       </el-form-item>
       </el-col>
       <el-col :span="6">
-        <el-form-item label="signer" prop="signerEnglish">
+        <el-form-item label="批准人(英文)" prop="signerEnglish">
         <el-input v-model="form.signerEnglish" placeholder="请输入" clearable class="w-full" />
       </el-form-item>
       </el-col>
