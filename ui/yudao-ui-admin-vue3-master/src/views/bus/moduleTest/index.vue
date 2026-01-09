@@ -107,10 +107,20 @@
             :width="column.width"
           />
           <el-table-column v-else-if="column.istrue && column.prop === 'judgeResult'" label="判定结果" align="center">
-            <template #default="{row}" >
+            <!-- <template #default="{row}" >
               <el-tag v-if="row.judgeResult === '1'" type="success">通过</el-tag>
               <el-tag v-else type="danger">失败</el-tag>
-            </template>
+            </template> -->
+             <template #default="{ row }" v-if="queryParams.language == '0'">
+
+            <el-tag v-if="row.judgeResult === '1'" type="success">通过</el-tag>
+            <el-tag v-else type="danger">失败</el-tag>
+          </template>
+            <template #default="{ row }" v-else-if="queryParams.language == '1'">
+
+            <el-tag v-if="row.judgeResult === '1'" type="success">Pass</el-tag>
+            <el-tag v-else type="danger">Fail</el-tag>
+          </template>
           </el-table-column>
           <el-table-column
             v-else-if="column.istrue && column.prop === 'id'"
@@ -170,10 +180,19 @@
             <!-- <el-input v-model="form.judgeResult" style="width: 100%" /> -->
             <el-select
               v-model="form.judgeResult"
+              v-if="queryParams.language =='0'"
               placeholder="请选择测试结果"
               class="!w-90px">
               <el-option label="通过" value="1" />
               <el-option label="失败" value="0" />
+            </el-select>
+             <el-select
+              v-model="form.judgeResult"
+              v-else-if="queryParams.language =='1'"
+              placeholder="请选择测试结果"
+              class="!w-90px">
+              <el-option label="Pass" value="1" />
+              <el-option label="Fail" value="0" />
             </el-select>
           </el-form-item>
         </el-col>

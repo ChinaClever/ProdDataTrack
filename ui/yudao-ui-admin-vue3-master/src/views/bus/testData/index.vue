@@ -95,9 +95,15 @@
           :width="column.width"
         />
         <el-table-column v-else-if="column.prop==='testResult' && column.istrue" label="测试结果" align="center">
-          <template #default="{ row }">
+          <template #default="{ row }" v-if="queryParams.language == '0'">
+
             <el-tag v-if="row.testResult === '1'" type="success">通过</el-tag>
             <el-tag v-else type="danger">失败</el-tag>
+          </template>
+            <template #default="{ row }" v-else-if="queryParams.language == '1'">
+
+            <el-tag v-if="row.testResult === '1'" type="success">Pass</el-tag>
+            <el-tag v-else type="danger">Fail</el-tag>
           </template>
         </el-table-column>
         <!-- 操作列 -->
@@ -166,11 +172,20 @@
           <el-form-item label="测试结果" prop="testResult">
             <!-- <el-input v-model="form.testResult" style="width: 100%" /> -->
             <el-select
+            v-if="queryParams.language == '0'"
               v-model="form.testResult"
               placeholder="请选择测试结果"
               class="!w-90px">
               <el-option label="通过" value="1" />
               <el-option label="失败" value="0" />
+            </el-select>
+            <el-select
+            v-if="queryParams.language == '1'"
+              v-model="form.testResult"
+              placeholder="请选择测试结果"
+              class="!w-90px">
+              <el-option label="Pass" value="1" />
+              <el-option label="Fail" value="0" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -439,7 +454,10 @@ const handleUpdate = async ()=>{
   }
 }
 
-const handleOpenReport = () => {
+const handleOpenReport = async () => {
+
+
+
   const row = antherArr.value
   if (!row) {
     ElMessage.warning('请先选择一条数据')
@@ -452,11 +470,33 @@ const handleOpenReport = () => {
     ElMessage.warning('报告参数不完整，请检查数据')
     return
   }
-  const url = router.resolve({
-    path: '/report',
-    query: { productSN: String(productSN), orderId: String(orderId), moduleSN: String(moduleSN) }
-  }).href
-  window.open(url, '_blank', 'noopener,noreferrer')
+
+  const openExternalReport = (brand: 'clever' | 'legrand') => {
+    const url = router.resolve({
+      path: '/report',
+      query: {
+        productSN: String(productSN),
+        orderId: String(orderId),
+        moduleSN: String(moduleSN),
+        brand,
+      }
+    }).href
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  openUrlOpen.value = false
+  try {
+    await ElMessageBox.confirm('请选择外部出厂报告抬头：', '外部出厂报告', {
+      confirmButtonText: '克莱沃',
+      cancelButtonText: '罗格朗',
+      distinguishCancelAndClose: true,
+      showCancelButton: true,
+      type: 'info',
+    })
+    openExternalReport('clever')
+  } catch (action) {
+    if (action === 'cancel') openExternalReport('legrand')
+  }
 }
 
 

@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; height: 100%; overflow: auto;">
+    <div style="width: 100%; height: 100%; overflow: auto;" v-if="brand == 'clever'">
       <div class="custom-button"  style="padding-left: 50px;">
         <el-switch
             v-model="out_language"
@@ -13,10 +13,10 @@
       <div ref="previewOuterRef" class="report-preview-outer" :class="{ 'no-zoom': !supportsZoom }" :style="previewOuterStyle">
         <div class="report-preview-inner" :class="{ 'is-exporting': exporting }" :style="previewInnerStyle">
       <div v-if="out_language == true">
-        <div id="page1Content">
+        <div id="page1Content" ref="page1Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
               <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo1.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo3.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
@@ -111,6 +111,7 @@
           <div style="height: 30px">
             <br/>
           </div>
+          <div class="report-page-footer">
           <div style="text-align: right; font-size: 25px; padding-right: 5%;">
             <p>
               <span style="display: inline-block; ">{{ formattedTime(goods_end_time).year}} 年</span>
@@ -133,11 +134,12 @@
           <div class="horizontal-rule">
             <hr/>
           </div>
+          </div>
         </div>
-        <div id="page2Content">
+        <div id="page2Content" ref="page2Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
             <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo3.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
@@ -262,25 +264,25 @@
                 </div>
        
             </div><br/>
-            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
                   <p>OK：合格，符合测试要求。</p>
             </div>
-            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
                   <p>NG：不合格，不符合测试要求。 </p>
             </div>
-            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
                   <p>NA：所测产品无此项功能。</p>
             </div>
         </div>
       </div>       
 
       <div v-else-if="out_language == false">
-        <div id="page1Content">
+        <div id="page1Content" ref="page1Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
               <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo3.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
-              <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px; flex: 1;">
+              <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px; margin-left: 35%;">
                   <p>Clever Electronic </p>
               </div>
           </div>
@@ -372,6 +374,7 @@
           <div style="height: 10px">
             <br/>
           </div>
+          <div class="report-page-footer">
           <div style="text-align: right; font-size: 25px; padding-right: 5%;">
             <p>
               <span>Date:{{formattedTime(goods_end_time).year}}/{{formattedTime(goods_end_time).month}}/{{formattedTime(goods_end_time).day}}</span>
@@ -392,13 +395,14 @@
           <div class="horizontal-rule">
             <hr/>
           </div>
+          </div>
         </div>
-        <div id="page2Content">
+        <div id="page2Content" ref="page2Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
             <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo3.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
-              <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px; flex: 1;">
+              <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px;margin-left: 35%;">
                   <p>Clever Electronic</p>
               </div>
           </div>
@@ -531,13 +535,563 @@
                   </el-table>
                 </div>
             </div><br/>
-            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
                   <p>OK: Qualified and meets the test requirements.</p>
             </div>
-            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
                   <p>NG: Failed and did not meet the test requirements. </p>
             </div>
-            <div style="padding-left: 115px; text-align: left; font-size: 20px; flex: 1;">
+            <div style="padding-left: 115px; text-align: left; font-size:24px; flex: 1;">
+                  <p>NA: The tested product does not have this function.</p>
+            </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+    <div style="width: 100%; height: 100%; overflow: auto;" v-else>
+      <div class="custom-button"  style="padding-left: 50px;">
+        <el-switch
+            v-model="out_language"
+            active-text="中文"
+            inactive-text="英文"
+            @change="updateLanguage"
+        />
+        <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
+      </div>
+
+      <div ref="previewOuterRef" class="report-preview-outer" :class="{ 'no-zoom': !supportsZoom }" :style="previewOuterStyle">
+        <div class="report-preview-inner" :class="{ 'is-exporting': exporting }" :style="previewInnerStyle">
+      <div v-if="out_language == true">
+        <div id="page1Content" ref="page1Ref" class="report-page">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+              <div style="padding-left: 5%; padding-top: 30px;">
+                  <img src="@/assets/logo2.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+              </div>
+              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; margin-left: 15.6%; ">
+                  <p>罗格朗智能电气（惠州）有限公司 </p>
+              </div>
+          </div>
+          <div class="horizontal-rule">
+          <hr/>
+          </div>
+          <!-- <div style="padding-right: 5%;">
+              <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">第1页，共2页</p>
+          </div> -->
+          <br/>
+          <p v-if="out_language " :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">检 验 报 告</p>
+          <p v-if="!out_language " :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">TEST REPORT</p>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <div class="br-rule">
+            <br/>
+          </div>
+          <div class="dialog-content">
+            <div class="row">
+              <div v-if="goods_dev_name !== '母线槽'" class="column left-column">
+                <p v-if="radio2  ">产品名称: {{ goods_dev_name + '（智能型）'}} </p>
+                <p v-if="!radio2 ">产品名称: {{ goods_dev_name + '（基本型）'}} </p>
+                <p >规格型号: {{modelNumber}}</p>
+                <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+                <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+              </div>
+              <div v-if="goods_dev_name === '母线槽'" class="column left-column">
+                <p >产品名称: {{ goods_dev_name }} </p>             
+                <p >规格型号: {{modelNumber}}</p>
+                <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+                <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+              </div>
+              <div class="column right-column">
+                <p >客户名称: {{customerName}}</p>
+                <p >检验类别: 出厂检验</p>
+                <p >生产数量: {{goods_order_num}}台</p>
+                <p >检验数量: {{goods_test_num}}台</p>
+              </div>
+            </div>
+          </div>
+          <div class="br-rule2">
+            <br/>
+          </div>
+          <div style="text-align: center; font-size: 40px;">
+              <p>检验依据：GB/T7251.6-2015 标准技术要求和产品使用说明书</p>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div  style="text-align: center; font-size: 40px;">
+              <p> 检 验 结 论 </p>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div  style="text-align: center; font-size: 40px;">
+              <p>该批产品检验，所检项目符合 GB/T7251.6-2015 标准技术要求和产品使用说明书要求。</p>
+          </div>
+          <div style="height: 6cap">
+              <br/>
+          </div>  
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div  style="text-align: left; font-size: 40px; padding-left: 15%;">
+              <p>说明：</p>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div  style="text-align: left; font-size: 40px; padding-left: 15%;">
+              <p>1、产品特性及状态： 正常</p>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div  style="text-align: left; font-size: 40px; padding-left: 15%;">
+              <p>2、检验环境条件：  （25±5）℃</p>
+          </div>
+          <div style="height: 20px">
+            <br/>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <div style="height: 30px">
+            <br/>
+          </div>
+          <div class="report-page-footer">
+          <div style="text-align: right; font-size: 25px; padding-right: 5%;">
+            <p>
+              <span style="display: inline-block; ">{{ formattedTime(goods_end_time).year}} 年</span>
+              <span style="display: inline-block; ">{{ formattedTime(goods_end_time).month}} 月</span>
+              <span>{{ formattedTime(goods_end_time).day}} 日</span>
+            </p>
+          </div>
+          <div style="height: 40px">
+            <br/>
+          </div>
+          <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
+            <div style="padding-left: 5%">
+                  <span >检验员：{{form.inspector}}</span>
+            </div>
+            <span>审核：{{form.auditor}}</span>
+            <div style="padding-right: 10%">
+                <span >批准：{{form.signer}}</span>
+            </div>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          </div>
+        </div>
+        <div id="page2Content" ref="page2Ref" class="report-page">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+            <div style="padding-left: 5%; padding-top: 30px;">
+                  <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+              </div>
+              <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; margin-left: 15.6%; ">
+                  <p>罗格朗智能电气（惠州）有限公司 </p>
+              </div>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <!-- <div style="padding-right: 5%;">
+              <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">第2页，共2页</p>
+          </div> -->
+
+          <br/>
+          <p v-if="out_language " :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">检 验 报 告</p>
+          <p v-if="!out_language " :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">TEST REPORT</p>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <br/>
+            <div v-if="goods_dev_name === '母线槽'" style="padding-left: 6%;">
+              <!--母线槽的报告排版-->
+                <div >
+                  <el-table ref="reportTableRef" :data="Busway" class="custom-table" style="width: 95%" border>
+                      <el-table-column  prop="test_item" label="检验项目" :align="centerAlign" width="299"/>
+                      <el-table-column prop="test_request" label="标准要求" header-align="center" align="left" width="900">
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
+                  </el-table>
+                </div>
+            </div>
+
+            <div  v-else-if="goods_dev_name === '插接箱' || '基本型插接箱'" style="padding-left: 6%;">             
+                <div v-if="radio1 === '2'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统</p>
+                </div>
+                  <el-table ref="reportTableRef" :data="JackBox" class="custom-table" style="width: 95%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="299">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
+                  </el-table>
+                </div>
+                <div v-else-if="radio1 === '1'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：安规测试设备、母线质检测试系统</p>
+              </div>
+                  <el-table ref="reportTableRef" :data="JackBox_jb" class="custom-table" style="width: 95%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="299">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
+                  </el-table>
+                </div>
+            </div>
+            <div  v-else-if="goods_dev_name === '始端箱'" style="padding-left: 6%;">
+                <div v-if="radio1 === '2'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：高温老化房、安规测试设备、母线质检测试系统等</p>
+                </div>
+                  <el-table ref="reportTableRef" :data="HeaBox" class="custom-table" style="width: 95%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" width="900">
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  min-width="120">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" min-width="120"/>
+                  </el-table>
+                </div>
+                <div v-if="radio1 === '1'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>检验仪器：安规测试设备、母线质检测试系统等</p>
+                </div>
+                  <el-table ref="reportTableRef" :data="HeaBox_jb" class="custom-table" style="width: 100%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="50"/>
+                      <el-table-column prop="test_item" label="检验项目" :align="centerAlign" width="200"/>
+                      <el-table-column  prop="test_request" label="标准要求" header-align="center" align="left" min-width="799">
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="检验结果"  :align="centerAlign"  width="400">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="单项结论" :align="centerAlign" width="202"/>
+                  </el-table>
+                </div>
+       
+            </div><br/>
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
+                  <p>OK：合格，符合测试要求。</p>
+            </div>
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
+                  <p>NG：不合格，不符合测试要求。 </p>
+            </div>
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
+                  <p>NA：所测产品无此项功能。</p>
+            </div>
+        </div>
+      </div>       
+
+      <div v-else-if="out_language == false">
+        <div id="page1Content" ref="page1Ref" class="report-page">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+              <div style="padding-left: 5%; padding-top: 30px;">
+                  <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+              </div>
+              <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px; flex: 1;">
+                  <p>Legrand </p>
+              </div>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <!-- <div style="padding-right: 5%;">
+              <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">Page 1 of 2</p>
+          </div> -->
+          <br/>
+          <p :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">TEST REPORT</p>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <div class="br-rule">
+            <br/>
+          </div>
+          <div class="dialog-content">
+            <div class="row">
+              <div v-if="goods_dev_name !== 'Busway'" class="column left-column" style="padding-left: 10%;">
+                <p v-if="radio2 ">Product Name: {{ goods_dev_name +'(Intelligent)'}}</p>
+                <p v-if="!radio2 ">Product Name: {{ goods_dev_name +'(Basic)'}}</p>
+                <p >Specification Model: {{modelNumber}}</p>
+                <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+                <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+              </div>
+              <div v-if="goods_dev_name === 'Busway'" class="column left-column" style="padding-left: 10%;">
+                <p >Product Name: {{ goods_dev_name }}</p>              
+                <p >Specification Model: {{modelNumber}}</p>
+                <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+                <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
+              </div>
+              <div class="column right-column" style="padding-right: 5%;">
+                <p >Customer Name: {{ customerName }}</p>
+                <p >Inspection Category: Factory Inspection</p>
+                <p >Production Quantity: {{goods_order_num}}PCS</p>
+                <p >Inspection Quantity: {{goods_test_num}}PCS</p>
+              </div>
+            </div>
+          </div>
+          <div class="br-rule2">
+            <br/>
+          </div>
+          <div  style="text-align: center; font-size: 40px;">
+              <p>Inspection basis: IEC 61439-6: 2012 standard technical requirements and product instructions</p>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div  style="text-align: center; font-size: 40px;">
+              <p> Test Conclusion </p>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div  style="text-align: center; font-size: 40px;">
+              <p>This batch of products was inspected and the items tested were in compliance with the technical requirements of IEC 61439-6: 2012  standard and the requirements of the product instructions.</p>
+          </div>
+          <div style="height: 20px">
+              <br/>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <div style="height: 10px">
+              <br/>
+          </div>
+          <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
+              <p>Illustrate:</p>
+          </div>
+          <div style="height: 10px">
+              <br/>
+          </div>
+          <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
+              <p>1.Product Characteristics and Status: Normal</p>
+          </div>
+          <div style="height: 10px">
+              <br/>
+          </div>
+          <div  style="text-align: left; font-size: 40px; padding-left: 10%;">
+              <p>2. Test environment conditions: (25±5)℃</p>
+          </div>
+          <div style="height: 3cqmax">
+            <br/>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <div style="height: 10px">
+            <br/>
+          </div>
+          <div class="report-page-footer">
+          <div style="text-align: right; font-size: 25px; padding-right: 5%;">
+            <p>
+              <span>Date:{{formattedTime(goods_end_time).year}}/{{formattedTime(goods_end_time).month}}/{{formattedTime(goods_end_time).day}}</span>
+            </p>
+          </div>
+          <div style="height: 10px">
+            <br/>
+          </div>
+          <div  class="column" style="display: flex; justify-content: space-between; font-size: 40px;">
+            <div style="padding-left: 3cm">
+                  <span >Inspector:{{form.inspectorEnglish}} </span>
+            </div>
+            <span>Audit:{{form.auditorEnglish}} </span>
+            <div style="padding-right: 7%">
+                <span >Approve:{{form.signerEnglish}} </span>
+            </div>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          </div>
+        </div>
+        <div id="page2Content" ref="page2Ref" class="report-page">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+            <div style="padding-left: 5%; padding-top: 30px;">
+                  <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+              </div>
+              <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px; flex: 1;">
+                  <p>Legrand</p>
+              </div>
+          </div>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <!-- <div style="padding-right: 5%;">
+              <p :style="{ textAlign: 'right', fontSize: 20 + 'px' }">Page 2 of 2</p>
+          </div> -->
+          <br/>
+          <p :style="{ textAlign: 'center', fontSize: fontSize + 'px' }">TEST REPORT</p>
+          <div class="horizontal-rule">
+            <hr/>
+          </div>
+          <br/>
+            <div v-if="goods_dev_name === 'Busway'" style="padding-left: 6%;">
+              <!--母线槽的报告排版-->
+                <div >
+                  <el-table ref="reportTableRef" :data="Busway_EN" class="custom-table" style="width: 95%" border>
+                      <el-table-column  prop="test_item" label="Test items" :align="centerAlign" width="350"/>
+                      
+                      <el-table-column prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
+                        <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="150"/>
+                      
+                  </el-table>
+                </div>
+            </div>
+            <div  v-else-if="goods_dev_name === 'Tap-off box' ||'Basic type Tap-off box' " style="padding-left: 6%;">
+                <div v-if="radio1 === '2'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: high temperature aging room, safety test equipment, busbar quality inspection and testing system, etc.</p>
+                </div>
+                  <el-table ref="reportTableRef" :data="JackBox_EN" class="custom-table" style="width: 97%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign"  width="250"/>
+                      
+                      <el-table-column  prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
+                        <template #default="{ row }" >
+                            <div class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
+                  </el-table>
+                </div>
+                  <div v-if="radio1 === '1'">
+                    <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: safety test equipment, busbar quality inspection and testing system, etc.</p>
+                </div>
+                  <el-table ref="reportTableRef" :data="JackBox_jb_EN" class="custom-table" style="width: 97%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
+                      
+                      <el-table-column  prop="test_request" label="Standard Requirements" header-align="center" align="left" width="900">
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
+                      
+                  </el-table>
+                
+                </div>
+            </div>
+            <div  v-else-if="goods_dev_name === 'Feeder box'" style="padding-left: 6%;">              
+              <div v-if="radio1 === '2'">
+                <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: high temperature aging room, safety test equipment, busbar quality inspection and testing system, etc.</p>
+              </div>
+                  <el-table ref="reportTableRef" :data="HeaBox_EN" class="custom-table" style="width: 97%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
+                      
+                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="900">
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
+                      
+                  </el-table>
+                </div>
+                <div v-if="radio1 === '1'">
+                  <div style="padding-left: 10px; text-align: left; font-size: 30px; flex: 1;">
+                  <p>Inspection instruments: safety test equipment, busbar quality inspection and testing system, etc.</p>
+              </div>
+                  <el-table ref="reportTableRef" :data="HeaBox_jb_EN" class="custom-table" style="width: 97%" border>
+                      <el-table-column prop="num" label="No." :align="centerAlign" width="100"/>
+                      
+                      <el-table-column prop="test_item" label="Test items" :align="centerAlign" width="250"/>
+                      
+                      <el-table-column  prop="test_request" label="Standard Requirements" :header-align="centerAlign" width="900">
+                        <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_request)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_process" label="Test result"  :align="centerAlign"  width="300">
+                          <template #default="{ row }">
+                            <div  class="cell-content-table" v-html="formatSkills(row.test_process)" ></div>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="test_result" label="Single conclusion" :align="centerAlign" width="187"/>
+                      
+                  </el-table>
+                </div>
+            </div><br/>
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
+                  <p>OK: Qualified and meets the test requirements.</p>
+            </div>
+            <div style="padding-left: 115px; text-align: left; font-size:24px; flex: 1;">
+                  <p>NG: Failed and did not meet the test requirements. </p>
+            </div>
+            <div style="padding-left: 115px; text-align: left; font-size: 24px; flex: 1;">
                   <p>NA: The tested product does not have this function.</p>
             </div>
         </div>
@@ -589,6 +1143,11 @@ const form = reactive({
   signerEnglish: "legrand",
   inspectorEnglish: "legrand",
 })
+
+const brand = ref("")
+const page1Ref = ref<HTMLElement | null>(null)
+const page2Ref = ref<HTMLElement | null>(null)
+
 // 预览使用“固定设计宽度 + 缩放”来适配手机（避免逐机型写样式）
 const REPORT_DESIGN_WIDTH_PX = 1900
 const previewScale = ref(1)
@@ -1993,113 +2552,79 @@ const queryParams = reactive({
     nextTick(() => updatePreviewScale())
   }
 
-      //对外导出的pdf
-  const OutExportToPDF = () =>{
-  // 获取第一页内容
-    const page1Element = document.getElementById('page1Content');
+  const addElementToPdf = async (pdf: JsPDF, element: HTMLElement, addPageBefore: boolean) => {
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
+    const imgData = canvas.toDataURL('image/jpeg', 1.0)
 
-    // 创建新的 PDF 实例
-    const PDF = new JsPDF('', 'pt', 'a4');
+    const pdfPageWidth = pdf.internal.pageSize.getWidth()
+    const pdfPageHeight = pdf.internal.pageSize.getHeight()
+    if (addPageBefore) pdf.addPage()
 
-    // 处理每一页的通用函数
-    const processPage = (element, pageNumber) => {
-      // 更新替代元素
-      return html2canvas(element)
-        .then(canvas => {
-          const contentWidth = canvas.width;
-          const contentHeight = canvas.height;
-          const pageHeight = (contentWidth / 592.28) * 841.89;
-          let position = 0;
+    // 每个页面容器应输出为“单独一页”，如果内容超高则按比例缩小以适配 A4，避免溢出到下一页
+    const scale = Math.min(pdfPageWidth / canvas.width, pdfPageHeight / canvas.height)
+    const renderWidth = canvas.width * scale
+    const renderHeight = canvas.height * scale
+    const offsetX = (pdfPageWidth - renderWidth) / 2
+    const offsetY = (pdfPageHeight - renderHeight) / 2
+    pdf.addImage(imgData, 'JPEG', offsetX, offsetY, renderWidth, renderHeight)
+  }
 
-          // 添加页面（如果需要处理多页，这里可能需要调整）
-          if (pageNumber > 1) {
-            PDF.addPage();
-          }
+  //对外导出的pdf
+  const OutExportToPDF = async () => {
+    const page1Element = page1Ref.value
+    const page2Element = page2Ref.value
+    if (!page1Element || !page2Element) {
+      await ElMessageBox.alert('页面未渲染完成，请稍后重试。')
+      return
+    }
 
-          while (position < contentHeight) {
-            let remainingHeight = pageHeight;
-            if (position + remainingHeight > contentHeight) {
-              remainingHeight = contentHeight - position;
-            }
+    const PDF = new JsPDF('', 'pt', 'a4')
 
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = contentWidth;
-            tempCanvas.height = remainingHeight;
-            const context = tempCanvas.getContext('2d');
-            context?.drawImage(canvas, 0, position, contentWidth, remainingHeight, 0, 0, contentWidth, remainingHeight);
-
-            const imageData = tempCanvas.toDataURL('image/jpeg', 1.0);
-            PDF.addImage(imageData, 'JPEG', 0, 0, 595.28, (592.28 / contentWidth) * remainingHeight);
-
-            position += remainingHeight;
-          }
-          return canvas;
-        });
-    };
-
-    // 处理第一页
     exporting.value = true
-    nextTick()
-      .then(() => processPage(page1Element, 1))
-      .then(() => {
-        // 假设我们有第二页内容需要处理，这里的ID应替换为实际的第二页元素ID
-        const page2Element = document.getElementById('page2Content');
-        return processPage(page2Element, 2); // 处理第二页
-      })
-      .then(() => {
-        // 完成后保存PDF
-        let fileName;
-        if(out_language.value  === true) {
-            if(radio1.value  === '1'  && goods_dev_name.value  !== '母线槽')
-            {
-                fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}-基本型出厂报告.pdf`;
-            }
-            else if(radio1.value === '2'  && goods_dev_name.value !== '母线槽')
-            {
-                fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}-智能出厂报告.pdf`;
-            }
-            else{
-                fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}出厂报告.pdf`;
-            }
-        } else if(out_language.value === false) {
-            if(radio1.value === '1'  && goods_dev_name.value !== 'Busway')
-            {
-                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value}-base Ex-factory Report.pdf`;
-            }
-            else if(radio1.value === '2'  && goods_dev_name.value !== 'Busway')
-            {
-                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value}-smart Ex-factory Report.pdf`;
-            }
-            else{
-                fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value} Ex-factory Report.pdf`;
-            }
-        }
-        PDF.save(fileName);
-      })
-      .catch(error => {
-        console.error('导出PDF时出错：', error);
-      })
-      .finally(() => {
-        exporting.value = false
-      });
-    }
-  const out_handleExport = () =>{
-      if (!modelNumber || !customerName) {
-          alert('请确保所有输入框都已填写！');
+    try {
+      await nextTick()
+      await addElementToPdf(PDF, page1Element, false)
+      await addElementToPdf(PDF, page2Element, true)
+
+      let fileName
+      if (out_language.value === true) {
+        if (radio1.value === '1' && goods_dev_name.value !== '母线槽') {
+          fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}-基本型出厂报告.pdf`
+        } else if (radio1.value === '2' && goods_dev_name.value !== '母线槽') {
+          fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}-智能出厂报告.pdf`
         } else {
-          // const loading = loading({
-          //   lock: true,
-          //   text: '正在导出PDF...',
-          //   spinner: 'el-icon-loading',
-          //   background: 'rgba(0, 0, 0, 0.7)'
-          // });
-          loading.value = true;
-          OutExportToPDF();
-          setTimeout(() => {
-            loading.value = false;
-          }, 2000);
+          fileName = `订单号 ${queryParams.orderId}${goods_dev_name.value}出厂报告.pdf`
         }
+      } else {
+        if (radio1.value === '1' && goods_dev_name.value !== 'Busway') {
+          fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value}-base Ex-factory Report.pdf`
+        } else if (radio1.value === '2' && goods_dev_name.value !== 'Busway') {
+          fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value}-smart Ex-factory Report.pdf`
+        } else {
+          fileName = `Order Number ${queryParams.orderId} ${goods_dev_name.value} Ex-factory Report.pdf`
+        }
+      }
+      PDF.save(fileName)
+    } catch (error) {
+      console.error('导出PDF时出错：', error)
+      await ElMessageBox.alert('导出PDF时出错，请查看控制台日志。')
+    } finally {
+      exporting.value = false
     }
+  }
+
+  const out_handleExport = async () => {
+    if (!modelNumber.value || !customerName.value) {
+      await ElMessageBox.alert('请确保产品型号和客户名称已获取（页面数据加载完成）！')
+      return
+    }
+    loading.value = true
+    try {
+      await OutExportToPDF()
+    } finally {
+      loading.value = false
+    }
+  }
 
   // 获取出厂报告数据
   const getReportData = async () => {
@@ -2160,7 +2685,8 @@ onMounted(() => {
   const queryOrderId = useRoute().query.orderId as string;
   const queryProductSN = useRoute().query.productSN as string;
   const queryModuleSN = useRoute().query.moduleSN as string;
-
+  const queryBrand = String(useRoute().query.brand ?? '').toLowerCase()
+  brand.value = queryBrand === 'clever' ? 'clever' : 'legrand'
   if (queryOrderId == '' || queryProductSN == '' || queryModuleSN == ''){
     ElMessageBox.alert('出错了，数据缺失（订单号、成品代码、模块序列号）', 
       'Error', 
@@ -2361,7 +2887,7 @@ align-items: center;  */
   line-height: 45px;
 }
 .column p:not(:last-child) { /* 为每个列内的非最后一个<p>元素添加间距 */
-  margin-bottom: 60px; /* 调整此值以改变行间距 */
+  margin-bottom: 12px;   /* 调整此值以改变行间距 */
 }
 
 .left-column {
@@ -2373,7 +2899,7 @@ align-items: center;  */
 }
 
 .cell-content-table{
-  font-size: 22px;
+  font-size: 26px;
   line-height: 25px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2419,5 +2945,49 @@ input {
 
 .report-preview-inner:not(.is-exporting) {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* 导出 PDF 时：固定页高 + 页脚贴底，避免出现“底部空白” */
+.report-preview-inner.is-exporting .report-page {
+  position: relative;
+  /* 1900px 设计宽度下的 A4 高度约为 1900 * (841.89/595.28) ≈ 2700 */
+  min-height: 2700px;
+  padding-bottom: 240px;
+}
+
+.report-preview-inner.is-exporting .report-page-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: 12px;
+}
+
+/* 导出 PDF 表格字体：单独放大，提升可读性 */
+.report-preview-inner.is-exporting {
+  --report-table-font-size: 26px;
+  --report-table-header-font-size: 26px;
+  --report-table-line-height: 26px;
+}
+
+.report-preview-inner.is-exporting :deep(.custom-table) {
+  font-size: var(--report-table-font-size);
+}
+
+.report-preview-inner.is-exporting :deep(.custom-table .cell),
+.report-preview-inner.is-exporting :deep(.custom-table .el-table__cell .cell) {
+  font-size: var(--report-table-font-size);
+  line-height: var(--report-table-line-height);
+}
+
+.report-preview-inner.is-exporting :deep(.custom-table th .cell),
+.report-preview-inner.is-exporting :deep(.custom-table .el-table__header-wrapper .cell) {
+  font-size: var(--report-table-header-font-size);
+  font-weight: 600;
+}
+
+.report-preview-inner.is-exporting :deep(.cell-content-table) {
+  font-size: var(--report-table-font-size);
+  line-height: var(--report-table-line-height);
 }
 </style>
