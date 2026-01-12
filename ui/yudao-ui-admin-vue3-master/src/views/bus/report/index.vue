@@ -1124,7 +1124,7 @@
 <script setup lang="ts">
 import { TestDataApi } from '@/api/bus/testData'
 import { ElMessageBox } from 'element-plus'
-import { isVisible } from 'element-plus/es/utils';
+// import { isVisible } from 'element-plus/es/utils';
 import html2canvas from "html2canvas";
 import JsPDF from "jspdf";
 import { systemapi } from '@/api/system/systemset';

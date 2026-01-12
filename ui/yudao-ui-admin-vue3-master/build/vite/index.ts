@@ -29,7 +29,7 @@ export function createVitePlugins() {
     VueJsx(),
     UnoCSS(),
     progress(),
-    PurgeIcons(),
+    PurgeIcons({ content :['index.html','src/**/*.{vue.js,ts}']}),
     ElementPlus({}),
     AutoImport({
       include: [

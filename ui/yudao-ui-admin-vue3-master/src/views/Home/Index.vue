@@ -61,15 +61,15 @@
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.project') }}</span>
-            <el-link
+            <span>产品</span>
+            <!-- <el-link
               type="primary"
               :underline="false"
               href="https://github.com/yudaocode"
               target="_blank"
             >
               {{ t('action.more') }}
-            </el-link>
+            </el-link> -->
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
@@ -83,7 +83,23 @@
               :sm="24"
               :xs="24"
             >
-              <el-card shadow="hover" class="mr-5px mt-5px">
+            <el-card  class="mr-5px mt-5px">
+              <div class=" flex items-center">
+                <span class="text-16px">{{item.name}}</span>
+              </div>
+              <div class="flex flex-col mt-2px">
+                <div>
+                  本月:
+                </div>
+                <div>
+                  去年:
+                </div>
+                <div>
+                  今年:
+                </div>
+              </div>
+            </el-card>
+              <!-- <el-card shadow="hover" class="mr-5px mt-5px">
                 <div class="flex items-center">
                   <Icon :icon="item.icon" :size="25" class="mr-8px" />
                   <span class="text-16px">{{ item.name }}</span>
@@ -93,7 +109,7 @@
                   <span>{{ item.personal }}</span>
                   <span>{{ formatTime(item.time, 'yyyy-MM-dd') }}</span>
                 </div>
-              </el-card>
+              </el-card> -->
             </el-col>
           </el-row>
         </el-skeleton>
@@ -111,6 +127,37 @@
             </el-col>
             <el-col :xl="14" :lg="14" :md="24" :sm="24" :xs="24">
               <el-card shadow="hover" class="mb-8px">
+                <div class="flex flex-row-reverse gap-1">
+                   <el-button
+                    class="!ml-0"
+                    :type="rangeType === 'year' ? 'primary' : 'default'"
+                    :color="rangeType === 'year' ? '#00768B' : undefined"
+                    :dark="rangeType === 'year'"
+                    @click="rangeType = 'year'"
+                  >
+                    当年
+                  </el-button>
+                    <el-button
+                    class="!ml-0"
+                    :type="rangeType === 'lastYear' ? 'primary' : 'default'"
+                    :color="rangeType === 'lastYear' ? '#00768B' : undefined"
+                    :dark="rangeType === 'lastYear'"
+                    @click="rangeType = 'lastYear'"
+                  >
+                    去年
+                  </el-button>
+                 
+                  <el-button
+                    class="!ml-0"
+                    :type="rangeType === 'month' ? 'primary' : 'default'"
+                    :color="rangeType === 'month' ? '#00768B' : undefined"
+                    :dark="rangeType === 'month'"
+                    @click="rangeType = 'month'"
+                  >
+                    本月
+                  </el-button>
+                
+                </div>
                 <el-skeleton :loading="loading" animated>
                   <Echart :options="barOptionsData" :height="280" />
                 </el-skeleton>
@@ -124,19 +171,19 @@
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.shortcutOperation') }}</span>
+            <span>报表入口</span>
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
           <el-row>
-            <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
+            <!-- <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
               <div class="flex items-center">
                 <Icon :icon="item.icon" class="mr-8px" />
                 <el-link type="default" :underline="false" @click="setWatermark(item.name)">
                   {{ item.name }}
                 </el-link>
               </div>
-            </el-col>
+            </el-col> -->
           </el-row>
         </el-skeleton>
       </el-card>
@@ -189,6 +236,7 @@ const { setWatermark } = useWatermark()
 const loading = ref(true)
 const avatar = userStore.getUser.avatar
 const username = userStore.getUser.nickname
+const rangeType = ref<'month' | 'year' | 'lastYear'>('month')
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
 // 获取统计数
 let totalSate = reactive<WorkplaceTotal>({
@@ -211,45 +259,45 @@ let projects = reactive<Project[]>([])
 const getProject = async () => {
   const data = [
     {
-      name: 'ruoyi-vue-pro',
-      icon: 'akar-icons:github-fill',
-      message: 'https://github.com/YunaiV/ruoyi-vue-pro',
-      personal: 'Spring Boot 单体架构',
+      name: 'IP-PDU',
+      month: 0,
+      year: 0 ,
+      lastYear:0,
       time: new Date()
     },
     {
-      name: 'yudao-ui-admin-vue3',
-      icon: 'logos:vue',
-      message: 'https://github.com/yudaocode/yudao-ui-admin-vue3',
-      personal: 'Vue3 + element-plus',
+      name: 'MPDU-pro',
+      month: 0,
+      year: 0 ,
+      lastYear:0,
       time: new Date()
     },
     {
-      name: 'yudao-ui-admin-vben',
-      icon: 'logos:vue',
-      message: 'https://github.com/yudaocode/yudao-ui-admin-vben',
-      personal: 'Vue3 + vben(antd)',
+      name: 'Busway',
+        month: 0,
+      year: 0 ,
+      lastYear:0,
       time: new Date()
     },
     {
-      name: 'yudao-cloud',
-      icon: 'akar-icons:github',
-      message: 'https://github.com/YunaiV/yudao-cloud',
-      personal: 'Spring Cloud 微服务架构',
+      name: 'BM-pdu',
+        month: 0,
+      year: 0 ,
+      lastYear:0,
       time: new Date()
     },
     {
-      name: 'yudao-ui-mall-uniapp',
-      icon: 'logos:vue',
-      message: 'https://github.com/yudaocode/yudao-ui-admin-uniapp',
-      personal: 'Vue3 + uniapp',
+      name: 'Zpdu',
+        month: 0,
+      year: 0 ,
+      lastYear:0,
       time: new Date()
     },
     {
-      name: 'yudao-ui-admin-vue2',
-      icon: 'logos:vue',
-      message: 'https://github.com/yudaocode/yudao-ui-admin-vue2',
-      personal: 'Vue2 + element-ui',
+      name: 'SZ-pdu',
+        month: 0,
+      year: 0 ,
+      lastYear:0,
       time: new Date()
     }
   ]
