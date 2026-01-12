@@ -1168,7 +1168,7 @@ const form = reactive({
 })
 
  const brand = ref("legrand")
- const showBrandSwitch = computed(() => String(route.query.brand ?? '').trim() === '')
+ const showBrandSwitch = ref('legrand')
   const page1Ref = ref<HTMLElement | null>(null)
   const page2Ref = ref<HTMLElement | null>(null)
 
