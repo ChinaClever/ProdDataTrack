@@ -3,6 +3,8 @@ package cn.iocoder.yudao.module.bus.service.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
@@ -44,16 +46,20 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.http.ResponseEntity;
 
 import javax.annotation.Resource;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.*;
 
 
@@ -420,12 +426,34 @@ public class TestDataServiceImpl implements TestDataService {
             respVO.setDeviceType(usedOrderInfo.getDeviceType());
             respVO.setProductionNum(Integer.valueOf(usedOrderInfo.getNumber()));
         } else {
-            // 查不到就请求其他接口 据说一定能查到
-            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx?Type=GetSpecPrints&UserId=BBFC8115-8EF5-42E1-B1CB-A1154291F9CD" +
-                    "&OrderNo=" + reqVO.getOrderId() +
-                    "&ProductNo=" + reqVO.getProductSN();
-            ResponseEntity<String> response = new RestTemplate().getForEntity(url, String.class);
-            JSONObject json = JSONObject.parseObject(response.getBody());
+//            // 查不到就请求其他接口 据说一定能查到
+//            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx?Type=GetSpecPrints&UserId=BBFC8115-8EF5-42E1-B1CB-A1154291F9CD" +
+//                    "&OrderNo=" + reqVO.getOrderId() +
+//                    "&ProductNo=" + reqVO.getProductSN();
+            // 构建 URL
+            String userId = "BBFC8115-8EF5-42E1-B1CB-A1154291F9CD";
+
+            // 构建 URL
+            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx";
+
+            // 创建一个不验证证书的 SSLContext
+            SSLContext sslContext = createTrustAllSSLContext();
+
+            // 发送请求
+            HttpResponse response = HttpRequest.get(url)
+                    .form("Type", "GetSpecPrints")
+                    .form("UserId", userId)
+                    .form("OrderNo", reqVO.getOrderId())
+                    .form("ProductNo", reqVO.getProductSN())
+                    .setSSLSocketFactory(sslContext.getSocketFactory()) // 设置 SSLSocketFactory
+                    .execute();
+                String responseBody = response.body();
+                System.out.println("Response Status: " + response.getStatus());
+                System.out.println("Response Body: " + responseBody);
+            JSONObject json = JSONObject.parseObject(responseBody);
+
+//            ResponseEntity<String> response = new RestTemplate().getForEntity(url, String.class);
+//            JSONObject json = JSONObject.parseObject(response.getBody());
             JSONArray rows = json.getJSONArray("rows");
             if (!rows.isEmpty()) {
                 JSONObject jsonObject = rows.getJSONObject(0);
@@ -555,5 +583,27 @@ public class TestDataServiceImpl implements TestDataService {
     public int deleteBatchTestData(String moduleSn) {
         return testDataMapper.deleteBatchTestData(moduleSn);
     }
+    private static SSLContext createTrustAllSSLContext() {
+        try {
+            // 创建一个信任所有证书的 TrustManager
+            TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[0];
+                        }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+                    }
+            };
 
+            // 初始化 SSLContext
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+            return sslContext;
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create trust all SSLContext", e);
+        }
+    }
 }
