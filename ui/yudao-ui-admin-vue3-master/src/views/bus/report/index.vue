@@ -7,6 +7,16 @@
             inactive-text="英文"
             @change="updateLanguage"
         />
+        <el-switch
+            class=" ml-2"
+            v-model="reportChange"
+            v-if="showBrandSwitch"
+            active-value="clever"
+            inactive-value="legrand"
+            active-text="克莱沃"
+            inactive-text="罗格朗"
+            @change="changeCompany"
+        />
         <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
 
@@ -556,6 +566,16 @@
             active-text="中文"
             inactive-text="英文"
             @change="updateLanguage"
+        />
+        <el-switch
+            class=" ml-2"
+            v-model="reportChange"
+            v-if="showBrandSwitch"
+            active-value="clever"
+            inactive-value="legrand"
+            active-text="克莱沃"
+            inactive-text="罗格朗"
+            @change="changeCompany"
         />
         <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
@@ -1110,9 +1130,12 @@ import JsPDF from "jspdf";
 import { systemapi } from '@/api/system/systemset';
 
 
-defineOptions({ name: 'BusReport' })
-const Out_dialogVisible = ref(true);
-const goods_SN_data = ref({});
+ defineOptions({ name: 'BusReport' })
+ const route = useRoute()
+  const Out_dialogVisible = ref(true);
+  const goods_SN_data = ref({});
+  const reportChange = ref('legrand')
+
 // const goods_product_sn = ref(null);
 // const goods_language_select = ref(null);
 // const goods_tool_name = ref(null);
@@ -1144,9 +1167,10 @@ const form = reactive({
   inspectorEnglish: "legrand",
 })
 
-const brand = ref("")
-const page1Ref = ref<HTMLElement | null>(null)
-const page2Ref = ref<HTMLElement | null>(null)
+ const brand = ref("legrand")
+ const showBrandSwitch = computed(() => String(route.query.brand ?? '').trim() === '')
+  const page1Ref = ref<HTMLElement | null>(null)
+  const page2Ref = ref<HTMLElement | null>(null)
 
 // 预览使用“固定设计宽度 + 缩放”来适配手机（避免逐机型写样式）
 const REPORT_DESIGN_WIDTH_PX = 1900
@@ -2516,6 +2540,12 @@ const queryParams = reactive({
       return len;
   }
 
+  const changeCompany = ()=>{
+    brand.value = reportChange.value === 'clever' ? 'clever' : 'legrand'
+    nextTick(() => updatePreviewScale())
+  }
+
+
   const updateLanguage = () => {
     if(out_language.value !== true)
       {
@@ -2681,12 +2711,13 @@ onMounted(() => {
       if (previewOuterRef.value) previewOuterResizeObserver.observe(previewOuterRef.value)
     }
   })
-
-  const queryOrderId = useRoute().query.orderId as string;
-  const queryProductSN = useRoute().query.productSN as string;
-  const queryModuleSN = useRoute().query.moduleSN as string;
-  const queryBrand = String(useRoute().query.brand ?? '').toLowerCase()
+ 
+  const queryOrderId = String(route.query.orderId ?? '')
+  const queryProductSN = String(route.query.productSN ?? '')
+  const queryModuleSN = String(route.query.moduleSN ?? '')
+  const queryBrand = String(route.query.brand ?? '').toLowerCase()
   brand.value = queryBrand === 'clever' ? 'clever' : 'legrand'
+  reportChange.value = brand.value
   if (queryOrderId == '' || queryProductSN == '' || queryModuleSN == ''){
     ElMessageBox.alert('出错了，数据缺失（订单号、成品代码、模块序列号）', 
       'Error', 
