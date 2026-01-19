@@ -135,7 +135,7 @@
                     :dark="rangeType === 'year'"
                     @click="rangeType = 'year'"
                   >
-                    当年
+                    今年
                   </el-button>
                     <el-button
                     class="!ml-0"
@@ -175,16 +175,17 @@
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
-          <el-row>
-            <!-- <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
+          <!-- <el-row>
+            <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
               <div class="flex items-center">
                 <Icon :icon="item.icon" class="mr-8px" />
                 <el-link type="default" :underline="false" @click="setWatermark(item.name)">
                   {{ item.name }}
                 </el-link>
               </div>
-            </el-col> -->
-          </el-row>
+            </el-col>
+          </el-row> -->
+               <el-empty description="暂无报表" />
         </el-skeleton>
       </el-card>
       <el-card shadow="never" class="mt-8px">
@@ -244,6 +245,52 @@ let totalSate = reactive<WorkplaceTotal>({
   access: 0,
   todo: 0
 })
+
+const  echartsdata = ref([
+  {
+      name: 'IP-PDU',
+      month: 20,
+      year: 40 ,
+      lastYear:30,
+
+    },
+    {
+      name: 'MPDU-pro',
+      month: 120,
+      year: 230 ,
+      lastYear:120,
+ 
+    },
+    {
+      name: 'Busway',
+        month:230,
+      year: 10 ,
+      lastYear:220,
+  
+    },
+    {
+      name: 'BM-pdu',
+        month: 10,
+      year:30 ,
+      lastYear:40,
+
+    },
+    {
+      name: 'Zpdu',
+        month: 10,
+      year: 20 ,
+      lastYear:0,
+
+    },
+    {
+      name: 'SZ-pdu',
+        month: 50,
+      year: 80 ,
+      lastYear:0,
+
+    }
+])
+
 
 const getCount = async () => {
   const data = {
@@ -387,7 +434,7 @@ const getUserAccessSource = async () => {
   set(
     pieOptionsData,
     'legend.data',
-    data.map((v) => t(v.name))
+    data.map((v) => t (v.name))
   )
   pieOptionsData!.series![0].data = data.map((v) => {
     return {
@@ -400,24 +447,16 @@ const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
 
 // 周活跃量
 const getWeeklyUserActivity = async () => {
-  const data = [
-    { value: 13253, name: 'analysis.monday' },
-    { value: 34235, name: 'analysis.tuesday' },
-    { value: 26321, name: 'analysis.wednesday' },
-    { value: 12340, name: 'analysis.thursday' },
-    { value: 24643, name: 'analysis.friday' },
-    { value: 1322, name: 'analysis.saturday' },
-    { value: 1324, name: 'analysis.sunday' }
-  ]
+
   set(
     barOptionsData,
     'xAxis.data',
-    data.map((v) => t(v.name))
+    echartsdata.value.map((v) => t(v.name))
   )
   set(barOptionsData, 'series', [
     {
       name: t('analysis.activeQuantity'),
-      data: data.map((v) => v.value),
+      data: rangeType.value === 'month' ? echartsdata.value.map((v) => v.month) : rangeType.value === 'lastYear' ?  echartsdata.value.map((v) => v.lastYear) : echartsdata.value.map((v) => v.year),
       type: 'bar'
     }
   ])
@@ -436,4 +475,8 @@ const getAllApi = async () => {
 }
 
 getAllApi()
+
+watch(()=>rangeType.value ,()=>{
+   getWeeklyUserActivity()
+},{immediate:true} )
 </script>

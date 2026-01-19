@@ -5,7 +5,7 @@
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
     :background="true"
-    :page-sizes="[10, 20, 30, 50, 100]"
+    :page-sizes="props.pageSizeArr"
     :pager-count="pagerCount"
     :total="total"
     :small="isSmall"
@@ -17,6 +17,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, watchEffect } from 'vue'
+import type { PropType } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 
 defineOptions({ name: 'Pagination' })
@@ -47,6 +48,10 @@ const props = defineProps({
   },
   // 设置最大页码按钮数。 页码按钮的数量，当总页数超过该值时会折叠
   // 移动端页码按钮的数量端默认值 5
+  pageSizeArr: {
+    type: Array as PropType<number[]>,
+    default: () => [10, 20, 30, 50, 100]
+  },
   pagerCount: {
     type: Number,
     default: document.body.clientWidth < 992 ? 5 : 7

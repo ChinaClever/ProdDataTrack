@@ -110,7 +110,7 @@ export const pieOptions: EChartsOption = {
 
 export const barOptions: EChartsOption = {
   title: {
-    text: t('analysis.weeklyUserActivity'),
+    text: 'PDU产品数量',
     left: 'center'
   },
   tooltip: {

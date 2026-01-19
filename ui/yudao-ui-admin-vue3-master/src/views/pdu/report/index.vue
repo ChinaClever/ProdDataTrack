@@ -1,6 +1,6 @@
 <template>
   <div>
-    你好
+    这是外部报告
   </div> 
 </template>
 
