@@ -52,11 +52,44 @@
           <el-table-column label="成品代码"  prop="productSN" min-width="120" align="center"  />
           <el-table-column label="模块序列号" prop="moduleSn" min-width="120" align="center"  />
           <el-table-column label="产品类型" prop="productType" min-width="120" align="center"  />
-          <el-table-column label="测试结果" prop="result"  min-width="120" align="center" />
+          <el-table-column label="测试结果" prop="result"  min-width="120" align="center" >
+            <template #default="{ row }" v-if="queryParams.language == '0'">
+
+            <el-tag v-if="row.result === '1'" type="success">通过</el-tag>
+            <el-tag v-else type="danger">失败</el-tag>
+          </template>
+            <template #default="{ row }" v-else-if="queryParams.language == '1'">
+
+            <el-tag v-if="row.result === '1'" type="success">Pass</el-tag>
+            <el-tag v-else type="danger">Fail</el-tag>
+          </template> 
+          <template #default="{ row }" v-else-if="queryParams.language == 'all'">
+
+            <el-tag v-if="row.languageSelect === '0'" type="success">通过</el-tag>
+            <el-tag v-else type="danger">失败</el-tag>
+          </template>
+            </el-table-column>
           <el-table-column label="客户名称"  prop="clientName" min-width="120" align="center"   />
           <el-table-column label="公司名称" prop="companyName" min-width="120" align="center"  />
           <el-table-column label="软件版本" prop="softVersion" min-width="120" align="center"  />
-          <el-table-column label="语言" prop="languageSelect" min-width="120" align="center"  />
+          <el-table-column label="语言" prop="languageSelect" min-width="120" align="center"  >
+            <template #default="{ row }" v-if="queryParams.language == '0'">
+
+            <el-tag v-if="row.languageSelect === '0'" type="success">中文</el-tag>
+            <el-tag v-else type="danger">英文</el-tag>
+          </template>
+            <template #default="{ row }" v-else-if="queryParams.language == '1'">
+
+            <el-tag v-if="row.languageSelect === '1'" type="success">English</el-tag>
+            <el-tag v-else type="danger">Fail</el-tag>
+          </template> 
+          <template #default="{ row }" v-else-if="queryParams.language == 'all'">
+
+            <el-tag v-if="row.languageSelect === '0'" type="success">中文</el-tag>
+            <el-tag v-else type="danger">英文</el-tag>
+          </template>
+            </el-table-column>
+            
           <el-table-column label="订单数量" prop="orderNum" min-width="120" align="center"  />
           <el-table-column label="工具名称" prop="toolName"  min-width="120" align="center" />
           <el-table-column label="测试开始时间" prop="testStartTime" min-width="120" align="center"  />
