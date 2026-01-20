@@ -140,7 +140,12 @@ export const barOptions: EChartsOption = {
     }
   },
   yAxis: {
-    type: 'value'
+    type: 'value',
+    // 避免自动生成 0.5 这类小数刻度
+    minInterval: 1,
+    axisLabel: {
+      formatter: (value: number) => (Number.isInteger(value) ? `${value}` : '')
+    }
   },
   series: [
     {

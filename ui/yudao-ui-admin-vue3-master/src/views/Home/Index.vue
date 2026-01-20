@@ -89,13 +89,13 @@
               </div>
               <div class="flex flex-col mt-2px">
                 <div>
-                  本月:
+                  本月: <span>{{item.month}}</span>
                 </div>
                 <div>
-                  去年:
+                  去年: <span>{{item.lastYear}}</span>
                 </div>
                 <div>
-                  今年:
+                  今年: <span>{{item.year}}</span>
                 </div>
               </div>
             </el-card>
@@ -228,7 +228,7 @@ import { useUserStore } from '@/store/modules/user'
 import { useWatermark } from '@/hooks/web/useWatermark'
 import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
 import { pieOptions, barOptions } from './echarts-data'
-
+import { homeApi } from '@/api/home'
 defineOptions({ name: 'Home' })
 
 const { t } = useI18n()
@@ -303,53 +303,53 @@ const getCount = async () => {
 
 // 获取项目数
 let projects = reactive<Project[]>([])
-const getProject = async () => {
-  const data = [
-    {
-      name: 'IP-PDU',
-      month: 0,
-      year: 0 ,
-      lastYear:0,
-      time: new Date()
-    },
-    {
-      name: 'MPDU-pro',
-      month: 0,
-      year: 0 ,
-      lastYear:0,
-      time: new Date()
-    },
-    {
-      name: 'Busway',
-        month: 0,
-      year: 0 ,
-      lastYear:0,
-      time: new Date()
-    },
-    {
-      name: 'BM-pdu',
-        month: 0,
-      year: 0 ,
-      lastYear:0,
-      time: new Date()
-    },
-    {
-      name: 'Zpdu',
-        month: 0,
-      year: 0 ,
-      lastYear:0,
-      time: new Date()
-    },
-    {
-      name: 'SZ-pdu',
-        month: 0,
-      year: 0 ,
-      lastYear:0,
-      time: new Date()
-    }
-  ]
-  projects = Object.assign(projects, data)
-}
+// const getProject = async () => {
+//   const data = [
+//     {
+//       name: 'IP-PDU',
+//       month: 0,
+//       year: 0 ,
+//       lastYear:0,
+//       time: new Date()
+//     },
+//     {
+//       name: 'MPDU-pro',
+//       month: 0,
+//       year: 0 ,
+//       lastYear:0,
+//       time: new Date()
+//     },
+//     {
+//       name: 'Busway',
+//         month: 0,
+//       year: 0 ,
+//       lastYear:0,
+//       time: new Date()
+//     },
+//     {
+//       name: 'BM-pdu',
+//         month: 0,
+//       year: 0 ,
+//       lastYear:0,
+//       time: new Date()
+//     },
+//     {
+//       name: 'Zpdu',
+//         month: 0,
+//       year: 0 ,
+//       lastYear:0,
+//       time: new Date()
+//     },
+//     {
+//       name: 'SZ-pdu',
+//         month: 0,
+//       year: 0 ,
+//       lastYear:0,
+//       time: new Date()
+//     }
+//   ]
+//   projects = Object.assign(projects, data)
+// }
 
 // 获取通知公告
 let notice = reactive<Notice[]>([])
@@ -465,7 +465,6 @@ const getWeeklyUserActivity = async () => {
 const getAllApi = async () => {
   await Promise.all([
     getCount(),
-    getProject(),
     getNotice(),
     getShortcut(),
     getUserAccessSource(),
@@ -475,6 +474,20 @@ const getAllApi = async () => {
 }
 
 getAllApi()
+
+const handlePdu = async()=>{
+  const res = await homeApi.shipmentNum()
+  Object.assign(echartsdata.value,res)
+  console.log(echartsdata.value)
+  getWeeklyUserActivity()
+
+  projects = Object.assign(projects, res)
+}
+
+
+onMounted(()=>{
+  handlePdu()
+})
 
 watch(()=>rangeType.value ,()=>{
    getWeeklyUserActivity()

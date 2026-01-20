@@ -6,10 +6,10 @@ export type WorkplaceTotal = {
 
 export type Project = {
   name: string
-  icon: string
-  message: string
-  personal: string
-  time: Date | number | string
+  month: string | number
+  year: string | number
+  lastYear: string | number
+
 }
 
 export type Notice = {
