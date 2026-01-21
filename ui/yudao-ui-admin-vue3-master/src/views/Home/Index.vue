@@ -92,11 +92,12 @@
                   本月: <span>{{item.month}}</span>
                 </div>
                 <div>
-                  去年: <span>{{item.lastYear}}</span>
-                </div>
-                <div>
                   今年: <span>{{item.year}}</span>
                 </div>
+                <div>
+                  去年: <span>{{item.lastYear}}</span>
+                </div>
+            
               </div>
             </el-card>
               <!-- <el-card shadow="hover" class="mr-5px mt-5px">
