@@ -249,43 +249,43 @@ let totalSate = reactive<WorkplaceTotal>({
 const  echartsdata = ref([
   {
       name: 'IP-PDU',
-      month: 20,
-      year: 40 ,
-      lastYear:30,
+      month: 0,
+      year: 0 ,
+      lastYear:0,
 
     },
     {
       name: 'MPDU-pro',
-      month: 120,
-      year: 230 ,
-      lastYear:120,
+      month: 0,
+      year: 0 ,
+      lastYear:0,
  
     },
     {
       name: 'Busway',
-        month:230,
-      year: 10 ,
-      lastYear:220,
+        month:0,
+      year: 0 ,
+      lastYear:0,
   
     },
     {
       name: 'BM-pdu',
-        month: 10,
-      year:30 ,
-      lastYear:40,
+        month: 0,
+      year:0 ,
+      lastYear:0,
 
     },
     {
       name: 'Zpdu',
-        month: 10,
-      year: 20 ,
+        month: 0,
+      year: 0 ,
       lastYear:0,
 
     },
     {
       name: 'SZ-pdu',
-        month: 50,
-      year: 80 ,
+        month: 0,
+      year: 0 ,
       lastYear:0,
 
     }
