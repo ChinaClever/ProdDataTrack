@@ -22,12 +22,12 @@
                 <el-form-item label="订单号">
                   <el-input v-model="queryParams.orderId" style="width:160px" clearable />
                 </el-form-item>
-                <!-- <el-form-item label="客户名">
+                <el-form-item label="客户名">
                   <el-input v-model="queryParams.clientName" style="width:160px" clearable />
-                </el-form-item> -->
-                <!-- <el-form-item label="产品类型">
-                    <el-input v-model="queryParams.productType" style="width:160px" clearable />
-                </el-form-item> -->
+                </el-form-item>
+                <el-form-item label="模块类型">
+                    <el-input v-model="queryParams.moduleType" style="width:160px" clearable />
+                </el-form-item>
                 <el-form-item label="模块序列号">
                     <el-input v-model="queryParams.moduleSn" style="width:160px" clearable />
                 </el-form-item>
@@ -73,7 +73,7 @@
           />
           <el-table-column  label="测试时间" prop="testDate" min-width="120" align="center" />
           <el-table-column label="客户名称"  prop="clientName" min-width="130" align="center"   />
-          <el-table-column label="产品类型" prop="productType" min-width="130" align="center"  />
+          <el-table-column label="模块类型" prop="moduleType" min-width="130" align="center"  />
             <el-table-column label="测试结果" prop="result"  min-width="130" align="center" >
             <template #default="{ row }" v-if="queryParams.language == '0'">
 
@@ -204,8 +204,8 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="6">
-              <el-form-item label="产品类型">
-                <el-input v-model="editForm.productType" />
+              <el-form-item label="模块类型">
+                <el-input v-model="editForm.moduleType" />
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="6">
@@ -399,7 +399,7 @@
   language: '0',
   moduleSn: undefined,
   result: 'all',
-  productType:undefined
+  moduleType:undefined
   
 })
 
@@ -446,7 +446,7 @@ const debouncedGetList = debounce(() => {
 }, 400)
 
 watch(
-  () => [queryParams.result, queryParams.language, queryParams.orderId, queryParams.productSn, queryParams.timeRange,queryParams.clientName,queryParams.productType],
+  () => [queryParams.result, queryParams.language, queryParams.orderId, queryParams.productSn, queryParams.timeRange,queryParams.clientName,queryParams.moduleType],
   () => debouncedGetList()
 )
 
