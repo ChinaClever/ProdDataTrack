@@ -58,6 +58,7 @@
 
   <el-row class="mt-8px" :gutter="8" justify="space-between">
     <el-col :xl="16" :lg="16" :md="24" :sm="24" :xs="24" class="mb-8px">
+     
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
@@ -72,7 +73,7 @@
             </el-link> -->
           </div>
         </template>
-        <el-skeleton :loading="loading" animated>
+        <el-skeleton :loading="pduLoading" animated>
           <el-row>
             <el-col
               v-for="(item, index) in projects"
@@ -236,6 +237,7 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const { setWatermark } = useWatermark()
 const loading = ref(true)
+const pduLoading = ref(true)
 const avatar = userStore.getUser.avatar
 const username = userStore.getUser.nickname
 const rangeType = ref<'month' | 'year' | 'lastYear'>('month')
@@ -483,6 +485,7 @@ const handlePdu = async()=>{
   getWeeklyUserActivity()
 
   projects = Object.assign(projects, res)
+  pduLoading.value = false
 }
 
 

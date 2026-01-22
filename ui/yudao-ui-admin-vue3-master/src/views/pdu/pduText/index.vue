@@ -22,6 +22,15 @@
                 <el-form-item label="订单号">
                   <el-input v-model="queryParams.orderId" style="width:160px" clearable />
                 </el-form-item>
+                <el-form-item label="客户名">
+                  <el-input v-model="queryParams.clientName" style="width:160px" clearable />
+                </el-form-item>
+                <el-form-item label="产品类型">
+                    <el-input v-model="queryParams.productType" style="width:160px" clearable />
+                </el-form-item>
+                <el-form-item label="模块序列号">
+                    <el-input v-model="queryParams.moduleSn" style="width:160px" clearable />
+                </el-form-item>
                 <el-form-item label="成品代码">
                     <el-input v-model="queryParams.productSN" style="width:160px" clearable />
                 </el-form-item>
@@ -38,6 +47,13 @@
                     clearable
                   />
                 </el-form-item>
+                <el-form-item label="显示列">
+                  <el-checkbox-group v-model="selectedOptionalColumns">
+                    <el-checkbox v-for="col in optionalColumns" :key="col.key" :label="col.key">
+                      {{ col.label }}
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
               </el-form>
             </el-skeleton>
           </el-card>
@@ -48,11 +64,18 @@
   </div>
   <div class="mt-6">
         <el-table :data="table" class=" table-style" border>
-          <el-table-column  label="订单号" prop="orderId" min-width="120" align="center" />
-          <el-table-column label="成品代码"  prop="productSN" min-width="120" align="center"  />
-          <el-table-column label="模块序列号" prop="moduleSn" min-width="120" align="center"  />
+          <el-table-column
+            label="序号"
+            type="index"
+            :index="getRowIndex"
+            min-width="80"
+            align="center"
+          />
+          <el-table-column  label="测试时间" prop="testDate" min-width="120" align="center" />
+         
+          <el-table-column label="客户名称"  prop="clientName" min-width="120" align="center"   />
           <el-table-column label="产品类型" prop="productType" min-width="120" align="center"  />
-          <el-table-column label="测试结果" prop="result"  min-width="120" align="center" >
+            <el-table-column label="测试结果" prop="result"  min-width="120" align="center" >
             <template #default="{ row }" v-if="queryParams.language == '0'">
 
             <el-tag v-if="row.result === '1'" type="success">通过</el-tag>
@@ -69,32 +92,38 @@
             <el-tag v-else type="danger">失败</el-tag>
           </template>
             </el-table-column>
-          <el-table-column label="客户名称"  prop="clientName" min-width="120" align="center"   />
-          <el-table-column label="公司名称" prop="companyName" min-width="120" align="center"  />
-          <el-table-column label="软件版本" prop="softVersion" min-width="120" align="center"  />
-          <el-table-column label="语言" prop="languageSelect" min-width="120" align="center"  >
-            <template #default="{ row }" v-if="queryParams.language == '0'">
-
-            <el-tag v-if="row.languageSelect === '0'" type="success">中文</el-tag>
-            <el-tag v-else type="danger">英文</el-tag>
-          </template>
-            <template #default="{ row }" v-else-if="queryParams.language == '1'">
-
-            <el-tag v-if="row.languageSelect === '1'" type="success">English</el-tag>
-            <el-tag v-else type="danger">Fail</el-tag>
-          </template> 
-          <template #default="{ row }" v-else-if="queryParams.language == 'all'">
-
-            <el-tag v-if="row.languageSelect === '0'" type="success">中文</el-tag>
-            <el-tag v-else type="danger">英文</el-tag>
-          </template>
-            </el-table-column>
-            
-          <el-table-column label="订单数量" prop="orderNum" min-width="120" align="center"  />
-          <el-table-column label="工具名称" prop="toolName"  min-width="120" align="center" />
-          <el-table-column label="测试开始时间" prop="testStartTime" min-width="120" align="center"  />
-          <el-table-column label="测试结束时间" prop="testEndTime" min-width="120" align="center"  />
-          <el-table-column label="协议版本" prop="protocolVersion" min-width="120" align="center"  />
+            <!-- 工时 -->
+             <el-table-column label="工时(秒)" prop="testTime" min-width="120" align="center" />
+             <el-table-column label="软件版本" prop="softVersion" min-width="120" align="center"  />
+             <el-table-column label="模块序列号" prop="moduleSn" min-width="120" align="center"  />
+          <el-table-column  label="订单号" prop="orderId" min-width="120" align="center" />
+          <el-table-column label="成品代码"  prop="productSN" min-width="120" align="center"  />
+          
+          <el-table-column v-if="isColumnEnabled('companyName')" label="公司名称" prop="companyName" min-width="120" align="center" />
+          <el-table-column v-if="isColumnEnabled('languageSelect')" label="语言" prop="languageSelect" min-width="120" align="center">
+            <template #default="{ row }">
+              <el-tag v-if="row.languageSelect === '0'" type="success">中文</el-tag>
+              <el-tag v-else type="warning">英文</el-tag>
+            </template>
+          </el-table-column>
+           <el-table-column v-if ="isColumnEnabled('testStartTime')"   label="测试开始时间" prop="testStartTime" min-width="120" align="center"  />
+          <el-table-column v-if="isColumnEnabled('testEndTime')"     label="测试结束时间" prop="testEndTime" min-width="120" align="center"  />
+          <el-table-column v-if="isColumnEnabled('orderNum')" label="订单数量" prop="orderNum" min-width="120" align="center" />
+          <el-table-column v-if="isColumnEnabled('toolName')" label="工具名称" prop="toolName" min-width="120" align="center" />
+          <el-table-column
+            v-if="isColumnEnabled('protocolVersion')"
+            label="协议版本"
+            prop="protocolVersion"
+            min-width="120"
+            align="center"
+          />
+          <el-table-column
+            v-if="isColumnEnabled('macAddress')"
+            label="mac地址"
+            prop="macAddress"
+            min-width="120"
+            align="center"
+          />
             <el-table-column label="详情"  min-width="120" align="center"  >
               <template #default="{row}" >
                 <el-button link type="primary" @click="handleDetails(row)">详情</el-button>
@@ -364,16 +393,37 @@
   pageNo: 1,
   pageSize: 15,
   timeRange: undefined,
+  clientName:undefined,
   orderId: undefined,
   productSN: undefined,
   language: '0',
   moduleSn: undefined,
   result: 'all',
- 
+  productType:undefined
+  
 })
 
-const getList = async()=>{
-  const res = await GettextPduApi.textPduText(queryParams)
+const getRowIndex = (index: number) =>
+  (queryParams.pageNo - 1) * queryParams.pageSize + index + 1
+
+const optionalColumns = [
+  { key: 'companyName', label: '公司名称' },
+  { key: 'languageSelect', label: '语言' },
+  { key: 'orderNum', label: '订单数量' },
+  { key: 'toolName', label: '工具名称' },
+  { key: 'protocolVersion', label: '协议版本' },
+  {key:'macAddress' ,label:'mac地址'},
+  {key:'testStartTime' ,label:'测试开始时间'},
+  {key: 'testEndTime' , label:'测试结束时间'}
+] as const
+
+const selectedOptionalColumns = ref<(typeof optionalColumns)[number]['key'][]>([])
+
+const isColumnEnabled = (key: (typeof optionalColumns)[number]['key']) =>
+  selectedOptionalColumns.value.includes(key)
+
+ const getList = async()=>{
+   const res = await GettextPduApi.textPduText(queryParams)
 
   if(res.list){
     table.value = res.list
@@ -396,7 +446,7 @@ const debouncedGetList = debounce(() => {
 }, 400)
 
 watch(
-  () => [queryParams.result, queryParams.language, queryParams.orderId, queryParams.productSN, queryParams.timeRange],
+  () => [queryParams.result, queryParams.language, queryParams.orderId, queryParams.productSN, queryParams.timeRange,queryParams.clientName,queryParams.productType],
   () => debouncedGetList()
 )
 
