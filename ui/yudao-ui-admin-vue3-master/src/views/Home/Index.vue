@@ -193,12 +193,12 @@
       <el-card shadow="never" class="mt-8px">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.notice') }}</span>
-            <el-link type="primary" :underline="false">{{ t('action.more') }}</el-link>
+            <span>通知公告</span>
+            <!-- <el-link type="primary" :underline="false">{{ t('action.more') }}</el-link> -->
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
-          <div v-for="(item, index) in notice" :key="`dynamics-${index}`">
+          <!-- <div v-for="(item, index) in notice" :key="`dynamics-${index}`">
             <div class="flex items-center">
               <el-avatar :src="avatar" :size="35" class="mr-16px">
                 <img src="@/assets/imgs/avatar.gif" alt="" />
@@ -215,6 +215,60 @@
               </div>
             </div>
             <el-divider />
+          </div> -->
+          <div v-if="(pduLoad?.length ?? 0) + (busLoad?.length ?? 0) === 0">
+            <el-empty description="暂无公告" />
+          </div>
+          <div v-else class="space-y-12px">
+            <div
+              v-for="(item, index) in pduLoad"
+              :key="item?.id ?? `${item?.title ?? 'pdu'}-${index}`"
+              class="rounded-8px border border-solid border-gray-200 p-12px transition hover:border-[var(--el-color-primary)] hover:bg-[var(--el-fill-color-light)]"
+            >
+              <div class="flex items-start justify-between gap-12px">
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-8px">
+                    
+                    <div class="min-w-0 flex-1 truncate text-14px font-600 text-gray-900">
+                      {{ item?.title ?? '-' }}
+                    </div>
+                    <el-tag size="small" type="success" effect="light">PDU</el-tag>
+                    
+                  </div>
+                  <div class="mt-8px whitespace-pre-wrap break-words text-13px text-gray-700">
+                    {{ item?.message ?? '-' }}
+                  </div>
+                </div>
+                <div class="shrink-0 pt-2px text-12px text-gray-400">
+                  {{ item?.testDate ?? '' }}
+                </div>
+              </div>
+            </div>
+
+            <div
+              v-for="(item, index) in busLoad"
+              :key="item?.id ?? `${item?.title ?? 'bus'}-${index}`"
+              class="rounded-8px border border-solid border-gray-200 p-12px transition hover:border-[var(--el-color-primary)] hover:bg-[var(--el-fill-color-light)]"
+            >
+              <div class="flex items-start justify-between gap-12px">
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-8px">
+                    
+                    <div class="min-w-0 flex-1 truncate text-14px font-600 text-gray-900">
+                      {{ item?.title ?? '-' }}
+                    </div>
+                    <el-tag size="small" type="warning" effect="light">母线</el-tag>
+                    
+                  </div>
+                  <div class="mt-8px whitespace-pre-wrap break-words text-13px text-gray-700">
+                    {{ item?.message ?? '-' }}
+                  </div>
+                </div>
+                <div class="shrink-0 pt-2px text-12px text-gray-400">
+                  {{ item?.testDate ?? '' }}
+                </div>
+              </div>
+            </div>
           </div>
         </el-skeleton>
       </el-card>
@@ -231,8 +285,11 @@ import { useWatermark } from '@/hooks/web/useWatermark'
 import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
 import { pieOptions, barOptions } from './echarts-data'
 import { homeApi } from '@/api/home'
+import { title } from 'process'
+import { clear } from 'console'
 defineOptions({ name: 'Home' })
-
+const pduLoad = ref<any>([])
+const busLoad = ref<any>([])
 const { t } = useI18n()
 const userStore = useUserStore()
 const { setWatermark } = useWatermark()
@@ -477,7 +534,41 @@ const getAllApi = async () => {
 }
 
 getAllApi()
+const timer = ref<ReturnType<typeof setTimeout> | null>(null)
+const isUnmounted = ref(false)
+const handleQuenen = async()=>{
+  try{
+     const [v1,v2] = await Promise.allSettled([
+    homeApi.busQueueTake(),
+    homeApi.pduQueueTake()
+  ])
+  
+  console.log(v1, v2)
 
+  if (v2.status === 'fulfilled') {
+    pduLoad.value = v2.value ?? []
+  } else {
+    console.error('pduQueueTake failed:', v2.reason)
+    pduLoad.value = []
+  }
+
+  if (v1.status === 'fulfilled') {
+    busLoad.value = v1.value ?? []
+  } else {
+    console.error('busQueueTake failed:', v1.reason)
+    busLoad.value = []
+  }
+  } catch(e){
+    console.log(e)
+  } finally{
+    if (isUnmounted.value) return
+    if (timer.value) clearTimeout(timer.value)
+    timer.value = setTimeout(() => {
+      handleQuenen()
+    }, 10000)
+  }
+  
+}
 const handlePdu = async()=>{
   const res = await homeApi.shipmentNum()
   Object.assign(echartsdata.value,res)
@@ -489,8 +580,17 @@ const handlePdu = async()=>{
 }
 
 
+onBeforeUnmount(()=>{
+  isUnmounted.value = true
+  if (timer.value) {
+    clearTimeout(timer.value)
+    timer.value = null
+  }
+})
+
 onMounted(()=>{
   handlePdu()
+  handleQuenen()
 })
 
 watch(()=>rangeType.value ,()=>{

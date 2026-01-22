@@ -403,6 +403,7 @@
   
 })
 
+
 const getRowIndex = (index: number) =>
   (queryParams.pageNo - 1) * queryParams.pageSize + index + 1
 
