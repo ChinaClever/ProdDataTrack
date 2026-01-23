@@ -187,7 +187,9 @@
               </div>
             </el-col>
           </el-row> -->
-               <el-empty description="暂无报表" />
+               <div class=" h-150px">
+                <el-empty description="暂无报表" style=" height: 100px;"  image-size="100" />
+               </div>
         </el-skeleton>
       </el-card>
       <el-card shadow="never" class="mt-8px">
