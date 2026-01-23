@@ -21,6 +21,10 @@ export const GettextPduApi = {
   },
   deleteModuleTest :async(id)=>{
     return await request.delete({url:`/pdu/deleteModuleTest`,params:{id}})
+  },
+  // pud成品质检内部报告
+  Report:async(params:any)=>{
+    return await request.get({url:`/pdu/internal-report`,params})
   }
 
 }

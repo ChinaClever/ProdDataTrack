@@ -129,10 +129,11 @@
                 <el-button link type="primary" @click="handleDetails(row)">详情</el-button>
               </template>
             </el-table-column>
-            <el-table-column label="操作"  min-width="140" align="center"  >
+            <el-table-column label="操作"  min-width="180" align="center"  >
               <template #default="{row}" >
                 <el-button link type="primary" @click="handleEdit(row)">修改</el-button>
                 <el-button link type="danger" @click="handledelete(row)">删除</el-button>
+                <el-button type="primary" link @click="()=> {openUrlOpen = true;antherArr = row}">查看报告</el-button>
               </template>
             </el-table-column>
               </el-table>
@@ -340,13 +341,30 @@
           <el-button type="primary" :loading="editSubmitting" @click="submitEdit">保存</el-button>
         </template>
       </el-dialog>
+
+          <el-dialog
+        v-model="openUrlOpen"
+        width="350px"
+        title="查看报告"
+        :before-close="(done) => {
+          openUrlOpen = false
+          antherArr = null
+          done()
+        }"
+      >
+        <div>
+          <el-button type="primary" @click="handleOpenReport">查看外部出厂报告</el-button>
+        <el-button type="primary" @click="handleOutReport">查看内部出厂报告</el-button>
+        </div>
+      </el-dialog>
 </template>
 
 
 <script setup lang="ts">
 
   import { GettextPduApi } from '@/api/pdu/pdutext'
-  import { ElMessage } from 'element-plus'
+import router from '@/router';
+  import { ElMessage, ElMessageBox } from 'element-plus'
   const load = ref(true)
   const total = ref(0)
   const pageSizeArr = [15,30,50,100]
@@ -362,6 +380,9 @@
   type PduTestRecord = Record<string, any> & {
     testData?: PduTestDetail[] | string
   }
+
+
+
   const dailogStatus = ref(false)
   const detaildialogStatu = ref(false)
   const arr = ref<PduTestDetail[]>([])
@@ -403,6 +424,9 @@
   
 })
 
+const openUrlOpen = ref(false)
+const antherArr = ref<any | null>(null)
+
 const getRowIndex = (index: number) =>
   (queryParams.pageNo - 1) * queryParams.pageSize + index + 1
 
@@ -431,6 +455,73 @@ const isColumnEnabled = (key: (typeof optionalColumns)[number]['key']) =>
     console.log("table",table.value)
   }
 }
+
+
+const handleOpenReport = async () => {
+
+
+
+  const row = antherArr.value
+  if (!row) {
+    ElMessage.warning('请先选择一条数据')
+    return
+  }
+  const productSN = row.productSn ?? row.productSN
+  const moduleSN = row.moduleSn ?? row.moduleSN
+  const orderId = row.orderId
+  if (!productSN || !moduleSN || !orderId) {
+    ElMessage.warning('报告参数不完整，请检查数据')
+    return
+  }
+
+  const openExternalReport = (brand: 'clever' | 'legrand') => {
+    const url = router.resolve({
+      path: 'pdu/pduText',
+      query: {
+        productSN: String(productSN),
+        orderId: String(orderId),
+        moduleSN: String(moduleSN),
+        brand,
+      }
+    }).href
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  openUrlOpen.value = false
+  try {
+    await ElMessageBox.confirm('请选择外部出厂报告抬头：', '外部出厂报告', {
+      confirmButtonText: '克莱沃',
+      cancelButtonText: '罗格朗',
+      distinguishCancelAndClose: true,
+      showCancelButton: true,
+      type: 'info',
+    })
+    openExternalReport('clever')
+  } catch (action) {
+    if (action === 'cancel') openExternalReport('legrand')
+  }
+}
+
+const handleOutReport = () => {
+  const row = antherArr.value
+  if (!row) {
+    ElMessage.warning('请先选择一条数据')
+    return
+  }
+  const productType = row.productType 
+  const moduleSN = row.moduleSn ?? row.moduleSN
+  if (!moduleSN) {
+    ElMessage.warning('模块序列号为空，无法打开内部报告')
+    return
+  }
+  openUrlOpen.value = false
+  router.push({
+    path: '/pdu/report',
+    query: { moduleSN: String(moduleSN),productType:productType }
+  })
+}
+
+
 
 const debounce = <T extends (...args: any[]) => void>(fn: T, wait = 300) => {
   let timer: ReturnType<typeof setTimeout> | undefined
