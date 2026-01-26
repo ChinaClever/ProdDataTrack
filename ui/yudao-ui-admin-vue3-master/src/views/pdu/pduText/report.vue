@@ -29,7 +29,7 @@
       <el-divider />
       <div class="report-meta">
         <div class="report-meta__col">
-          <div class="report-meta__item">{{ uiText.productCode }} {{ qualityTestInternalReport?.productSN  }}</div>
+          <div class="report-meta__item">{{ uiText.productCode }} {{ qualityTestInternalReport?.productSn  }}</div>
           <div class="report-meta__item">{{ uiText.inspectionStartTime }} {{ qualityTestInternalReport?.testStartTime  }}</div>
           <div class="report-meta__item">{{ uiText.inspectionEndTime }} {{ qualityTestInternalReport?.testEndTime  }}</div>
         </div>
@@ -134,7 +134,7 @@ type ModuleTestInternalReportType = {
 }
 type qualityTestInternalReportType = {
   clientName: string
-  productSN: string
+  productSn: string
   moduleSn:string
   productType: string
   orderId: string
