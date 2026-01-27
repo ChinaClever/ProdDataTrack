@@ -13,8 +13,11 @@
       <div v-if="qualityTestInternalReport != null" ref="qualitySection" class="report-section">
          <div class=" flex items-center justify-center">
         <!-- <h1>{{  qualityTestInternalReport?.productType}}功能检验报告</h1> -->
-         <h1>质检报告</h1>
-      </div>
+          <h1>PDU自动测试报告</h1>
+        </div>
+        <div class=" flex items-center justify-center">
+          <h2>模块序列号：{{moduleTestInternalReport?.moduleSn}}</h2>
+        </div>
       <el-divider />
       <!-- 信息区：按截图两行左右布局 -->
       <div class="report-meta">
@@ -82,7 +85,7 @@
           <div class="report-meta__item">{{ uiText.inspectionEndTime }} {{ moduleTestInternalReport?.testEndTime }}</div>
         </div>
         <div class="report-meta__col report-meta__col--right2">
-          <div class="report-meta__item">{{ uiText.testItem }} 模块质检</div>
+          <div class="report-meta__item">{{ uiText.testItem }} 模块校准</div>
           <div class="report-meta__item">{{ uiText.inspectionType }} 全检</div>
           <div class="report-meta__item">{{ uiText.inspectionResult }} {{ moduleTestInternalReport?.result === '1'? '通过' : '失败'}}</div>
         </div>
@@ -141,7 +144,6 @@ type qualityTestInternalReportType = {
   productType: string
   orderId: string
   orderNum: string
-  productSn: string
   result: string
   testData: unknown[]
   testEndTime: string
@@ -336,7 +338,7 @@ const output = async () => {
   if (qualitySection.value) await exportSection(doc, qualitySection.value, false)
   if (moduleSection.value) await exportSection(doc, moduleSection.value, true) // 第二块强制新页开始
 
-  doc.save('report.pdf')
+  doc.save('PDU自动测试报告.pdf')
 }
 
 const handleSn = async () => {
@@ -380,6 +382,11 @@ watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
 //   text-align: right;
 // }
 
+.small-br {
+  display: block;
+  margin: 0;
+  line-height: 0.5; /* 调整行高来控制间距 */
+}
 
 .report-meta__col--right,
 .report-meta__col--right2 {
@@ -396,7 +403,7 @@ watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
   padding: 0 20px 20px 20px;
   :deep(.el-table__header){
     th {
-      background-color:#f5f7fe ;
+      // background-color:#f5f7fe ;
       color: #848485;
       font-weight: 600;
       font-size: 16px;
@@ -418,7 +425,7 @@ watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
         // padding: 12px 0;
         // border-bottom: 1px solid #ebeef5;
     //  font-family: 'SimSun', serif;
-      background-color:#f5f7fe ;
+      // background-color:#f5f7fe ;
       color: #777779;
       font-weight: 600;
       font-size: 16px;
