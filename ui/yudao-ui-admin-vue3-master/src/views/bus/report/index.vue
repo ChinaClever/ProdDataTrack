@@ -26,7 +26,7 @@
         <div id="page1Content" ref="page1Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
               <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo3.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo1.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
@@ -149,7 +149,7 @@
         <div id="page2Content" ref="page2Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
             <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo3.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 11%; text-align: center; font-size: 20px; flex: 1;">
                   <p>惠州市克莱沃电子有限公司 </p>
@@ -290,7 +290,7 @@
         <div id="page1Content" ref="page1Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
               <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo3.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px; margin-left: 35%;">
                   <p>Clever Electronic </p>
@@ -410,7 +410,7 @@
         <div id="page2Content" ref="page2Ref" class="report-page">
           <div class="custom-dialog-title" style="display: flex; align-items: center;">
             <div style="padding-left: 5%; padding-top: 30px;">
-                  <img src="@/assets/logo3.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
+                  <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
               <div style="padding-top: 100px; padding-right: 27%; text-align: center; font-size: 20px;margin-left: 35%;">
                   <p>Clever Electronic</p>
