@@ -385,7 +385,7 @@ watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
 .report-meta__col--right2 {
   align-items: flex-start;                 // 右列内容从“右列起始线”对齐（你要的y轴一致
   position: relative  ;
-  left: 150px;
+  left: 350px;
 }
 
 .report-meta__item {
