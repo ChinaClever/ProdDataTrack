@@ -10,9 +10,10 @@
     
     </div>
     <div ref="config" class=" w-full h-full mt-2 bg-white font-900 ">
-      <div ref="qualitySection" class="report-section">
+      <div v-if="qualityTestInternalReport != null" ref="qualitySection" class="report-section">
          <div class=" flex items-center justify-center">
-        <h1>{{  qualityTestInternalReport?.productType}}功能检验报告</h1>
+        <!-- <h1>{{  qualityTestInternalReport?.productType}}功能检验报告</h1> -->
+         <h1>质检报告</h1>
       </div>
       <el-divider />
       <!-- 信息区：按截图两行左右布局 -->
@@ -56,13 +57,14 @@
 
     </el-table>
       </div>
-      <div ref="moduleSection" class="report-section">
+      <div v-if="moduleTestInternalReport != null" ref="moduleSection" class="report-section">
         <div class=" flex items-center justify-center">
-        <h1>{{  moduleTestInternalReport?.moduleType }}模块调试报告</h1>
+        <!-- <h1>{{  moduleTestInternalReport?.moduleType }}模块调试报告</h1> -->
+        <h1>参数配置与校准记录</h1>
       </div>
       <el-divider />
       <!-- 信息区：按截图两行左右布局 -->
-      <div class="report-meta">
+      <!-- <div class="report-meta">
         <div class="report-meta__col">
           <div class="report-meta__item">{{ uiText.orderNo }} {{  moduleTestInternalReport?.orderId }}</div>
           <div class="report-meta__item">{{ uiText.orderQty }} {{  moduleTestInternalReport?.orderNum }}</div>
@@ -71,8 +73,8 @@
           <div class="report-meta__item">{{ uiText.productModel }} {{   moduleTestInternalReport?.moduleType  }}</div>
           <div class="report-meta__item">{{ uiText.inspectionDate }} {{  moduleTestInternalReport?.clientName }}</div>
         </div>
-      </div>
-      <el-divider />
+      </div> -->
+      <!-- <el-divider /> -->
       <div class="report-meta">
         <div class="report-meta__col">
           <div class="report-meta__item">{{ uiText.moduelCode }} {{  moduleTestInternalReport?.moduleSn }}</div>
@@ -395,9 +397,9 @@ watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
   :deep(.el-table__header){
     th {
       background-color:#f5f7fe ;
-      color: #606266;
+      color: #848485;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
       text-align: center;
       border-bottom: 1px solid #ebeef5;
     }
@@ -410,11 +412,18 @@ watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
 
       }
       td{
-        text-align: center;
-        font-size: 14px;
-        color: #606266;
-        padding: 12px 0;
-        border-bottom: 1px solid #ebeef5;
+        // text-align: center;
+        // font-size: 16px;
+        // color: #848485;
+        // padding: 12px 0;
+        // border-bottom: 1px solid #ebeef5;
+    //  font-family: 'SimSun', serif;
+      background-color:#f5f7fe ;
+      color: #777779;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+      border-bottom: 1px solid #ebeef5;
 
       }
     }
