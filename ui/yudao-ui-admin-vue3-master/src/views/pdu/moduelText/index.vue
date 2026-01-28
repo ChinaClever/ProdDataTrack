@@ -623,6 +623,11 @@ const removeEditRow = (index: number) => {
 }
 
 const handledelete = async(v)=>{
+  await ElMessageBox.confirm('确定要删除吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+})
   console.log('id',v.id)
   const res = await GettextPduApi.deleteModuleTest(v.id)
 
