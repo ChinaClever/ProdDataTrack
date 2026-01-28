@@ -60,11 +60,12 @@ const formRef = ref()
 
 const selectOptions = ref([
   { value: 'bus', label: '母线' },
-  // { value: 'xxx', label: '...' },
+  { value :'pdu',label:'PDU'}
+  
 ])
 
 const form = reactive({
-  inspector:'克莱沃',
+   inspector:'克莱沃',
   auditor:'克莱沃',
   signer:'克莱沃',
   inspectorEnglish:'legrand',
@@ -108,6 +109,10 @@ onMounted(()=>{
   handleRequest()
 })
 
+
+watch(()=> form.identification,()=>{
+   handleRequest()
+},{immediate:true})
 </script>
 
 

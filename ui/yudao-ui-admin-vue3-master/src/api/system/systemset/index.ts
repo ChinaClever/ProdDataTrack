@@ -1,4 +1,5 @@
 import request from '@/config/axios'
+import { url } from 'inspector'
 
 
 
@@ -8,5 +9,6 @@ export const systemapi = {
   },
   getFactoryReportClerk:async(params)=>{
     return await request.get({url:`/system/factoryReportClerk/getFactoryReportClerk/?identification=${params}`})
-  }
+  },
+  
 }
