@@ -364,6 +364,7 @@
 
   import { GettextPduApi } from '@/api/pdu/pdutext'
 import router from '@/router';
+import { promises } from 'dns';
   import { ElMessage, ElMessageBox } from 'element-plus'
   const load = ref(true)
   const total = ref(0)
@@ -635,7 +636,6 @@ const handledelete = async(v)=>{
 })
   console.log('id',v.id)
   const res = await GettextPduApi.deleteTestData(v.id)
-
   if(res){
     await getList()
   }

@@ -485,18 +485,7 @@ const handleOpenReport = async () => {
   }
 
   openUrlOpen.value = false
-  try {
-    await ElMessageBox.confirm('请选择外部出厂报告抬头：', '外部出厂报告', {
-      confirmButtonText: '克莱沃',
-      cancelButtonText: '罗格朗',
-      distinguishCancelAndClose: true,
-      showCancelButton: true,
-      type: 'info',
-    })
-    openExternalReport('clever')
-  } catch (action) {
-    if (action === 'cancel') openExternalReport('legrand')
-  }
+  openExternalReport('clever')
 }
 
 

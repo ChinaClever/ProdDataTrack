@@ -17,6 +17,16 @@
             inactive-text="罗格朗"
             @change="changeCompany"
         />
+
+         <el-switch
+            class=" ml-2"
+            v-model="Show"
+            v-if="showBrandSwitch"
+            :active-value="true"
+            :inactive-value="false"
+            active-text="显示"
+            inactive-text="不显示"
+        />
         <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
 
@@ -24,7 +34,7 @@
         <div class="report-preview-inner" :class="{ 'is-exporting': exporting }" :style="previewInnerStyle">
       <div v-if="out_language == true">
         <div id="page1Content" ref="page1Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;" v-if="Show">
               <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -32,7 +42,7 @@
                   <p>惠州市克莱沃电子有限公司 </p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule" v-if="Show">
           <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -52,18 +62,18 @@
               <div v-if="goods_dev_name !== '母线槽'" class="column left-column">
                 <p v-if="radio2  ">产品名称: {{ goods_dev_name + '（智能型）'}} </p>
                 <p v-if="!radio2 ">产品名称: {{ goods_dev_name + '（基本型）'}} </p>
-                <p >规格型号: {{modelNumber}}</p>
+                <p v-if="modelNumber">规格型号: {{modelNumber}}</p>
                 <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div v-if="goods_dev_name === '母线槽'" class="column left-column">
                 <p >产品名称: {{ goods_dev_name }} </p>             
-                <p >规格型号: {{modelNumber}}</p>
+                <p v-if="modelNumber" >规格型号: {{modelNumber}}</p>
                 <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div class="column right-column">
-                <p >客户名称: {{customerName}}</p>
+                <p v-if="customerName!==null">客户名称: {{customerName}}</p>
                 <p >检验类别: 出厂检验</p>
                 <p >生产数量: {{goods_order_num}}台</p>
                 <p >检验数量: {{goods_test_num}}台</p>
@@ -147,7 +157,7 @@
           </div>
         </div>
         <div id="page2Content" ref="page2Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;" v-if="Show">
             <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -155,7 +165,7 @@
                   <p>惠州市克莱沃电子有限公司 </p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule"  v-if="Show">
             <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -288,7 +298,7 @@
 
       <div v-else-if="out_language == false">
         <div id="page1Content" ref="page1Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;"  v-if="Show">
               <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -296,7 +306,7 @@
                   <p>Clever Electronic </p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule"  v-if="Show">
             <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -315,18 +325,18 @@
               <div v-if="goods_dev_name !== 'Busway'" class="column left-column" style="padding-left: 10%;">
                 <p v-if="radio2 ">Product Name: {{ goods_dev_name +'(Intelligent)'}}</p>
                 <p v-if="!radio2 ">Product Name: {{ goods_dev_name +'(Basic)'}}</p>
-                <p >Specification Model: {{modelNumber}}</p>
+                <p v-if="modelNumber">Specification Model: {{modelNumber}}</p>
                 <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div v-if="goods_dev_name === 'Busway'" class="column left-column" style="padding-left: 10%;">
                 <p >Product Name: {{ goods_dev_name }}</p>              
-                <p >Specification Model: {{modelNumber}}</p>
+                <p v-if="modelNumber">Specification Model: {{modelNumber}}</p>
                 <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div class="column right-column" style="padding-right: 5%;">
-                <p >Customer Name: {{ customerName }}</p>
+                <p v-if="customerName!==null">Customer Name: {{ customerName }}</p>
                 <p >Inspection Category: Factory Inspection</p>
                 <p >Production Quantity: {{goods_order_num}}PCS</p>
                 <p >Inspection Quantity: {{goods_test_num}}PCS</p>
@@ -408,7 +418,7 @@
           </div>
         </div>
         <div id="page2Content" ref="page2Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;"  v-if="Show">
             <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo1.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -416,7 +426,7 @@
                   <p>Clever Electronic</p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule"  v-if="Show">
             <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -577,6 +587,15 @@
             inactive-text="罗格朗"
             @change="changeCompany"
         />
+         <el-switch
+            class=" ml-2"
+            v-model="Show"
+            v-if="showBrandSwitch"
+            :active-value="true"
+            :inactive-value="false"
+            active-text="显示"
+            inactive-text="不显示"
+        />
         <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
 
@@ -584,7 +603,7 @@
         <div class="report-preview-inner" :class="{ 'is-exporting': exporting }" :style="previewInnerStyle">
       <div v-if="out_language == true">
         <div id="page1Content" ref="page1Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;"  v-if="Show">
               <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo2.png"  alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -592,7 +611,7 @@
                   <p>罗格朗智能电气（惠州）有限公司 </p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule"  v-if="Show">
           <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -612,18 +631,18 @@
               <div v-if="goods_dev_name !== '母线槽'" class="column left-column">
                 <p v-if="radio2  ">产品名称: {{ goods_dev_name + '（智能型）'}} </p>
                 <p v-if="!radio2 ">产品名称: {{ goods_dev_name + '（基本型）'}} </p>
-                <p >规格型号: {{modelNumber}}</p>
+                <p v-if="modelNumber">规格型号: {{modelNumber}}</p>
                 <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div v-if="goods_dev_name === '母线槽'" class="column left-column">
                 <p >产品名称: {{ goods_dev_name }} </p>             
-                <p >规格型号: {{modelNumber}}</p>
+                <p v-if="modelNumber">规格型号: {{modelNumber}}</p>
                 <p >生产日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >检验日期: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div class="column right-column">
-                <p >客户名称: {{customerName}}</p>
+                <p v-if="customerName!==null">客户名称: {{customerName}}</p>
                 <p >检验类别: 出厂检验</p>
                 <p >生产数量: {{goods_order_num}}台</p>
                 <p >检验数量: {{goods_test_num}}台</p>
@@ -707,7 +726,7 @@
           </div>
         </div>
         <div id="page2Content" ref="page2Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;"  v-if="Show">
             <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -715,7 +734,7 @@
                   <p>罗格朗智能电气（惠州）有限公司 </p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule"  v-if="Show">
             <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -848,7 +867,7 @@
 
       <div v-else-if="out_language == false">
         <div id="page1Content" ref="page1Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;"  v-if="Show">
               <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -856,7 +875,7 @@
                   <p>Legrand </p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule"  v-if="Show">
             <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -875,18 +894,18 @@
               <div v-if="goods_dev_name !== 'Busway'" class="column left-column" style="padding-left: 10%;">
                 <p v-if="radio2 ">Product Name: {{ goods_dev_name +'(Intelligent)'}}</p>
                 <p v-if="!radio2 ">Product Name: {{ goods_dev_name +'(Basic)'}}</p>
-                <p >Specification Model: {{modelNumber}}</p>
+                <p v-if="modelNumber">Specification Model: {{modelNumber}}</p>
                 <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div v-if="goods_dev_name === 'Busway'" class="column left-column" style="padding-left: 10%;">
                 <p >Product Name: {{ goods_dev_name }}</p>              
-                <p >Specification Model: {{modelNumber}}</p>
+                <p v-if="modelNumber">Specification Model: {{modelNumber}}</p>
                 <p >Production Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
                 <p >Inspection Date: {{ formattedGoodsEndTime(goods_end_time) }}</p>
               </div>
               <div class="column right-column" style="padding-right: 5%;">
-                <p >Customer Name: {{ customerName }}</p>
+                <p v-if="customerName!==null">Customer Name: {{ customerName }}</p>
                 <p >Inspection Category: Factory Inspection</p>
                 <p >Production Quantity: {{goods_order_num}}PCS</p>
                 <p >Inspection Quantity: {{goods_test_num}}PCS</p>
@@ -968,7 +987,7 @@
           </div>
         </div>
         <div id="page2Content" ref="page2Ref" class="report-page">
-          <div class="custom-dialog-title" style="display: flex; align-items: center;">
+          <div class="custom-dialog-title" style="display: flex; align-items: center;"  v-if="Show">
             <div style="padding-left: 5%; padding-top: 30px;">
                   <img src="@/assets/logo2.png" alt="左上角图片" style="height: 100px; width: auto; margin-right: 10px;"/>
               </div>
@@ -976,7 +995,7 @@
                   <p>Legrand</p>
               </div>
           </div>
-          <div class="horizontal-rule">
+          <div class="horizontal-rule"  v-if="Show" >
             <hr/>
           </div>
           <!-- <div style="padding-right: 5%;">
@@ -1135,7 +1154,7 @@ import { systemapi } from '@/api/system/systemset';
   const Out_dialogVisible = ref(true);
   const goods_SN_data = ref({});
   const reportChange = ref('legrand')
-
+  const Show = ref(true)
 // const goods_product_sn = ref(null);
 // const goods_language_select = ref(null);
 // const goods_tool_name = ref(null);
@@ -2644,10 +2663,10 @@ const queryParams = reactive({
   }
 
   const out_handleExport = async () => {
-    if (!modelNumber.value || !customerName.value) {
-      await ElMessageBox.alert('请确保产品型号和客户名称已获取（页面数据加载完成）！')
-      return
-    }
+    // if (!modelNumber.value || !customerName.value) {
+    //   await ElMessageBox.alert('请确保产品型号和客户名称已获取（页面数据加载完成）！')
+    //   return
+    // }
     loading.value = true
     try {
       await OutExportToPDF()
