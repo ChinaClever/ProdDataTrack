@@ -10,7 +10,7 @@
         <el-switch
             class=" ml-2"
             v-model="reportChange"
-            v-if="showBrandSwitch"
+            v-if="Show && showBrandSwitch"
             active-value="clever"
             inactive-value="legrand"
             active-text="克莱沃"
@@ -24,8 +24,8 @@
             v-if="showBrandSwitch"
             :active-value="true"
             :inactive-value="false"
-            active-text="显示"
-            inactive-text="不显示"
+            active-text="显示Logo"
+            inactive-text="不显示Logo"
         />
         <el-button type="primary" class="container-button" @click="out_handleExport">导出 PDF</el-button>
       </div>
@@ -1154,7 +1154,7 @@ import { systemapi } from '@/api/system/systemset';
   const Out_dialogVisible = ref(true);
   const goods_SN_data = ref({});
   const reportChange = ref('legrand')
-  const Show = ref(true)
+  const Show = ref(false)
 // const goods_product_sn = ref(null);
 // const goods_language_select = ref(null);
 // const goods_tool_name = ref(null);
