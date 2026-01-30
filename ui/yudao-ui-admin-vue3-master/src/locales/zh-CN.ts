@@ -183,7 +183,7 @@ export default {
     videoAdvertising: '视频广告',
     searchEngines: '搜索引擎',
     weeklyUserActivity: '每周用户活跃量',
-    activeQuantity: '活跃量',
+    activeQuantity: '出货数量',
     monday: '周一',
     tuesday: '周二',
     wednesday: '周三',

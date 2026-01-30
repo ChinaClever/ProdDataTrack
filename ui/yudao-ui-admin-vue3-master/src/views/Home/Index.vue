@@ -62,7 +62,7 @@
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>产品</span>
+            <span>产品出货数量</span>
             <!-- <el-link
               type="primary"
               :underline="false"
