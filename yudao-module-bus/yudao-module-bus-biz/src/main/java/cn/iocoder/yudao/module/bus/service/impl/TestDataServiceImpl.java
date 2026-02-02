@@ -5,6 +5,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import cn.iocoder.yudao.framework.common.util.http.CRMUtils;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
@@ -130,9 +131,6 @@ public class TestDataServiceImpl implements TestDataService {
      */
     @Override
     public PageResult<TestData> getTestDataPage(TestDataPageReqVO pageReqVO) {
-        // 打印请求参数
-        System.out.println(pageReqVO);
-
         // 创建分页对象
         Page<TestData> page = new Page<>(pageReqVO.getPageNo(), pageReqVO.getPageSize());
 
@@ -426,46 +424,51 @@ public class TestDataServiceImpl implements TestDataService {
             respVO.setDeviceType(usedOrderInfo.getDeviceType());
             respVO.setProductionNum(Integer.valueOf(usedOrderInfo.getNumber()));
         } else {
+            Map<String, String> crm = CRMUtils.getInfoByCRM(reqVO.getOrderId(), reqVO.getProductSN(),"bus");
+            respVO.setCustomerName(crm.get("CUSTOMERNAME"));
+            respVO.setDeviceType(crm.get("MODELCODE"));
+            respVO.setProductionNum(Integer.valueOf(crm.get("QUANTITY")));
 //            // 查不到就请求其他接口 据说一定能查到
 //            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx?Type=GetSpecPrints&UserId=BBFC8115-8EF5-42E1-B1CB-A1154291F9CD" +
 //                    "&OrderNo=" + reqVO.getOrderId() +
 //                    "&ProductNo=" + reqVO.getProductSN();
             // 构建 URL
-            String userId = "BBFC8115-8EF5-42E1-B1CB-A1154291F9CD";
-
-            // 构建 URL
-            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx";
-
-            // 创建一个不验证证书的 SSLContext
-            SSLContext sslContext = createTrustAllSSLContext();
-
-            // 发送请求
-            HttpResponse response = HttpRequest.get(url)
-                    .form("Type", "GetSpecPrints")
-                    .form("UserId", userId)
-                    .form("OrderNo", reqVO.getOrderId())
-                    .form("ProductNo", reqVO.getProductSN())
-                    .setSSLSocketFactory(sslContext.getSocketFactory()) // 设置 SSLSocketFactory
-                    .execute();
-                String responseBody = response.body();
-                System.out.println("Response Status: " + response.getStatus());
-                System.out.println("Response Body: " + responseBody);
-            JSONObject json = JSONObject.parseObject(responseBody);
-
-//            ResponseEntity<String> response = new RestTemplate().getForEntity(url, String.class);
-//            JSONObject json = JSONObject.parseObject(response.getBody());
-            JSONArray rows = json.getJSONArray("rows");
-            if (!rows.isEmpty()) {
-                JSONObject jsonObject = rows.getJSONObject(0);
-                respVO.setCustomerName(jsonObject.getString("CUSTOMERNAME"));
-                respVO.setDeviceType(jsonObject.getString("MODELCODE"));
-                respVO.setProductionNum(jsonObject.getInteger("QUANTITY"));
-            } else {
-                respVO.setCustomerName("CUSTOMERNAME");     //临时===========================================
-                respVO.setDeviceType("MODELCODE");          //临时===========================================
-
-//                return null;
-            }
+//            String userId = "BBFC8115-8EF5-42E1-B1CB-A1154291F9CD";
+//
+//            // 构建 URL
+//            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx";
+//
+//            // 创建一个不验证证书的 SSLContext
+//            SSLContext sslContext = createTrustAllSSLContext();
+//
+//            // 发送请求
+//            HttpResponse response = HttpRequest.get(url)
+//                    .form("Type", "GetSpecPrints")
+//                    .form("UserId", userId)
+//                    .form("OrderNo", reqVO.getOrderId())
+//                    .form("AmmeterPrdNo", reqVO.getProductSN())
+//                    .setSSLSocketFactory(sslContext.getSocketFactory()) // 设置 SSLSocketFactory
+//                    .execute();
+//                String responseBody = response.body();
+//                System.out.println("Response Status: " + response.getStatus());
+//                System.out.println("Response Body: " + responseBody);
+//            JSONObject json = JSONObject.parseObject(responseBody);
+//
+////            ResponseEntity<String> response = new RestTemplate().getForEntity(url, String.class);
+////            JSONObject json = JSONObject.parseObject(response.getBody());
+//            JSONArray rows = json.getJSONArray("rows");
+//            if (!rows.isEmpty()) {
+//                JSONObject jsonObject = rows.getJSONObject(0);
+//                respVO.setCustomerName(jsonObject.getString("CUSTOMERNAME"));
+//                respVO.setDeviceType(jsonObject.getString("MODELCODE"));
+//                respVO.setProductionNum(jsonObject.getInteger("QUANTITY"));
+//            } else {
+//
+//                respVO.setCustomerName("CUSTOMERNAME");     //临时===========================================
+//                respVO.setDeviceType("MODELCODE");          //临时===========================================
+//
+////                return null;
+//            }
 
 //            respVO.setCustomerName("CUSTOMERNAME");     //临时===========================================
 //            respVO.setDeviceType("MODELCODE");          //临时===========================================

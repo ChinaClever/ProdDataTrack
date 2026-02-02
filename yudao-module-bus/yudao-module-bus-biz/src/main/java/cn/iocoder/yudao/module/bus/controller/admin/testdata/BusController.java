@@ -9,6 +9,7 @@ import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
 import cn.iocoder.yudao.module.bus.mapper.ModulesTestMapper;
 import cn.iocoder.yudao.module.bus.mapper.TestDataMapper;
 import cn.iocoder.yudao.module.bus.service.ModulesTestService;
+import cn.iocoder.yudao.module.bus.service.BusQueueService;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.PermitAll;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.hutool.core.lang.Console.log;
@@ -44,13 +46,23 @@ public class BusController {
     @Autowired
     private ModulesTestMapper modulesTestMapper;
 
+    @Autowired
+    private BusQueueService busQueueService;
+
     @PostMapping("/testData")
     @PermitAll
     public ResponseEntity<?> receiveTestData(@RequestBody TestData testData) {
         try {
+            // 去除空格
+            testData.setModuleSn(testData.getModuleSn().replaceAll("\\s+", ""));
             testData.setAllData(testData.toString());
             testDataMapper.insert(testData);
-
+            InformText informText = new InformText();
+            String msg = testData.getDevName() +"：设备（" + testData.getModuleSn() + "）质检" + (testData.getTestResult().equals("0") ? "失败" : "完成") ;
+            informText.setMessage(msg);
+            informText.setTestDate(testData.getStartTime());
+            informText.setTitle("母线质检");
+            busQueueService.addElementToQueue("busQuality", informText);
         } catch (Exception e) {
             log("存储测试数据失败：" + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("存储测试数据失败" + e.getMessage());
@@ -118,8 +130,16 @@ public class BusController {
     @PermitAll
     public ResponseEntity<?> receiveModulesTest(@RequestBody ModulesTest modulesTest) {
         try {
+            // 去除空格
+            modulesTest.setModuleSn(modulesTest.getModuleSn().replaceAll("\\s+", ""));
             modulesTest.setAllData(modulesTest.toString());
             modulesTestMapper.insert(modulesTest);
+            InformText informText = new InformText();
+            String msg = modulesTest.getModuleType() +"：设备（" + modulesTest.getModuleSn() + "）校准" + (modulesTest.getTestResult().equals("0") ? "失败" : "完成") ;
+            informText.setTestDate(modulesTest.getTestTime());
+            informText.setMessage(msg);
+            informText.setTitle("母线校准");
+            busQueueService.addElementToQueue("busModule", informText);
 
         } catch (Exception e) {
             log("存储测试数据失败：" + e);
@@ -156,6 +176,17 @@ public class BusController {
     public CommonResult<PageResult<ModulesTest>> getModulesTestPa(ModulesTestPageVO pageReqVO) {
         PageResult<ModulesTest> pageResult = modulesTestService.getModulesTestPage(pageReqVO);
         return success(pageResult);
+    }
+
+    @GetMapping("/queueTake")
+    @Operation(summary = "队列元素获取")
+    public CommonResult<List<InformText>> takeElement() {
+        List<InformText> elements = new ArrayList<>();
+        InformText moduleElement = busQueueService.getElementFromQueue("busModule");
+        InformText qualityElement = busQueueService.getElementFromQueue("busQuality");
+        elements.add(moduleElement);
+        elements.add(qualityElement);
+        return success(elements);
     }
 
 }

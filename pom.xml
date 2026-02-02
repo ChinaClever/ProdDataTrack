@@ -16,6 +16,7 @@
         <module>yudao-module-system</module>
         <module>yudao-module-infra</module>
         <module>yudao-module-bus</module>
+        <module>yudao-module-pdu</module>
         <!--        <module>yudao-module-member</module>-->
 <!--        <module>yudao-module-bpm</module>-->
 <!--        <module>yudao-module-report</module>-->

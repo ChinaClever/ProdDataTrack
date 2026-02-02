@@ -1,4 +1,4 @@
-package cn.iocoder.yudao.module.bus.entity;
+package cn.iocoder.yudao.module.pdu.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @ToString
 @TableName("bus_file_info")
-public class UsedOrderInfo implements Serializable{
+public class PduUsedOrderInfo implements Serializable{
     /**
      * 编号，数据库自增
      */

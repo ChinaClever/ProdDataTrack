@@ -161,6 +161,7 @@ public class OAuth2TokenServiceImpl implements OAuth2TokenService {
                 .setUserId(userId).setUserType(userType)
                 .setClientId(clientDO.getClientId()).setScopes(scopes)
                 .setExpiresTime(LocalDateTime.now().plusSeconds(clientDO.getRefreshTokenValiditySeconds()));
+//                .setExpiresTime(LocalDateTime.now().plusMinutes(30));
         oauth2RefreshTokenMapper.insert(refreshToken);
         return refreshToken;
     }
