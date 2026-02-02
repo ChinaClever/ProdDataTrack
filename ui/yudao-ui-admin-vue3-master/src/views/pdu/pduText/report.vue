@@ -9,7 +9,8 @@
       <el-button type="primary" @click="output">{{ uiText.export }}</el-button>
     
     </div>
-    <div ref="config" class=" w-full h-full mt-2 bg-white font-900 ">
+    <div ref="config" class="report-root">
+      <div class="report-sheet" :style="reportStyleVars">
       <div v-if="qualityTestInternalReport != null" ref="qualitySection" class="report-section">
          <div class=" flex items-center justify-center">
         <!-- <h1>{{  qualityTestInternalReport?.productType}}功能检验报告</h1> -->
@@ -107,8 +108,9 @@
 
     </el-table>
       </div>
+      
      
-    
+      </div>
     </div>
    
 
@@ -123,7 +125,7 @@
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { GettextPduApi } from '@/api/pdu/pdutext'
-import dayjs from 'dayjs'
+
 
 type ModuleTestInternalReportType = {
   clientName: string
@@ -149,7 +151,7 @@ type qualityTestInternalReportType = {
   testEndTime: string
   testStartTime: string
 }
-const resizeObserve = ref()
+const resizeObserve = ref<ResizeObserver| null>(null)
 const moduleTestInternalReport = ref<ModuleTestInternalReportType | null>(null)
 const qualityTestInternalReport = ref<qualityTestInternalReportType | null>(null)
 const pduReport = ref('1')
@@ -161,6 +163,20 @@ const route = useRoute()
 const arr =ref([])
 const qualitySection = ref<HTMLElement | null>(null)
 const moduleSection = ref<HTMLElement | null>(null)
+const continerWidth = ref(0)
+
+const REPORT_DESIGN_WIDTH_PX = 1600
+const REPORT_PAD_INLINE = 'clamp(16px, 8vw, 200px)'
+const REPORT_META_FONT_SIZE = '22px'
+const REPORT_TABLE_FONT_SIZE = '16px'
+const REPORT_TABLE_HEADER_FONT_SIZE = '16px'
+
+const previewScale = computed(() => {
+  if (continerWidth.value <= 0) return 1
+  return Math.min(1, continerWidth.value / REPORT_DESIGN_WIDTH_PX)
+})
+
+const isNarrow = computed(() => continerWidth.value > 0 && continerWidth.value < REPORT_DESIGN_WIDTH_PX)
 const toStr = (v: unknown): string => {
   if (v == null) return ''
   if (Array.isArray(v)) return String(v[0] ?? '').trim()
@@ -235,99 +251,97 @@ const moduleSN = computed(()=>{
 
 const reportList = ref<any[]>([])
 const normalizeToArray = (v: unknown): any[] => (Array.isArray(v) ? v : [])
-const firstRow = computed(() => reportList.value[0] ?? {})
-const lastRow = computed(() => reportList.value[reportList.value.length - 1] ?? {})
 
-const orderNo = computed(() => toStr(route.query.orderId ?? route.query.orderNo ?? firstRow.value?.orderId))
-const productModel = computed(() =>
-  toStr(route.query.productModel ?? route.query.productType ?? firstRow.value?.devName ?? title.value)
-)
-const orderQty = computed(() =>
-  toStr(route.query.orderQty ?? route.query.orderNum ?? firstRow.value?.orderNum ?? firstRow.value?.productionNum)
-)
-const productCode = computed(() =>
-  toStr(route.query.productSN ?? route.query.productSn ?? firstRow.value?.productSn ?? firstRow.value?.productSN)
+
+const reportStyleVars = computed(
+  () =>
+    ({
+      width: `${REPORT_DESIGN_WIDTH_PX}px`,
+      zoom: String(previewScale.value),
+      '--report-pad-inline': REPORT_PAD_INLINE,
+      '--report-meta-font-size': REPORT_META_FONT_SIZE,
+      '--report-table-font-size': REPORT_TABLE_FONT_SIZE,
+      '--report-table-header-font-size': REPORT_TABLE_HEADER_FONT_SIZE
+    }) as any
 )
 
-const formatDate = (v: unknown) => {
-  const s = toStr(v)
-  if (!s) return ''
-  const d = dayjs(s)
-  return d.isValid() ? d.format('YYYY-MM-DD') : s
+const raf = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
+
+async function withExportWrapper<T>(
+  sectionEl: HTMLElement,
+  run: (target: HTMLElement) => Promise<T>
+): Promise<T> {
+  const wrapper = document.createElement('div')
+  wrapper.style.position = 'fixed'
+  wrapper.style.left = '-10000px'
+  wrapper.style.top = '0'
+  wrapper.style.width = `${REPORT_DESIGN_WIDTH_PX}px`
+  wrapper.style.background = '#fff'
+  wrapper.style.pointerEvents = 'none'
+  wrapper.style.opacity = '1'
+
+  wrapper.style.setProperty('--report-pad-inline', REPORT_PAD_INLINE)
+  wrapper.style.setProperty('--report-meta-font-size', REPORT_META_FONT_SIZE)
+  wrapper.style.setProperty('--report-table-font-size', REPORT_TABLE_FONT_SIZE)
+  wrapper.style.setProperty('--report-table-header-font-size', REPORT_TABLE_HEADER_FONT_SIZE)
+
+  const clone = sectionEl.cloneNode(true) as HTMLElement
+  clone.style.width = '100%'
+  clone.style.boxSizing = 'border-box'
+  wrapper.appendChild(clone)
+
+  document.body.appendChild(wrapper)
+  try {
+    await raf()
+    await raf()
+    return await run(wrapper)
+  } finally {
+    wrapper.remove()
+  }
 }
 
-const formatDateTime = (v: unknown) => {
-  const s = toStr(v)
-  if (!s) return ''
-  const d = dayjs(s)
-  return d.isValid() ? d.format('YYYY-MM-DD HH:mm:ss') : s
-}
 
-const inspectionDateText = computed(() => {
-  const customerName = toStr(
-    route.query.clientName ?? route.query.customerName ?? firstRow.value?.clientName ?? firstRow.value?.customerName
-  )
-  if (customerName) return customerName
-
-  const v = lastRow.value?.endTime ?? firstRow.value?.endTime ?? route.query.inspectionDate
-  return formatDate(v) || dayjs().format('YYYY-MM-DD')
-})
-
-const inspectionStartTimeText = computed(() => {
-  const v = firstRow.value?.startTime ?? route.query.startTime
-  return formatDateTime(v) || '-'
-})
-
-const inspectionEndTimeText = computed(() => {
-  const v = lastRow.value?.endTime ?? route.query.endTime
-  return formatDateTime(v) || '-'
-})
-
-const orderQtyText = computed(() => {
-  if (!orderQty.value) return '-'
-  return `${orderQty.value} ${uiText.value.qtyUnit}`
-})
-
-const inspectionResultText = computed(() => {
-  if (!reportList.value.length) return '-'
-  const pass = reportList.value.every((item) => Number(item?.testResult ?? item?.result ?? 1) !== 0)
-  return pass ? uiText.value.pass : uiText.value.fail
-})
 
 
 
 const exportSection = async (doc: jsPDF, el: HTMLElement, startOnNewPage: boolean) => {
   if (startOnNewPage) doc.addPage()
 
-  const canvas = await html2canvas(el, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#fff'
-  })
+  const canvas = await withExportWrapper(el, (target) =>
+    html2canvas(target, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#fff',
+      scrollX: 0,
+      scrollY: 0
+    })
+  )
 
-  const pageW = doc.internal.pageSize.getWidth()
-  const pageH = doc.internal.pageSize.getHeight()
+  const contentWidth = canvas.width
+  const contentHeight = canvas.height
 
-  const pageHeightPx = Math.floor((pageH * canvas.width) / pageW) // A4高度对应的像素高度
-  let y = 0
+  const pageW = 595.28
+  const heightValue = isZh.value ? 825.0 : 840.0
+  const pageHeightPx = (contentWidth / 592.28) * heightValue
+  let position = 0
 
-  while (y < canvas.height) {
-    const sliceHeightPx = Math.min(pageHeightPx, canvas.height - y)
+  while (position < contentHeight) {
+    let remainingHeight = pageHeightPx
+    if (position + remainingHeight > contentHeight) {
+      remainingHeight = contentHeight - position
+    }
 
-    const sliceCanvas = document.createElement('canvas')
-    sliceCanvas.width = canvas.width
-    sliceCanvas.height = sliceHeightPx
+    const tempCanvas = document.createElement('canvas')
+    tempCanvas.width = contentWidth
+    tempCanvas.height = remainingHeight
+    const ctx = tempCanvas.getContext('2d')!
+    ctx.drawImage(canvas, 0, position, contentWidth, remainingHeight, 0, 0, contentWidth, remainingHeight)
 
-    const ctx = sliceCanvas.getContext('2d')!
-    ctx.drawImage(canvas, 0, y, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx)
+    const imageData = tempCanvas.toDataURL('image/jpeg', 1.0)
+    doc.addImage(imageData, 'JPEG', 0, 0, pageW, (592.28 / contentWidth) * remainingHeight)
 
-    const imgData = sliceCanvas.toDataURL('image/jpeg', 1.0)
-    const sliceHeightPt = (sliceHeightPx * pageW) / canvas.width
-
-    doc.addImage(imgData, 'JPEG', 0, 0, pageW, sliceHeightPt)
-
-    y += sliceHeightPx
-    if (y < canvas.height) doc.addPage()
+    position += remainingHeight
+    if (position < contentHeight) doc.addPage()
   }
 }
 
@@ -356,6 +370,29 @@ const handleSn = async () => {
 const handleReport = async()=>{
 
 }
+
+watch(
+  config,
+  (el,_prew,onCleanup)=>{
+    if(!el) return 
+
+    const ro  =  new ResizeObserver((entries)=>{
+      const entry = entries[0]
+      if(!entry) return 
+      continerWidth.value = Math.floor(entry.contentRect.width)
+    })
+
+    ro.observe(el)
+    continerWidth.value = Math.floor(el.getBoundingClientRect().width)
+    resizeObserve.value = ro
+
+    onCleanup(()=>{
+      ro.disconnect()
+      if(resizeObserve.value === ro) resizeObserve.value = null
+    })
+  },
+{immediate:true})
+
 
 watch(moduleSN, () => handleSn(), { immediate: true })
 watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
@@ -451,5 +488,62 @@ watch(()=>pduReport.value , ()=>handleReport,{ immediate:true})
     gap: 12px;
   }
 
+}
+
+.report-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  padding: 18px var(--report-pad-inline);
+  font-size: var(--report-meta-font-size);
+  font-weight: 700;
+}
+
+.report-meta__col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 右列不再用 left 偏移 */
+.report-meta__col--right,
+.report-meta__col--right2 {
+  align-items: flex-start;
+}
+
+.report-meta__item {
+  white-space: nowrap;
+  text-align: left;
+}
+
+/* 窄屏：一列 + 自动换行 */
+.report-root-narrow {
+  width: 100%;
+  height: 100%;
+  .report-meta {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+    padding: 12px var(--report-pad-inline);
+  }
+
+  .report-meta__item {
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+/* 表格字体也跟着缩 */
+.table-class {
+  :deep(.el-table__header th) {
+    font-size: var(--report-table-header-font-size);
+  }
+  :deep(.el-table__body td) {
+    font-size: var(--report-table-font-size);
+  }
+}
+
+.report-root{
+  width: 100%;
+  height: 100%;
 }
 </style>

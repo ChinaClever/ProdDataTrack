@@ -300,7 +300,7 @@ const queryParams = reactive({
           }
 
           // 导出 PDF
-  if(language.value === true)
+          if(language.value === true)
           {
              PDF.save(`产品SN号 ${inputdata.value} 出厂报告.pdf`)
           }
