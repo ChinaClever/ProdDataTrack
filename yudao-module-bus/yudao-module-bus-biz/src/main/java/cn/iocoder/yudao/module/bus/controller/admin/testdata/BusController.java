@@ -57,12 +57,14 @@ public class BusController {
             testData.setModuleSn(testData.getModuleSn().replaceAll("\\s+", ""));
             testData.setAllData(testData.toString());
             testDataMapper.insert(testData);
-            InformText informText = new InformText();
-            String msg = testData.getDevName() +"：设备（" + testData.getModuleSn() + "）质检" + (testData.getTestResult().equals("0") ? "失败" : "完成") ;
-            informText.setMessage(msg);
-            informText.setTestDate(testData.getStartTime());
-            informText.setTitle("母线质检");
-            busQueueService.addElementToQueue("busQuality", informText);
+            if ("0".equals(testData.getLanguageSelect())) {
+                InformText informText = new InformText();
+                String msg = testData.getDevName() + "：设备（" + testData.getModuleSn() + "）质检" + (testData.getTestResult().equals("0") ? "失败" : "完成");
+                informText.setMessage(msg);
+                informText.setTestDate(testData.getStartTime());
+                informText.setTitle("母线质检");
+                busQueueService.addElementToQueue("busQuality", informText);
+            }
         } catch (Exception e) {
             log("存储测试数据失败：" + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("存储测试数据失败" + e.getMessage());
@@ -135,7 +137,7 @@ public class BusController {
             modulesTest.setAllData(modulesTest.toString());
             modulesTestMapper.insert(modulesTest);
             InformText informText = new InformText();
-            String msg = modulesTest.getModuleType() +"：设备（" + modulesTest.getModuleSn() + "）校准" + (modulesTest.getTestResult().equals("0") ? "失败" : "完成") ;
+            String msg = modulesTest.getModuleType() + "：设备（" + modulesTest.getModuleSn() + "）校准" + (modulesTest.getTestResult().equals("0") ? "失败" : "完成");
             informText.setTestDate(modulesTest.getTestTime());
             informText.setMessage(msg);
             informText.setTitle("母线校准");

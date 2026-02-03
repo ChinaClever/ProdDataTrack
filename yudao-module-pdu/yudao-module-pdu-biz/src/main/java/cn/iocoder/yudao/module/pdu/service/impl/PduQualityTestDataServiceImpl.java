@@ -93,7 +93,7 @@ public class PduQualityTestDataServiceImpl implements PduQualityTestDataService 
             DateTime dateTime = new DateTime();
             String timeString = dateTime.toString("yyyy-MM-dd HH:mm:ss");
             pduQualityTestData.setTestDate(timeString);
-            Map<String, String> crmInfo = CRMUtils.getInfoByCRM(pduQualityTestDataVo.getOrderId(), pduQualityTestDataVo.getProductSN(),"pdu");
+            Map<String, String> crmInfo = CRMUtils.getInfoByCRM(pduQualityTestDataVo.getOrderId(), pduQualityTestDataVo.getProductSN(), "pdu");
             String customerName = crmInfo.get("CUSTOMERNAME");
             String specification = crmInfo.get("MODELCODE");
             String quantity = crmInfo.get("QUANTITY");
@@ -101,12 +101,14 @@ public class PduQualityTestDataServiceImpl implements PduQualityTestDataService 
             pduQualityTestData.setSpecification(specification);
             pduQualityTestData.setOrderNum(quantity.equals("0") ? pduQualityTestDataVo.getOrderNum() : quantity);
             pduQualityTestDataMapper.insert(pduQualityTestData);
-            InformText informText = new InformText();
-            String msg = pduQualityTestData.getProductType() +"：设备（" + pduQualityTestData.getModuleSn() + "）质检" + (pduQualityTestData.getResult().equals("0") ? "失败" : "完成") ;
-            informText.setMessage(msg);
-            informText.setTestDate(timeString);
-            informText.setTitle("PDU质检");
-            pduQueueService.addElementToQueue("pduQuality", informText);
+            if ("0".equals(pduQualityTestDataVo.getLanguageSelect())) {
+                InformText informText = new InformText();
+                String msg = pduQualityTestData.getProductType() + "：设备（" + pduQualityTestData.getModuleSn() + "）质检" + (pduQualityTestData.getResult().equals("0") ? "失败" : "完成");
+                informText.setMessage(msg);
+                informText.setTestDate(timeString);
+                informText.setTitle("PDU质检");
+                pduQueueService.addElementToQueue("pduQuality", informText);
+            }
         } catch (Exception e) {
             log.error("存储测试数据失败：", e);
         }
@@ -535,7 +537,7 @@ public class PduQualityTestDataServiceImpl implements PduQualityTestDataService 
         pduModulesTestDataQueryWrapper.eq("module_sn", reqVO.getModuleSN());
         PduModulesTestData pduModulesTestData = pduModulesTestMapper.selectOne(pduModulesTestDataQueryWrapper);
         if (pduModulesTestData != null) {
-            BeanUtils.copyProperties(pduModulesTestData,moduleTestInternalReport);
+            BeanUtils.copyProperties(pduModulesTestData, moduleTestInternalReport);
             String moduleTestData = pduModulesTestData.getTestData();
             List<PduTestDataDetail> pduModuleTestDataDetails = DataTransitionUtil.parsePduTestDataDetail(moduleTestData);
             pduModuleTestDataDetails.removeIf(vo -> vo.getTestItem() == null || vo.getTestItem().isEmpty());

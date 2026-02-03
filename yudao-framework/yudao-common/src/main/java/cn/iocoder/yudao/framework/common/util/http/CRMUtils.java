@@ -5,6 +5,8 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class CRMUtils {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CRMUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(CRMUtils.class);
 
     private static final String CRM_URL = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx";
     private static final String USER_ID = "BBFC8115-8EF5-42E1-B1CB-A1154291F9CD";

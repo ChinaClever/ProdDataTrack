@@ -109,10 +109,10 @@ public class HomeServiceImpl implements HomeService {
         List<PduQualityTestData> allPduData = pduQualityTestDataMapper.selectList(pduQueryWrapper);
 
         // 获取所有Bus数据（语言为中文且通过质检）
-        QueryWrapper<TestData> busQueryWrapper = new QueryWrapper<>();
-        busQueryWrapper
-                .eq("language_select", "0")
-                .eq("test_result", "1");
+//        QueryWrapper<TestData> busQueryWrapper = new QueryWrapper<>();
+//        busQueryWrapper
+//                .eq("language_select", "0")
+//                .eq("test_result", "1");
         List<TestData> allBusData = testDataMapper.findLatestByProductSnWithConditions();
 //        List<TestData> allBusData = testDataMapper.selectList(busQueryWrapper);
 

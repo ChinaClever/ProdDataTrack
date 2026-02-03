@@ -3,7 +3,7 @@
     <div class=" bg-white flex justify-between p-2">
       <div>
           <el-switch active-text="中文"  inactive-text="英文"  inactive-value="1" active-value="0"  class=" ml-3"   v-model="outLangues" />
-          <el-switch  active-text="克莱沃"  inactive-text="罗格朗"  active-value="1" inactive-value="0"  class="ml-3" v-model="company"        />
+          <!-- <el-switch  active-text="克莱沃"  inactive-text="罗格朗"  active-value="1" inactive-value="0"  class="ml-3" v-model="company"        /> -->
           <!-- <el-switch  active-text="质量报告"  inactive-text="成品报告"  active-value="1" inactive-value="0"  class="ml-3" v-model="pduReport"        /> -->
       </div>
       <el-button type="primary" @click="output">{{ uiText.export }}</el-button>

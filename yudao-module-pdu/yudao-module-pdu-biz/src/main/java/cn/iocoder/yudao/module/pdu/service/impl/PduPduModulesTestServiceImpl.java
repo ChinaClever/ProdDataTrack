@@ -125,7 +125,7 @@ public class PduPduModulesTestServiceImpl implements PduModulesTestService {
             DateTime dateTime = new DateTime();
             String timeString = dateTime.toString("yyyy-MM-dd HH:mm:ss");
             pduModulesTestData.setTestDate(timeString);
-            Map<String, String> crmInfo = CRMUtils.getInfoByCRM(pduModulesTestDataVo.getOrderId(), pduModulesTestDataVo.getProductSn(),"pdu");
+            Map<String, String> crmInfo = CRMUtils.getInfoByCRM(pduModulesTestDataVo.getOrderId(), pduModulesTestDataVo.getProductSn(), "pdu");
             String customerName = crmInfo.get("CUSTOMERNAME");
             String specification = crmInfo.get("MODELCODE");
             String quantity = crmInfo.get("QUANTITY");
@@ -133,12 +133,14 @@ public class PduPduModulesTestServiceImpl implements PduModulesTestService {
             pduModulesTestData.setSpecification(specification);
             pduModulesTestData.setOrderNum(quantity.equals("0") ? pduModulesTestDataVo.getOrderNum() : quantity);
             pduModulesTestMapper.insert(pduModulesTestData);
-            InformText informText = new InformText();
-            String msg = pduModulesTestData.getModuleType() +"：设备（" + pduModulesTestData.getModuleSn() + "）校准" + (pduModulesTestData.getResult().equals("0") ? "失败" : "完成") ;
-            informText.setMessage(msg);
-            informText.setTestDate(timeString);
-            informText.setTitle("PDU校准");
-            pduQueueService.addElementToQueue("pduModule", informText);
+            if ("0".equals(pduModulesTestDataVo.getLanguageSelect())) {
+                InformText informText = new InformText();
+                String msg = pduModulesTestData.getModuleType() + "：设备（" + pduModulesTestData.getModuleSn() + "）校准" + (pduModulesTestData.getResult().equals("0") ? "失败" : "完成");
+                informText.setMessage(msg);
+                informText.setTestDate(timeString);
+                informText.setTitle("PDU校准");
+                pduQueueService.addElementToQueue("pduModule", informText);
+            }
         } catch (Exception e) {
             log.error("存储测试数据失败：", e);
         }
