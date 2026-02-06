@@ -558,16 +558,30 @@ public class TestDataServiceImpl implements TestDataService {
 //                .eq("product_sn", reqVO.getProductSN())
 //                .eq("module_sn", reqVO.getModuleSN());
 
+
         List<TestData> testDataList = testDataMapper.selectList(queryWrapper);
         Collections.reverse(testDataList);
-
         List<TestData> newDataList = new ArrayList<>(testDataList.size());
-
+        Set<String> processedTestRequests = new HashSet<>();
         testDataList.forEach(i -> {
-            if (!newDataList.toString().contains(i.getTestRequest())) {
+            String testRequest = i.getTestRequest();
+            if (!processedTestRequests.contains(testRequest)) {
+                processedTestRequests.add(testRequest);
                 newDataList.add(i);
             }
         });
+
+
+//        List<TestData> testDataList = testDataMapper.selectList(queryWrapper);
+//        Collections.reverse(testDataList);
+//
+//        List<TestData> newDataList = new ArrayList<>(testDataList.size());
+//
+//        testDataList.forEach(i -> {
+//            if (!newDataList.toString().contains(i.getTestRequest())) {
+//                newDataList.add(i);
+//            }
+//        });
         Collections.reverse(newDataList);
         return newDataList;
     }

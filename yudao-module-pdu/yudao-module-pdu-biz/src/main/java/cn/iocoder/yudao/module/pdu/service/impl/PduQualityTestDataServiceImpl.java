@@ -522,13 +522,14 @@ public class PduQualityTestDataServiceImpl implements PduQualityTestDataService 
         String testData = pduQualityTestData.getTestData();
         List<PduTestDataDetail> pduTestDataDetails = DataTransitionUtil.parsePduTestDataDetail(testData);
         pduTestDataDetails.removeIf(vo -> vo.getTestItem() == null || vo.getTestItem().isEmpty());
-        pduTestDataDetails.sort(Comparator.comparing(PduTestDataDetail::getNo).reversed());
+        List<PduTestDataDetail> details = processPduTestDataDetail(pduTestDataDetails);
+        details.sort(Comparator.comparing(PduTestDataDetail::getNo).reversed());
         int index = 1;
-        for (PduTestDataDetail pduTestDataDetail : pduTestDataDetails) {
+        for (PduTestDataDetail pduTestDataDetail : details) {
             pduTestDataDetail.setNo(String.valueOf(index));
             index++;
         }
-        qualityTestInternalReport.setTestData(pduTestDataDetails);
+        qualityTestInternalReport.setTestData(details);
         internalReportVo.setQualityTestInternalReport(qualityTestInternalReport);
 
         // 处理半成品调试
@@ -541,13 +542,14 @@ public class PduQualityTestDataServiceImpl implements PduQualityTestDataService 
             String moduleTestData = pduModulesTestData.getTestData();
             List<PduTestDataDetail> pduModuleTestDataDetails = DataTransitionUtil.parsePduTestDataDetail(moduleTestData);
             pduModuleTestDataDetails.removeIf(vo -> vo.getTestItem() == null || vo.getTestItem().isEmpty());
-            pduModuleTestDataDetails.sort(Comparator.comparing(PduTestDataDetail::getNo).reversed());
+            List<PduTestDataDetail> moduleDetails = processPduTestDataDetail(pduModuleTestDataDetails);
+            moduleDetails.sort(Comparator.comparing(PduTestDataDetail::getNo).reversed());
             int moduleIndex = 1;
-            for (PduTestDataDetail testDataDetail : pduModuleTestDataDetails) {
+            for (PduTestDataDetail testDataDetail : moduleDetails) {
                 testDataDetail.setNo(String.valueOf(moduleIndex));
                 moduleIndex++;
             }
-            moduleTestInternalReport.setTestData(pduModuleTestDataDetails);
+            moduleTestInternalReport.setTestData(moduleDetails);
             internalReportVo.setModuleTestInternalReport(moduleTestInternalReport);
         }
 
@@ -562,5 +564,18 @@ public class PduQualityTestDataServiceImpl implements PduQualityTestDataService 
     @Override
     public void deleteTestData(Integer id) {
         pduQualityTestDataMapper.deleteById(id);
+    }
+
+    private List<PduTestDataDetail> processPduTestDataDetail(List<PduTestDataDetail> pduTestDataDetails) {
+        List<PduTestDataDetail> processList = new ArrayList<>(pduTestDataDetails.size());
+        Set<String> processedTestRequests = new HashSet<>();
+        pduTestDataDetails.forEach(i -> {
+            String testRequest = i.getTestRequest();
+            if (!processedTestRequests.contains(testRequest)) {
+                processedTestRequests.add(testRequest);
+                processList.add(i);
+            }
+        });
+        return processList;
     }
 }
