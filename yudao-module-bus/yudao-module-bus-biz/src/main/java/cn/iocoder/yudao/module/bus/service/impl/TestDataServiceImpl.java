@@ -428,6 +428,7 @@ public class TestDataServiceImpl implements TestDataService {
             respVO.setCustomerName(crm.get("CUSTOMERNAME"));
             respVO.setDeviceType(crm.get("MODELCODE"));
             respVO.setProductionNum(Integer.valueOf(crm.get("QUANTITY")));
+            respVO.setPassTestNum(Integer.valueOf(crm.get("QUANTITY")));
 //            // 查不到就请求其他接口 据说一定能查到
 //            String url = "https://cle.legrandchina.cn/Ashx/GetSpecPrint.ashx?Type=GetSpecPrints&UserId=BBFC8115-8EF5-42E1-B1CB-A1154291F9CD" +
 //                    "&OrderNo=" + reqVO.getOrderId() +
@@ -540,8 +541,8 @@ public class TestDataServiceImpl implements TestDataService {
         System.out.println("failTestModuleList" + Arrays.toString(failTestModuleList.toArray()));
         if (!testDataList.isEmpty()) {
             respVO.setDevName(testDataList.get(0).getDevName());
-            respVO.setPassTestNum(passTestModuleList.size());
-            respVO.setProductionNum(passTestModuleList.size());//临时==============================================
+//            respVO.setPassTestNum(passTestModuleList.size());
+//            respVO.setProductionNum(passTestModuleList.size());//临时==============================================
             respVO.setProductionDate(testDataList.get(0).getStartTime());
             respVO.setTestDate(testDataList.get(0).getEndTime());
         }
