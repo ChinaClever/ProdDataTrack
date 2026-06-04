@@ -24,16 +24,55 @@ public class CRMUtils {
     private static final String USER_ID = "BBFC8115-8EF5-42E1-B1CB-A1154291F9CD";
     private static final String TYPE = "GetSpecPrints";
 
-    public static Map<String, String> getInfoByCRM(String orderId, String productSn,String type) {
+//    public static Map<String, String> getInfoByCRM(String orderId, String productSn,String type) {
+//        Map<String, String> result = new HashMap<>();
+//
+//        try {
+//            // 第一次请求
+//            result = sendRequest(orderId, productSn, "AmmeterPrdNo");
+//
+//            if (result.isEmpty()) {
+//                // 第二次请求
+//                result = sendRequest(orderId, productSn, "ProductNo");
+//            }
+//
+//            if (result.isEmpty() && "pdu".equals(type)) {
+//                result.put("CUSTOMERNAME", "标准");
+//                result.put("MODELCODE", "无");
+//                result.put("QUANTITY", "0");
+//            }
+//
+//            if (result.isEmpty() && "bus".equals(type)) {
+//                result.put("CUSTOMERNAME", null);
+//                result.put("MODELCODE", null);
+//                result.put("QUANTITY", "0");
+//            }
+//
+//        } catch (Exception e) {
+//            log.error("获取CRM信息失败：", e);
+//        }
+//
+//        return result;
+//    }
+
+    public static Map<String, String> getInfoByCRM(String orderId, String productSn, String type) {
         Map<String, String> result = new HashMap<>();
 
         try {
+            // 处理 orderId 格式：如果包含 "/"，只取后半段
+            String processedOrderId = orderId;
+            if (orderId != null && orderId.contains("/")) {
+                String[] parts = orderId.split("/");
+                processedOrderId = parts[parts.length - 1];  // 取最后一段
+                log.debug("orderId 格式转换: {} -> {}", orderId, processedOrderId);
+            }
+
             // 第一次请求
-            result = sendRequest(orderId, productSn, "AmmeterPrdNo");
+            result = sendRequest(processedOrderId, productSn, "AmmeterPrdNo");
 
             if (result.isEmpty()) {
                 // 第二次请求
-                result = sendRequest(orderId, productSn, "ProductNo");
+                result = sendRequest(processedOrderId, productSn, "ProductNo");
             }
 
             if (result.isEmpty() && "pdu".equals(type)) {
@@ -54,7 +93,6 @@ public class CRMUtils {
 
         return result;
     }
-
 
     private static Map<String, String> sendRequest(String orderId, String productSn, String productField) {
         Map<String, String> result = new HashMap<>();
