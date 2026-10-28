@@ -18,9 +18,4 @@ export const TestDataApi = {
     return await request.get({ url: `/bus/internal-report`, params })
   },
 
-  // 导出某个序列号下交流耐压测试/绝缘测试/接地测试的耗时
-  exportTestDuration: async (params: any) => {
-    return await request.download({ url: `/bus/test-duration-export`, params })
-  },
-
 }

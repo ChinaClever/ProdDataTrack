@@ -4,8 +4,6 @@ import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqV
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDurationExcelVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDurationReqVO;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
@@ -39,12 +37,4 @@ public interface TestDataService {
     ReportRespVO getReportInfo(ReportReqVO reqVO);
 
     List<TestData> getInternalReport(ReportReqVO reqVO);
-
-    /**
-     * 统计某序列号下交流耐压测试/绝缘测试/接地测试的耗时
-     *
-     * @param reqVO 成品代码（必填）、模块序列号（选填）
-     * @return 各测试项耗时
-     */
-    List<TestDurationExcelVO> getTestDurationList(TestDurationReqVO reqVO);
 }

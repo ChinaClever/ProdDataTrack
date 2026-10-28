@@ -2,13 +2,10 @@ package cn.iocoder.yudao.module.bus.controller.admin.testdata;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.framework.excel.core.util.ExcelUtils;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDurationExcelVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDurationReqVO;
 import cn.iocoder.yudao.module.bus.entity.TestData;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
 import cn.iocoder.yudao.module.bus.service.TestDataService;
@@ -22,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -79,13 +75,6 @@ public class BusController {
     public CommonResult<List<TestData>> getInternalReport(ReportReqVO reqVO) {
         List<TestData> pageResult = testDataService.getInternalReport(reqVO);
         return success(pageResult);
-    }
-
-    @GetMapping("/test-duration-export")
-    public void exportTestDuration(TestDurationReqVO reqVO, HttpServletResponse response) throws IOException {
-        List<TestDurationExcelVO> list = testDataService.getTestDurationList(reqVO);
-        String fileName = "测试项耗时-" + reqVO.getProductSN() + ".xls";
-        ExcelUtils.write(response, fileName, "测试项耗时", TestDurationExcelVO.class, list);
     }
 
 }

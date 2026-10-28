@@ -1,16 +1,12 @@
 package cn.iocoder.yudao.module.bus.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.FileListPageReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportReqVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.ReportRespVO;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDataPageReqVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDurationExcelVO;
-import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.TestDurationReqVO;
 import cn.iocoder.yudao.module.bus.entity.UsedOrderInfo;
 import cn.iocoder.yudao.module.bus.mapper.UsedOrderInfoMapper;
 import cn.iocoder.yudao.module.infra.dal.dataobject.file.FileConfigDO;
@@ -51,26 +47,18 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
 
 @Service
-@Slf4j
 public class TestDataServiceImpl implements TestDataService {
     @Resource
     private MongoTemplate mongoTemplate;
@@ -459,140 +447,6 @@ public class TestDataServiceImpl implements TestDataService {
         List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
 
         return testDataList;
-    }
-
-    /**
-     * 需要统计耗时的测试项：第一个元素是导出展示的名称，后面是匹配 test_item 的关键字（兼容中英文文案）
-     */
-    private static final List<String[]> DURATION_TEST_ITEMS = Arrays.asList(
-            new String[]{"交流耐压测试", "耐压", "高压", "withstand", "high voltage", "hipot"},
-            new String[]{"绝缘测试", "绝缘", "insulation"},
-            new String[]{"接地测试", "接地", "ground"}
-    );
-
-    @Override
-    public List<TestDurationExcelVO> getTestDurationList(TestDurationReqVO reqVO) {
-        if (StrUtil.isBlank(reqVO.getProductSN())) {
-            throw ServiceExceptionUtil.invalidParamException("成品代码不能为空");
-        }
-        String productSN = reqVO.getProductSN().trim();
-        String moduleSN = StrUtil.isBlank(reqVO.getModuleSN()) ? null : reqVO.getModuleSN().trim();
-
-        // 模块序列号为空时，取该成品代码下最新一条数据的模块序列号
-        if (moduleSN == null) {
-            Query latestQuery = new Query(Criteria.where("product_sn").is(productSN)
-                    .and("language_select").is("0"))
-                    .with(Sort.by(Sort.Order.desc("_id")))
-                    .limit(1);
-            TestData latest = mongoTemplate.findOne(latestQuery, TestData.class);
-            if (latest == null || StrUtil.isBlank(latest.getModule_sn())) {
-                throw ServiceExceptionUtil.invalidParamException("成品代码({})没有对应的测试数据", productSN);
-            }
-            moduleSN = latest.getModule_sn().trim();
-        }
-
-        // 查询该成品代码 + 模块序列号下的全部测试记录
-        // 中英文是同一份测试数据的两条记录，只统计中文的，避免重复累加
-        Query query = new Query(Criteria.where("product_sn").is(productSN)
-                .and("module_sn").is(moduleSN)
-                .and("language_select").is("0"));
-        List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
-        if (testDataList.isEmpty()) {
-            throw ServiceExceptionUtil.invalidParamException("成品代码({})、模块序列号({})没有对应的测试数据", productSN, moduleSN);
-        }
-
-        // 按测试项累加每条记录的耗时（结束时间 - 开始时间）
-        long[] totalMillis = new long[DURATION_TEST_ITEMS.size()];
-        int[] recordCounts = new int[DURATION_TEST_ITEMS.size()];
-        for (TestData testData : testDataList) {
-            int itemIndex = matchDurationTestItem(testData.getTest_item());
-            if (itemIndex < 0) {
-                continue;
-            }
-            Long startMillis = parseTimeMillis(testData.getStart_time());
-            Long endMillis = parseTimeMillis(testData.getEnd_time());
-            if (startMillis == null || endMillis == null || endMillis < startMillis) {
-                continue;
-            }
-            totalMillis[itemIndex] += endMillis - startMillis;
-            recordCounts[itemIndex]++;
-        }
-
-        // 组装导出数据
-        List<TestDurationExcelVO> result = new ArrayList<>(DURATION_TEST_ITEMS.size());
-        for (int i = 0; i < DURATION_TEST_ITEMS.size(); i++) {
-            long millis = totalMillis[i];
-            TestDurationExcelVO excelVO = new TestDurationExcelVO();
-            excelVO.setProductSn(productSN);
-            excelVO.setModuleSn(moduleSN);
-            excelVO.setTestItem(DURATION_TEST_ITEMS.get(i)[0]);
-            excelVO.setDurationSeconds(BigDecimal.valueOf(millis)
-                    .divide(BigDecimal.valueOf(1000), 3, RoundingMode.HALF_UP));
-            excelVO.setDurationText(formatDurationText(millis));
-            excelVO.setRecordCount(recordCounts[i]);
-            result.add(excelVO);
-        }
-        return result;
-    }
-
-    /**
-     * 判断测试项属于哪一类，匹配不到返回 -1
-     */
-    private int matchDurationTestItem(String testItem) {
-        if (StrUtil.isBlank(testItem)) {
-            return -1;
-        }
-        String item = testItem.toLowerCase();
-        for (int i = 0; i < DURATION_TEST_ITEMS.size(); i++) {
-            String[] keywords = DURATION_TEST_ITEMS.get(i);
-            // 第一个是展示名称，从第二个开始是关键字
-            for (int j = 1; j < keywords.length; j++) {
-                if (item.contains(keywords[j])) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * 将 testdata 中字符串形式的时间解析成毫秒时间戳，解析失败返回 null
-     */
-    private Long parseTimeMillis(String time) {
-        if (StrUtil.isBlank(time)) {
-            return null;
-        }
-        String value = time.trim();
-        // 时间戳（毫秒或秒）
-        if (value.matches("\\d{10,13}")) {
-            long timestamp = Long.parseLong(value);
-            return value.length() == 10 ? timestamp * 1000 : timestamp;
-        }
-        // 兼容 yyyy-MM-dd HH:mm:ss 等常见格式
-        try {
-            return DateUtil.parse(value).getTime();
-        } catch (Exception ignored) {
-        }
-        // ISO8601 格式，例如 2024-09-27T17:17:08+08:00、2024-09-27T09:17:08Z
-        try {
-            return OffsetDateTime.parse(value).toInstant().toEpochMilli();
-        } catch (DateTimeParseException ignored) {
-        }
-        // 不带时区的 ISO 格式，例如 2024-09-27T17:17:08.123
-        try {
-            return LocalDateTime.parse(value).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        } catch (DateTimeParseException ignored) {
-        }
-        log.warn("[parseTimeMillis][时间({}) 解析失败]", value);
-        return null;
-    }
-
-    /**
-     * 毫秒格式化为 时:分:秒，例如 01:02:03
-     */
-    private String formatDurationText(long millis) {
-        long totalSeconds = millis / 1000;
-        return String.format("%02d:%02d:%02d", totalSeconds / 3600, (totalSeconds % 3600) / 60, totalSeconds % 60);
     }
 
 
