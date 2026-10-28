@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.bus.controller.admin.testdata;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.framework.excel.core.util.ExcelUtils;
 import cn.iocoder.yudao.module.bus.controller.admin.testdata.vo.*;
 import cn.iocoder.yudao.module.bus.entity.ModulesTest;
 import cn.iocoder.yudao.module.bus.entity.TestData;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.PermitAll;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -189,6 +191,14 @@ public class BusController {
         elements.add(moduleElement);
         elements.add(qualityElement);
         return success(elements);
+    }
+
+    @GetMapping("/test-duration-export")
+    @Operation(summary = "导出交流耐压测试/绝缘测试/接地测试的耗时")
+    public void exportTestDuration(TestDurationReqVO reqVO, HttpServletResponse response) throws IOException {
+        List<TestDurationExcelVO> list = testDataService.getTestDurationList(reqVO);
+        ExcelUtils.write(response, "测试项耗时-" + reqVO.getProductSN() + ".xls", "测试项耗时",
+                TestDurationExcelVO.class, list);
     }
 
 }

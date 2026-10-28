@@ -28,5 +28,9 @@ export const TestDataApi = {
   // 更新成品质检数据
   updateTestData: async (data: any) => {
     return await request.put({ url: `/bus/updateTestData`, data })
+  },
+  // 导出交流耐压测试/绝缘测试/接地测试的耗时
+  exportTestDuration: async (params: any) => {
+    return await request.download({ url: `/bus/test-duration-export`, params })
   }
 }
