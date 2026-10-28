@@ -52,7 +52,12 @@
         </el-form-item>
         <el-form-item >
           <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-1px" /> 搜索</el-button>
-        </el-form-item> 
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" plain @click="openExportDialog">
+            <Icon icon="ep:download" class="mr-1px" /> 导出测试项耗时
+          </el-button>
+        </el-form-item>
     </el-form>
   </ContentWrap>
   <ContentWrap>
@@ -76,10 +81,35 @@
       v-model:limit="queryParams.pageSize"
       @pagination="getList"/>
   </ContentWrap>
+
+  <!-- 导出测试项耗时 -->
+  <Dialog v-model="exportDialogVisible" title="导出测试项耗时" width="500px">
+    <el-form
+      ref="exportFormRef"
+      v-loading="exportLoading"
+      :model="exportFormData"
+      :rules="exportFormRules"
+      label-width="110px">
+      <el-form-item label="成品代码" prop="productSN">
+        <el-input v-model="exportFormData.productSN" placeholder="请输入成品代码" clearable />
+      </el-form-item>
+      <el-form-item label="模块序列号" prop="moduleSN">
+        <el-input
+          v-model="exportFormData.moduleSN"
+          placeholder="选填，为空时取该成品代码最新的模块序列号"
+          clearable />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button :disabled="exportLoading" type="primary" @click="handleExport">导 出</el-button>
+      <el-button @click="exportDialogVisible = false">取 消</el-button>
+    </template>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
+import download from '@/utils/download'
 import { TestDataApi } from '@/api/bus/testData'
 const loading = ref(true)
 const list = ref<Array<{ }>>([]) as any; 
@@ -236,6 +266,51 @@ function formatTestResult(row: any, _column: any, cellValue: number): string {
     return '通过'
     }
     return 'Pass'
+  }
+}
+
+/** 导出测试项耗时 **/
+const message = useMessage()
+const exportDialogVisible = ref(false)
+const exportLoading = ref(false)
+const exportFormRef = ref()
+const exportFormData = reactive({
+  productSN: '',
+  moduleSN: ''
+})
+const exportFormRules = {
+  productSN: [{ required: true, message: '成品代码不能为空', trigger: 'blur' }]
+}
+
+const openExportDialog = () => {
+  exportFormData.productSN = ''
+  exportFormData.moduleSN = ''
+  exportDialogVisible.value = true
+  nextTick(() => exportFormRef.value?.clearValidate())
+}
+
+const handleExport = async () => {
+  if (!exportFormRef.value) {
+    return
+  }
+  const valid = await exportFormRef.value.validate().catch(() => false)
+  if (!valid) {
+    return
+  }
+  try {
+    exportLoading.value = true
+    const data = await TestDataApi.exportTestDuration({
+      productSN: exportFormData.productSN,
+      // 模块序列号为空时不传，由后端取该成品代码下最新的模块序列号
+      moduleSN: exportFormData.moduleSN || undefined
+    })
+    download.excel(data, `测试项耗时-${exportFormData.productSN}.xls`)
+    message.success('导出成功')
+    exportDialogVisible.value = false
+  } catch {
+    // 失败提示已由请求拦截器统一处理
+  } finally {
+    exportLoading.value = false
   }
 }
 
