@@ -480,8 +480,7 @@ public class TestDataServiceImpl implements TestDataService {
 
         // 模块序列号为空时，取该成品代码下最新一条数据的模块序列号
         if (moduleSN == null) {
-            Query latestQuery = new Query(Criteria.where("product_sn").is(productSN)
-                    .and("language_select").is("0"))
+            Query latestQuery = new Query(Criteria.where("product_sn").is(productSN))
                     .with(Sort.by(Sort.Order.desc("_id")))
                     .limit(1);
             TestData latest = mongoTemplate.findOne(latestQuery, TestData.class);
@@ -492,36 +491,37 @@ public class TestDataServiceImpl implements TestDataService {
         }
 
         // 查询该成品代码 + 模块序列号下的全部测试记录
-        // 中英文是同一份测试数据的两条记录，只统计中文的，避免重复累加
-        Query query = new Query(Criteria.where("product_sn").is(productSN)
-                .and("module_sn").is(moduleSN)
-                .and("language_select").is("0"));
+        Query query = new Query(Criteria.where("product_sn").is(productSN).and("module_sn").is(moduleSN));
         List<TestData> testDataList = mongoTemplate.find(query, TestData.class);
         if (testDataList.isEmpty()) {
             throw ServiceExceptionUtil.invalidParamException("成品代码({})、模块序列号({})没有对应的测试数据", productSN, moduleSN);
         }
 
         // 按测试项累加每条记录的耗时（结束时间 - 开始时间）
-        long[] totalMillis = new long[DURATION_TEST_ITEMS.size()];
-        int[] recordCounts = new int[DURATION_TEST_ITEMS.size()];
+        // 同一次测试可能同时保存中文、英文两条记录，按语言分开统计，避免重复累加
+        long[][] totalMillis = new long[DURATION_TEST_ITEMS.size()][2];
+        int[][] recordCounts = new int[DURATION_TEST_ITEMS.size()][2];
         for (TestData testData : testDataList) {
             int itemIndex = matchDurationTestItem(testData.getTest_item());
             if (itemIndex < 0) {
                 continue;
             }
+            int languageIndex = Objects.equals("1", testData.getLanguage_select()) ? 1 : 0;
             Long startMillis = parseTimeMillis(testData.getStart_time());
             Long endMillis = parseTimeMillis(testData.getEnd_time());
             if (startMillis == null || endMillis == null || endMillis < startMillis) {
                 continue;
             }
-            totalMillis[itemIndex] += endMillis - startMillis;
-            recordCounts[itemIndex]++;
+            totalMillis[itemIndex][languageIndex] += endMillis - startMillis;
+            recordCounts[itemIndex][languageIndex]++;
         }
 
         // 组装导出数据
         List<TestDurationExcelVO> result = new ArrayList<>(DURATION_TEST_ITEMS.size());
         for (int i = 0; i < DURATION_TEST_ITEMS.size(); i++) {
-            long millis = totalMillis[i];
+            // 优先取中文记录，没有中文记录时取英文记录
+            int languageIndex = recordCounts[i][0] > 0 ? 0 : 1;
+            long millis = totalMillis[i][languageIndex];
             TestDurationExcelVO excelVO = new TestDurationExcelVO();
             excelVO.setProductSn(productSN);
             excelVO.setModuleSn(moduleSN);
@@ -529,7 +529,7 @@ public class TestDataServiceImpl implements TestDataService {
             excelVO.setDurationSeconds(BigDecimal.valueOf(millis)
                     .divide(BigDecimal.valueOf(1000), 3, RoundingMode.HALF_UP));
             excelVO.setDurationText(formatDurationText(millis));
-            excelVO.setRecordCount(recordCounts[i]);
+            excelVO.setRecordCount(recordCounts[i][languageIndex]);
             result.add(excelVO);
         }
         return result;
