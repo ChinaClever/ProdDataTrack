@@ -19,9 +19,9 @@ public class TestDurationExcelVO {
     @ExcelProperty("模块序列号")
     private String moduleSn;
 
-    @Schema(description = "测试项", example = "交流耐压测试")
-    @ExcelProperty("测试项")
-    private String testItem;
+    @Schema(description = "测试步骤", example = "安规测试")
+    @ExcelProperty("测试步骤")
+    private String testStep;
 
     @Schema(description = "耗时（秒）", example = "10.5")
     @ExcelProperty("耗时(秒)")

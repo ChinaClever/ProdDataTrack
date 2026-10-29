@@ -194,10 +194,10 @@ public class BusController {
     }
 
     @GetMapping("/test-duration-export")
-    @Operation(summary = "导出交流耐压测试/绝缘测试/接地测试的耗时")
+    @Operation(summary = "导出安规测试/功能测试的耗时")
     public void exportTestDuration(TestDurationReqVO reqVO, HttpServletResponse response) throws IOException {
         List<TestDurationExcelVO> list = testDataService.getTestDurationList(reqVO);
-        ExcelUtils.write(response, "测试项耗时-" + reqVO.getProductSN() + ".xls", "测试项耗时",
+        ExcelUtils.write(response, "测试步骤耗时-" + reqVO.getProductSN() + ".xls", "测试步骤耗时",
                 TestDurationExcelVO.class, list);
     }
 

@@ -72,7 +72,7 @@
         <el-form-item >
           <!-- <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-1px" /> 搜索</el-button> -->
           <el-button  type="danger" @click="()=> dialogStatus = true" >批量删除</el-button>
-          <el-button type="primary" @click="openExportDialog">导出测试项耗时</el-button>
+          <el-button type="primary" @click="openExportDialog">导出测试步骤耗时</el-button>
         </el-form-item>
     </el-form>
   </ContentWrap>
@@ -257,11 +257,11 @@
     </div>
   </el-dialog>
 
-  <!-- 导出测试项耗时 -->
+  <!-- 导出测试步骤耗时 -->
   <el-dialog
     v-model="exportDialogVisible"
     width="500px"
-    title="导出测试项耗时"
+    title="导出测试步骤耗时"
   >
     <el-form ref="exportFormRef" :model="exportForm" :rules="exportRules" label-width="100px">
       <el-form-item label="成品代码" prop="productSN">
@@ -571,7 +571,7 @@ const handlesubmit =async ()=>{
   }
 }
 
-/** 导出测试项耗时 **/
+/** 导出测试步骤耗时 **/
 const exportDialogVisible = ref(false)
 const exportLoading = ref(false)
 const exportFormRef = ref()
@@ -605,7 +605,7 @@ const handleExport = async () => {
       // 模块序列号为空时不传，由后端取该成品代码下最新的模块序列号
       moduleSN: exportForm.moduleSN || undefined
     })
-    download.excel(data, `测试项耗时-${exportForm.productSN}.xls`)
+    download.excel(data, `测试步骤耗时-${exportForm.productSN}.xls`)
     ElMessage.success('导出成功')
     exportDialogVisible.value = false
   } catch {

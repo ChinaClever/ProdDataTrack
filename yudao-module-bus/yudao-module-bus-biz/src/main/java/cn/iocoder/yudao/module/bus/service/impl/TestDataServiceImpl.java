@@ -613,10 +613,10 @@ public class TestDataServiceImpl implements TestDataService {
     }
 
     /**
-     * 需要统计耗时的测试项，按 test_item 全匹配
+     * 需要统计耗时的测试步骤（大类），按 test_step 全匹配，其下的子测试项一并计入
      */
-    private static final List<String> DURATION_TEST_ITEMS = Arrays.asList(
-            "交流耐压测试", "绝缘测试", "接地测试"
+    private static final List<String> DURATION_TEST_STEPS = Arrays.asList(
+            "安规测试", "功能测试"
     );
 
     @Override
@@ -652,11 +652,11 @@ public class TestDataServiceImpl implements TestDataService {
             throw ServiceExceptionUtil.invalidParamException("成品代码({})、模块序列号({})没有对应的测试数据", productSN, moduleSN);
         }
 
-        // 按测试项累加每条记录的耗时（结束时间 - 开始时间）
-        long[] totalMillis = new long[DURATION_TEST_ITEMS.size()];
+        // 按测试步骤累加其下所有子测试项的耗时（结束时间 - 开始时间）
+        long[] totalMillis = new long[DURATION_TEST_STEPS.size()];
         for (TestData testData : testDataList) {
-            int itemIndex = matchDurationTestItem(testData.getTestItem());
-            if (itemIndex < 0) {
+            int stepIndex = matchDurationTestStep(testData.getTestStep());
+            if (stepIndex < 0) {
                 continue;
             }
             Long startMillis = parseTimeMillis(testData.getStartTime());
@@ -664,17 +664,17 @@ public class TestDataServiceImpl implements TestDataService {
             if (startMillis == null || endMillis == null || endMillis < startMillis) {
                 continue;
             }
-            totalMillis[itemIndex] += endMillis - startMillis;
+            totalMillis[stepIndex] += endMillis - startMillis;
         }
 
         // 组装导出数据
-        List<TestDurationExcelVO> result = new ArrayList<>(DURATION_TEST_ITEMS.size());
-        for (int i = 0; i < DURATION_TEST_ITEMS.size(); i++) {
+        List<TestDurationExcelVO> result = new ArrayList<>(DURATION_TEST_STEPS.size());
+        for (int i = 0; i < DURATION_TEST_STEPS.size(); i++) {
             long millis = totalMillis[i];
             TestDurationExcelVO excelVO = new TestDurationExcelVO();
             excelVO.setProductSn(productSN);
             excelVO.setModuleSn(moduleSN);
-            excelVO.setTestItem(DURATION_TEST_ITEMS.get(i));
+            excelVO.setTestStep(DURATION_TEST_STEPS.get(i));
             excelVO.setDurationSeconds(BigDecimal.valueOf(millis)
                     .divide(BigDecimal.valueOf(1000), 3, RoundingMode.HALF_UP));
             excelVO.setDurationText(formatDurationText(millis));
@@ -684,13 +684,13 @@ public class TestDataServiceImpl implements TestDataService {
     }
 
     /**
-     * 判断测试项属于哪一类（全匹配），匹配不到返回 -1
+     * 判断测试步骤属于哪一类（全匹配），匹配不到返回 -1
      */
-    private int matchDurationTestItem(String testItem) {
-        if (StrUtil.isBlank(testItem)) {
+    private int matchDurationTestStep(String testStep) {
+        if (StrUtil.isBlank(testStep)) {
             return -1;
         }
-        return DURATION_TEST_ITEMS.indexOf(testItem.trim());
+        return DURATION_TEST_STEPS.indexOf(testStep.trim());
     }
 
     /**
