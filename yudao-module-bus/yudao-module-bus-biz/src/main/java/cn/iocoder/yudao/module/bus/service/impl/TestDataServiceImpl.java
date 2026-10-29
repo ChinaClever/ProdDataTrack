@@ -613,10 +613,12 @@ public class TestDataServiceImpl implements TestDataService {
     }
 
     /**
-     * 需要统计耗时的测试步骤（大类），按 test_step 全匹配，其下的子测试项一并计入
+     * 需要统计的测试项：交流耐压测试、绝缘测试、接地测试按 test_item 全匹配，
+     * 功能测试按 test_step 全匹配（其下包含多个子测试项，一并计入）
      */
-    private static final List<String> DURATION_TEST_STEPS = Arrays.asList(
-            "安规测试", "功能测试"
+    private static final String DURATION_STEP_FUNCTION = "功能测试";
+    private static final List<String> DURATION_ITEMS = Arrays.asList(
+            "交流耐压测试", "绝缘测试", "接地测试", DURATION_STEP_FUNCTION
     );
 
     @Override
@@ -652,11 +654,14 @@ public class TestDataServiceImpl implements TestDataService {
             throw ServiceExceptionUtil.invalidParamException("成品代码({})、模块序列号({})没有对应的测试数据", productSN, moduleSN);
         }
 
-        // 按测试步骤累加其下所有子测试项的耗时（结束时间 - 开始时间）
-        long[] totalMillis = new long[DURATION_TEST_STEPS.size()];
+        // 按测试项累加耗时（结束时间 - 开始时间），并记录该项最早的开始时间和最晚的结束时间
+        long[] totalMillis = new long[DURATION_ITEMS.size()];
+        long[] minStartMillis = new long[DURATION_ITEMS.size()];
+        long[] maxEndMillis = new long[DURATION_ITEMS.size()];
+        Arrays.fill(minStartMillis, Long.MAX_VALUE);
         for (TestData testData : testDataList) {
-            int stepIndex = matchDurationTestStep(testData.getTestStep());
-            if (stepIndex < 0) {
+            int itemIndex = matchDurationItem(testData);
+            if (itemIndex < 0) {
                 continue;
             }
             Long startMillis = parseTimeMillis(testData.getStartTime());
@@ -664,17 +669,24 @@ public class TestDataServiceImpl implements TestDataService {
             if (startMillis == null || endMillis == null || endMillis < startMillis) {
                 continue;
             }
-            totalMillis[stepIndex] += endMillis - startMillis;
+            totalMillis[itemIndex] += endMillis - startMillis;
+            minStartMillis[itemIndex] = Math.min(minStartMillis[itemIndex], startMillis);
+            maxEndMillis[itemIndex] = Math.max(maxEndMillis[itemIndex], endMillis);
         }
 
         // 组装导出数据
-        List<TestDurationExcelVO> result = new ArrayList<>(DURATION_TEST_STEPS.size());
-        for (int i = 0; i < DURATION_TEST_STEPS.size(); i++) {
+        List<TestDurationExcelVO> result = new ArrayList<>(DURATION_ITEMS.size());
+        for (int i = 0; i < DURATION_ITEMS.size(); i++) {
             long millis = totalMillis[i];
             TestDurationExcelVO excelVO = new TestDurationExcelVO();
             excelVO.setProductSn(productSN);
             excelVO.setModuleSn(moduleSN);
-            excelVO.setTestStep(DURATION_TEST_STEPS.get(i));
+            excelVO.setTestName(DURATION_ITEMS.get(i));
+            // 没有匹配到记录时，起止时间留空
+            if (minStartMillis[i] != Long.MAX_VALUE) {
+                excelVO.setStartTime(formatTime(minStartMillis[i]));
+                excelVO.setEndTime(formatTime(maxEndMillis[i]));
+            }
             excelVO.setDurationSeconds(BigDecimal.valueOf(millis)
                     .divide(BigDecimal.valueOf(1000), 3, RoundingMode.HALF_UP));
             excelVO.setDurationText(formatDurationText(millis));
@@ -684,13 +696,34 @@ public class TestDataServiceImpl implements TestDataService {
     }
 
     /**
-     * 判断测试步骤属于哪一类（全匹配），匹配不到返回 -1
+     * 匹配测试项，匹配不到返回 -1
+     * 1. 功能测试：按 test_step 全匹配，其下所有子测试项一并计入
+     * 2. 交流耐压测试、绝缘测试、接地测试：按 test_item 全匹配
      */
-    private int matchDurationTestStep(String testStep) {
-        if (StrUtil.isBlank(testStep)) {
+    private int matchDurationItem(TestData testData) {
+        if (DURATION_STEP_FUNCTION.equals(StrUtil.trim(testData.getTestStep()))) {
+            return DURATION_ITEMS.indexOf(DURATION_STEP_FUNCTION);
+        }
+        String testItem = StrUtil.trim(testData.getTestItem());
+        if (StrUtil.isBlank(testItem)) {
             return -1;
         }
-        return DURATION_TEST_STEPS.indexOf(testStep.trim());
+        for (int i = 0; i < DURATION_ITEMS.size(); i++) {
+            if (DURATION_STEP_FUNCTION.equals(DURATION_ITEMS.get(i))) {
+                continue;
+            }
+            if (DURATION_ITEMS.get(i).equals(testItem)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 毫秒时间戳格式化为 yyyy-MM-dd HH:mm:ss
+     */
+    private String formatTime(long millis) {
+        return DateUtil.format(new Date(millis), "yyyy-MM-dd HH:mm:ss");
     }
 
     /**
