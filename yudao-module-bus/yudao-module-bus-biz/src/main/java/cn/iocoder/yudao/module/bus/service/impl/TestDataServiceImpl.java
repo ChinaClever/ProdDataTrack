@@ -613,12 +613,21 @@ public class TestDataServiceImpl implements TestDataService {
     }
 
     /**
-     * 需要统计的测试项：交流耐压测试、绝缘测试、接地测试按 test_item 全匹配，
-     * 功能测试按 test_step 全匹配（其下包含多个子测试项，一并计入）
+     * 需要统计的测试项：
+     * 1. 安规测试：test_item 为交流耐压测试、绝缘测试的记录，耗时汇总到一起
+     * 2. 接地测试：test_item 全匹配
+     * 3. 功能测试：test_step 全匹配，其下包含多个子测试项，一并计入
      */
+    private static final String DURATION_NAME_SAFETY = "安规测试";
     private static final String DURATION_STEP_FUNCTION = "功能测试";
     private static final List<String> DURATION_ITEMS = Arrays.asList(
-            "交流耐压测试", "绝缘测试", "接地测试", DURATION_STEP_FUNCTION
+            DURATION_NAME_SAFETY, "接地测试", DURATION_STEP_FUNCTION
+    );
+    /**
+     * 汇总到安规测试的 test_item
+     */
+    private static final List<String> DURATION_SAFETY_TEST_ITEMS = Arrays.asList(
+            "交流耐压测试", "绝缘测试"
     );
 
     @Override
@@ -698,7 +707,8 @@ public class TestDataServiceImpl implements TestDataService {
     /**
      * 匹配测试项，匹配不到返回 -1
      * 1. 功能测试：按 test_step 全匹配，其下所有子测试项一并计入
-     * 2. 交流耐压测试、绝缘测试、接地测试：按 test_item 全匹配
+     * 2. 安规测试：test_item 为交流耐压测试、绝缘测试的记录汇总
+     * 3. 接地测试：按 test_item 全匹配
      */
     private int matchDurationItem(TestData testData) {
         if (DURATION_STEP_FUNCTION.equals(StrUtil.trim(testData.getTestStep()))) {
@@ -708,15 +718,14 @@ public class TestDataServiceImpl implements TestDataService {
         if (StrUtil.isBlank(testItem)) {
             return -1;
         }
-        for (int i = 0; i < DURATION_ITEMS.size(); i++) {
-            if (DURATION_STEP_FUNCTION.equals(DURATION_ITEMS.get(i))) {
-                continue;
-            }
-            if (DURATION_ITEMS.get(i).equals(testItem)) {
-                return i;
-            }
+        if (DURATION_SAFETY_TEST_ITEMS.contains(testItem)) {
+            return DURATION_ITEMS.indexOf(DURATION_NAME_SAFETY);
         }
-        return -1;
+        // 功能测试只按 test_step 匹配，避免同名 test_item 被重复归类
+        if (DURATION_STEP_FUNCTION.equals(testItem)) {
+            return -1;
+        }
+        return DURATION_ITEMS.indexOf(testItem);
     }
 
     /**

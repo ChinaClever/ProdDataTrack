@@ -47,7 +47,7 @@ public interface TestDataService {
     int deleteBatchTestData(String moduleSn);
 
     /**
-     * 统计某序列号下交流耐压测试、绝缘测试、接地测试、功能测试的耗时
+     * 统计某序列号下安规测试（交流耐压测试+绝缘测试）、接地测试、功能测试的耗时
      *
      * @param reqVO 成品代码（必填）、模块序列号（选填）
      * @return 各测试项的耗时汇总
