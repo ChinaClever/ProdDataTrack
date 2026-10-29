@@ -614,17 +614,17 @@ public class TestDataServiceImpl implements TestDataService {
 
     /**
      * 需要统计的测试项：
-     * 1. 安规测试：test_item 为交流耐压测试、绝缘测试的记录，耗时汇总到一起
+     * 1. 绝缘+交流耐压测试：test_item 为交流耐压测试、绝缘测试的记录，耗时汇总到一起
      * 2. 接地测试：test_item 全匹配
      * 3. 功能测试：test_step 全匹配，其下包含多个子测试项，一并计入
      */
-    private static final String DURATION_NAME_SAFETY = "安规测试";
+    private static final String DURATION_NAME_SAFETY = "绝缘+交流耐压测试";
     private static final String DURATION_STEP_FUNCTION = "功能测试";
     private static final List<String> DURATION_ITEMS = Arrays.asList(
             DURATION_NAME_SAFETY, "接地测试", DURATION_STEP_FUNCTION
     );
     /**
-     * 汇总到安规测试的 test_item
+     * 汇总到绝缘+交流耐压测试的 test_item
      */
     private static final List<String> DURATION_SAFETY_TEST_ITEMS = Arrays.asList(
             "交流耐压测试", "绝缘测试"
@@ -707,7 +707,7 @@ public class TestDataServiceImpl implements TestDataService {
     /**
      * 匹配测试项，匹配不到返回 -1
      * 1. 功能测试：按 test_step 全匹配，其下所有子测试项一并计入
-     * 2. 安规测试：test_item 为交流耐压测试、绝缘测试的记录汇总
+     * 2. 绝缘+交流耐压测试：test_item 为交流耐压测试、绝缘测试的记录汇总
      * 3. 接地测试：按 test_item 全匹配
      */
     private int matchDurationItem(TestData testData) {
